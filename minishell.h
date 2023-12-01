@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 18:52:32 by akortvel          #+#    #+#             */
-/*   Updated: 2023/12/01 11:57:43 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/01 16:31:26 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define MINISHELL_H
 
 # include "libft/libft.h"
-# include "lexer.h"
+//# include "lexer.h"
 
 # include <stdio.h>
 # include <stddef.h>
@@ -38,6 +38,11 @@ typedef struct s_lexer
 	void	*next;
 }	t_lexer;
 
+typedef struct s_lexer_pos
+{	
+	int i;
+}	t_lexer_pos;
+
 typedef struct s_parsing
 {
 	char *cmd_path;
@@ -51,7 +56,16 @@ typedef struct s_parsing
 	int	fd_pipe[2];
 }	t_parsing;
 
+typedef struct s_infos
+{
+	char **env;
+	char *path;
+	char *old_path;
+	char *pwd;
+	char *home;
+}	t_infos;
 
+/*
 void	parser(char* input, t_info *info);
 char 	*replace_dollar(char *input,  t_info *info);
 char	**ft_arrycpy(char **envp);
@@ -61,5 +75,6 @@ void	ft_clearscreen(char *input);
 void	get_pwd(t_info *info);
 void	ft_lexer(t_input *input,  t_info *info);
 char	*ft_strldup(char *s, size_t len);
+*/
 
 #endif

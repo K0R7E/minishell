@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 18:52:19 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/01 13:03:46 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/01 16:29:59 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,25 +44,35 @@ int	count_prompts(char *str)
 
 
 
-void	ft_lexer(t_input *input, t_info *info)
+void	ft_lexer(t_input *input, t_parsing *info) //inut str; env var
 {
 	//(void)info;
 	/*
 	info->args = ft_split(input->input_str, ' ');
 	return ;
 	*/
-	printf("input_str: %s\n", input->input_str);
-
-	int		i;
-	int		j;
-	int 	length;
-	int 	pos;
-
-	i = 0;
-	j = 0;
-	pos = -1;
+	//printf("input_str: %s\n", input->input_str);
+	t_lexer_pos *pos;
+	
+	pos->i = 0;;
 	info->args = (char **)malloc(((count_prompts(input->input_str)) + 1) * sizeof(char *));
-	printf("prompts: %d\n", (count_prompts(input->input_str)));
+	while (input->input_str[i] != '\0')
+	{
+		if (input->input_str[i] == ' ' || input->input_str[i] == '\t')
+		{
+			i++;
+			continue ;
+		}
+		else if (input->input_str[i] == '>' || input->input_str[i] == '<' || input->input_str[i] == '|')
+			handle_redirect();
+		else
+			handle_prompt();
+	
+	
+	
+	
+	//printf("prompts: %d\n", (count_prompts(input->input_str)));
+	/*
 	if (!input->input_str)
 		return ;
 	while (input->input_str[i] != '\0')
@@ -88,7 +98,7 @@ void	ft_lexer(t_input *input, t_info *info)
 			while (input->input_str[i] != ' ' || input->input_str[i] != '\0' || input->input_str[i] != '\t')
 				i++;
 			i++;
-			info->args[++pos] = ft_strldup(input->input_str + length, i - length);
+			info->args[++pos] = ft_strldup(input->input_str + length, i - length); //change to linked list
 		}
 		else if (input->input_str[i] == '\"')
 		{
@@ -104,7 +114,7 @@ void	ft_lexer(t_input *input, t_info *info)
 				}	
 			}
 			i++;
-			info->args[++pos] = ft_strldup(input->input_str + length, i - length);
+			info->args[++pos] = ft_strldup(input->input_str + length, i - length); //change to linked list
 		}
 		else 
 		{
@@ -118,13 +128,14 @@ void	ft_lexer(t_input *input, t_info *info)
 					break ;
 				i++;
 			}
-			info->args[++pos] = ft_strldup(input->input_str + length, i - length);
+			info->args[++pos] = ft_strldup(input->input_str + length, i - length); //change to linked list
 			//info->args[pos++] = ft_strldup(input->input_str + i, j + 1); write own
 			//info->args[j++][i - length] = '\0';
 		}
 		
 	}
 	info->args[++pos]= NULL;
+	*/
 }
 
 
