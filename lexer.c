@@ -6,12 +6,14 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 18:52:19 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/01 16:29:59 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/01 18:46:42 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 /* #include "lexer.h" */
+
+/*
 int	count_prompts(char *str)
 {
 	int i;
@@ -41,36 +43,88 @@ int	count_prompts(char *str)
 	}
 	return (count + 1);
 }
+*/
 
 
-
-void	ft_lexer(t_input *input, t_parsing *info) //inut str; env var
+void	ft_new_prompt(t_parsing *list, t_info *info, t_lexer_pos *pos, int start, int type)
 {
-	//(void)info;
-	/*
-	info->args = ft_split(input->input_str, ' ');
-	return ;
-	*/
-	//printf("input_str: %s\n", input->input_str);
+	
+	
+}
+
+void	handle_redirect(t_info *info, t_parsing *list, t_lexer_pos *pos)
+{
+	if (info->input[pos->i] == '>')
+	{
+		if (info->input[pos->i + 1] == '>')
+		{
+			ft_new_prompt(list, info, pos, pos->i, 4);
+			pos->i++;
+		}
+		else
+			ft_new_prompt(list, info, pos, pos->i, 2);
+	}
+	else if (info->input[pos->i] == '<')
+	{
+		if (info->input[pos->i + 1] == '<')
+		{
+			ft_new_prompt(list, info, pos, pos->i, 5);
+			pos->i++;
+		}
+		else
+			ft_new_prompt(list, info, pos, pos->i, 3);
+	}
+	else if (info->input[pos->i] == '|')
+		ft_new_prompt(list, info, pos, pos->i, 6);
+	
+	else if (info->input[pos->i] == '|')
+		ft_new_prompt(list, info, pos, pos->i, 5);
+}
+
+void	handle_prompt(t_info *info, t_parsing *list, t_lexer_pos *pos)
+{
+	int state;
+	int start;
+
+	state = 0;
+	start = pos->i;
+	while (info->input[pos->i] != ' ' && state == 0 || info->input[pos->i] != '\t' && state == 0 || info->input[pos->i] != '\0')
+	{
+		if (info->input[pos->i])
+		{
+			if (state == 0)
+				state = 1;
+			else if (state == 1)
+				state = 0;
+		}
+		pos->i++;
+		ft_new_prompt(list, info, pos, start, 1);
+	}
+
+}
+
+void	ft_lexer(t_info *info, t_parsing *list) //input str; env var
+{
 	t_lexer_pos *pos;
 	
-	pos->i = 0;;
-	info->args = (char **)malloc(((count_prompts(input->input_str)) + 1) * sizeof(char *));
-	while (input->input_str[i] != '\0')
+	pos->i = 0;;;
+	while (info->input[pos->i] != '\0')
 	{
-		if (input->input_str[i] == ' ' || input->input_str[i] == '\t')
+		if (info->input[pos->i] == ' ' || info->input[pos->i] == '\t')
 		{
-			i++;
+			pos->i++;
 			continue ;
 		}
-		else if (input->input_str[i] == '>' || input->input_str[i] == '<' || input->input_str[i] == '|')
-			handle_redirect();
+		else if (info->input[pos->i] == '>' || info->input[pos->i] == '<' || info->input[pos->i] == '|')
+			handle_redirect(info ,list, pos); //if | change pos->command_number
 		else
-			handle_prompt();
+			handle_prompt(info ,list, pos);
+	}
+}
 	
 	
-	
-	
+
+	//info->args = (char **)malloc(((count_prompts(info->input)) + 1) * sizeof(char *));
 	//printf("prompts: %d\n", (count_prompts(input->input_str)));
 	/*
 	if (!input->input_str)
@@ -136,7 +190,6 @@ void	ft_lexer(t_input *input, t_parsing *info) //inut str; env var
 	}
 	info->args[++pos]= NULL;
 	*/
-}
 
 
 /*

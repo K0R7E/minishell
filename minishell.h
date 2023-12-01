@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 18:52:32 by akortvel          #+#    #+#             */
-/*   Updated: 2023/12/01 17:04:31 by akortvel         ###   ########.fr       */
+/*   Updated: 2023/12/01 17:50:16 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_lexer
 typedef struct s_lexer_pos
 {	
 	int i;
+	int command_number;
 }	t_lexer_pos;
 
 typedef struct s_parsing
@@ -74,7 +75,7 @@ char	**ft_arrycpy(char **envp);
 /* void	ft_clearscreen(char *input); */
 //void	ft_printenv(char *input, t_info *info);
 void 	get_pwd(t_info *info);
-//void	ft_lexer(t_input *input,  t_info *info);
+void	ft_lexer(t_info *info, t_parsing *list);
 /* char	*ft_strldup(char *s, size_t len); */
 
 
