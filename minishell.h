@@ -30,15 +30,27 @@
 
 # define MAX_INPUT_SIZE 1024
 
-typedef struct s_info
+typedef struct s_lexer
+{	
+	int	command;
+	int	type;
+	char	*token;
+	void	*next;
+}	t_lexer;
+
+typedef struct s_parsing
 {
-	char **env;
-	char *pwd;
-	char *oldpwd;
-	char *home;
-	char *path;
+	char *cmd_path;
+	int	command; //whatever this means?
+	t_lexer redir;
 	char **args;
-}	t_info;
+	char *in_file;
+	char	*out_file;
+	int	fd_in;
+	int	fd_out;
+	int	fd_pipe[2];
+}	t_parsing;
+
 
 void	parser(char* input, t_info *info);
 char 	*replace_dollar(char *input,  t_info *info);
