@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 18:52:32 by akortvel          #+#    #+#             */
-/*   Updated: 2023/12/01 17:04:31 by akortvel         ###   ########.fr       */
+/*   Updated: 2023/12/01 17:33:34 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_parsing
 typedef struct s_info
 {
 	char **env;
+	t_lexer *lexer;
 	char *input;
 	char *path;
 	char *old_pwd;
