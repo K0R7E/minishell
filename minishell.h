@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 18:52:32 by akortvel          #+#    #+#             */
-/*   Updated: 2023/12/01 16:31:26 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/01 16:56:08 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@
 
 typedef struct s_lexer
 {	
-	int	command;
-	int	type;
-	char	*token;
-	void	*next;
+	int				command;
+	int				type;
+	char			*token;
+	struct s_lexer	*next;
 }	t_lexer;
 
 typedef struct s_lexer_pos
@@ -47,7 +47,7 @@ typedef struct s_parsing
 {
 	char *cmd_path;
 	int	command; //whatever this means?
-	t_lexer redir;
+	t_lexer lexer;
 	char **args;
 	char *in_file;
 	char	*out_file;
@@ -56,16 +56,17 @@ typedef struct s_parsing
 	int	fd_pipe[2];
 }	t_parsing;
 
-typedef struct s_infos
+typedef struct s_info
 {
 	char **env;
+	char *input;
 	char *path;
-	char *old_path;
+	char *old_pwd;
 	char *pwd;
 	char *home;
-}	t_infos;
+}	t_info;
 
-/*
+
 void	parser(char* input, t_info *info);
 char 	*replace_dollar(char *input,  t_info *info);
 char	**ft_arrycpy(char **envp);
@@ -73,8 +74,8 @@ void 	ft_echo(char *input);
 void	ft_clearscreen(char *input);
 //void	ft_printenv(char *input, t_info *info);
 void	get_pwd(t_info *info);
-void	ft_lexer(t_input *input,  t_info *info);
+//void	ft_lexer(t_input *input,  t_info *info);
 char	*ft_strldup(char *s, size_t len);
-*/
+
 
 #endif
