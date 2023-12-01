@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-/* #include "lexer.h" */
 
 char	*add_char_to_str(char *str, char c)
 {
