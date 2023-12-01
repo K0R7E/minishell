@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 18:52:32 by akortvel          #+#    #+#             */
-/*   Updated: 2023/12/01 16:56:08 by akortvel         ###   ########.fr       */
+/*   Updated: 2023/12/01 17:04:31 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,15 @@ typedef struct s_info
 }	t_info;
 
 
-void	parser(char* input, t_info *info);
-char 	*replace_dollar(char *input,  t_info *info);
+/* void	parser(char* input, t_info *info);
+char 	*replace_dollar(char *input,  t_info *info); */
 char	**ft_arrycpy(char **envp);
-void 	ft_echo(char *input);
-void	ft_clearscreen(char *input);
+/* void 	ft_echo(char *input); */
+/* void	ft_clearscreen(char *input); */
 //void	ft_printenv(char *input, t_info *info);
-void	get_pwd(t_info *info);
+void 	get_pwd(t_info *info);
 //void	ft_lexer(t_input *input,  t_info *info);
-char	*ft_strldup(char *s, size_t len);
+/* char	*ft_strldup(char *s, size_t len); */
 
 
 #endif

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fstark <fstark@student.42.fr>              +#+  +:+       +#+         #
+#    By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/25 18:54:43 by akortvel          #+#    #+#              #
-#    Updated: 2023/12/01 11:58:41 by fstark           ###   ########.fr        #
+#    Updated: 2023/12/01 17:05:03 by akortvel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC				=	cc
 RM				=	rm -rf
 CFLAGS			=	-Wall -Wextra -Werror -g
 FLAGS			=	-lreadline 
-SRCS            =	main.c lexer.c change_env_var.c parser.c ft_utils.c
+SRCS            =	main.c ft_getpwd.c ft_cpyarry.c
 
 OBJ_DIR				=	obj
 OBJS				=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
