@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 18:52:32 by akortvel          #+#    #+#             */
-/*   Updated: 2023/12/01 17:33:34 by akortvel         ###   ########.fr       */
+/*   Updated: 2023/12/03 12:12:52 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 
 typedef struct s_lexer
 {	
-	int				command;
+	int				pipes;
 	int				type;
 	char			*token;
 	struct s_lexer	*next;
@@ -45,15 +45,15 @@ typedef struct s_lexer_pos
 
 typedef struct s_parsing
 {
-	char *cmd_path;
-	int	command; //whatever this means?
-	t_lexer lexer;
-	char **args;
-	char *in_file;
+	char	*cmd_path;
+	int		command; //whatever this means?
+	t_lexer	lexer;
+	char	**args;
+	char	*in_file;
 	char	*out_file;
-	int	fd_in;
-	int	fd_out;
-	int	fd_pipe[2];
+	int		fd_in;
+	int		fd_out;
+	int		fd_pipe[2];
 }	t_parsing;
 
 typedef struct s_info
