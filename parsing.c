@@ -11,7 +11,7 @@ enum {
     TokenTypeOutputAppend = 4,
     TokenTypeHeredoc = 5,
     TokenTypePipe = 6,
-    TokenTypeEnd = 7,
+	TokenTypeEnd = 7,
 };
 
 typedef struct s_lexer
@@ -63,18 +63,23 @@ t_lexer *tokenize_input(const char *input) {
         if (strcmp(token, ">") == 0) {
             // Output redirect
             current->next = create_token(TokenTypeOutputRedirect, ">");
+			current = current->next;
         } else if (strcmp(token, "<") == 0) {
             // Input redirect
             current->next = create_token(TokenTypeInputRedirect, "<");
+			current = current->next;
         } else if (strcmp(token, ">>") == 0) {
             // Output append
             current->next = create_token(TokenTypeOutputAppend, ">>");
+			current = current->next;
         } else if (strcmp(token, "<<") == 0) {
             // Heredoc
             current->next = create_token(TokenTypeHeredoc, "<<");
+			current = current->next;
         } else if (strcmp(token, "|") == 0) {
             // Pipe
             current->next = create_token(TokenTypePipe, "|");
+			current = current->next;
         } else {
             // Word
             if (head == NULL) {
@@ -82,7 +87,7 @@ t_lexer *tokenize_input(const char *input) {
                 current = head;
             } else {
                 current->next = create_token(TokenTypeWord, token);
-                current = current->next;
+        		current = current->next;
             }
         }
 
