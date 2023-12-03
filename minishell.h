@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 18:52:32 by akortvel          #+#    #+#             */
-/*   Updated: 2023/12/03 12:12:52 by akortvel         ###   ########.fr       */
+/*   Updated: 2023/12/03 13:47:53 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 
 typedef struct s_lexer
 {	
-	int				pipes;
+	int				command;
 	int				type;
 	char			*token;
 	struct s_lexer	*next;

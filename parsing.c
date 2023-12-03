@@ -5,6 +5,7 @@ void ft_parser(t_info *info, t_parsing *pars, t_lexer *lexer)
 	int i = 0;
 	int j = 0;
 
+
 	while (lexer->next)
 	{
 		if (lexer->type == 1)
@@ -27,19 +28,23 @@ void ft_parser(t_info *info, t_parsing *pars, t_lexer *lexer)
 		else if (lexer->type == 4)
 		{
 			pars->in_file = ft_strdup(lexer->token);
+			pars->fd_in = open(pars->in_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			printf("recir_append: %s\n", pars->in_file); // should redirect output in append mode.
 		}
 		else if (lexer->type == 5)
 		{
 			pars->out_file = ft_strdup(lexer->token);
-			printf("heredoc: %s\n", pars->out_file); // heredoc + delimiter
+				pars->fd_out = open(pars->out_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+				printf("heredoc_delimiter: %s\n", pars->out_file); // heredoc + delimiter
 		}
 		lexer = lexer->next;
+		j++;
 	}
-}
+
+}	
 
 
-int main(int argc, char **argv, char **envp)
+/* int main(int argc, char **argv, char **envp)
 {
 	t_info *info;
 	t_parsing *pars;
@@ -57,4 +62,4 @@ int main(int argc, char **argv, char **envp)
 		ft_parser(info, pars, info->lexer);
 		//ft_exec(info, pars);
 	} 
-}
+} */
