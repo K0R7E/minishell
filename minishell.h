@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/25 18:52:32 by akortvel          #+#    #+#             */
-/*   Updated: 2023/12/04 18:47:13 by fstark           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -30,6 +19,18 @@
 
 # define MAX_INPUT_SIZE 1024
 
+// Token types
+enum {
+    TokenTypeWord = 1,
+    TokenTypeOutputRedirect = 2,
+    TokenTypeInputRedirect = 3,
+    TokenTypeOutputAppend = 4,
+    TokenTypeHeredoc = 5,
+    TokenTypePipe = 6,
+	TokenTypeEnd = 7,
+	TokenTypeDelimiter = 8,
+};
+
 typedef struct s_lexer
 {	
 	int				command;
@@ -46,21 +47,22 @@ typedef struct s_lexer_pos
 
 typedef struct s_parsing
 {
-	char *cmd_path;
-	int	command; //whatever this means?
-	t_lexer lexer;
-	char **args;
-	char *in_file;
+	char	**cmd_path;
+	char	**cmd_builtin;
+	int		yon;
+	t_lexer	*lexer;
+	char	**args;
+	char	*in_file;
 	char	*out_file;
-	int	fd_in;
-	int	fd_out;
-	int	fd_pipe[2];
-	int word_count;
-}	t_parsing;
+	int		fd_in;
+	int		fd_out;
+	int		fd_pipe[2];
+	char 	*check_cmd[7];
 
 typedef struct s_info
 {
 	char **env;
+	t_lexer *lexer;
 	char *input;
 	char *path;
 	char *old_pwd;
@@ -69,13 +71,21 @@ typedef struct s_info
 }	t_info;
 
 
-/* void	parser(char* input, t_info *info);
-char 	*replace_dollar(char *input,  t_info *info); */
+// main.c
+void ft_get_input(t_info *info);
+
+// ft_cpyarray.c
 char	**ft_arrycpy(char **envp);
-/* void 	ft_echo(char *input); */
-/* void	ft_clearscreen(char *input); */
-//void	ft_printenv(char *input, t_info *info);
+
+// ft_getpwd.c
 void 	get_pwd(t_info *info);
+
+// parsing.c
+void ft_parser(t_lexer *tokens, t_parsing *pars);
+void free_parsing(t_parsing *pars);
+//void print_tokens(t_lexer *tokens);
+
+//lexer.c
 void	ft_lexer(t_info *info, t_parsing *list);
 /* char	*ft_strldup(char *s, size_t len); */
 char *ft_strldup(char *s, size_t len);
