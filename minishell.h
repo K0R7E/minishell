@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 18:52:32 by akortvel          #+#    #+#             */
-/*   Updated: 2023/12/01 17:50:16 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/04 18:47:13 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_parsing
 	int	fd_in;
 	int	fd_out;
 	int	fd_pipe[2];
+	int word_count;
 }	t_parsing;
 
 typedef struct s_info
@@ -77,6 +78,6 @@ char	**ft_arrycpy(char **envp);
 void 	get_pwd(t_info *info);
 void	ft_lexer(t_info *info, t_parsing *list);
 /* char	*ft_strldup(char *s, size_t len); */
-
+char *ft_strldup(char *s, size_t len);
 
 #endif
