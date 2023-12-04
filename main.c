@@ -37,12 +37,11 @@ int main(int argc, char **argv, char **envp)
 		ft_get_input(info);
 		//ft_check_input(info);
 		//ft_lexer(info, pars);
-		//ft_parser(pars->lexer, pars);
-		//ft_exec(info, pars);
+		ft_parser(pars->lexer, pars);
+/* 		ft_executor(info, pars);
+		ft_execute(pars->args, pars->fd_in, pars->fd_out); */
 
-		/* const char *input = "ls -l > output.txt < input.txt << append.txt | grep pattern"; */
-
-    	t_lexer *tokens = tokenize_input(info->input);
+/*     	t_lexer *tokens = tokenize_input(info->input);
 
     	printf("Tokens:\n");
     	print_tokens(tokens);
@@ -51,7 +50,7 @@ int main(int argc, char **argv, char **envp)
     	ft_parser(tokens, pars);
 
     	free_tokens(tokens);
-    	/* free_parsing(pars); */
+    	free_parsing(pars); */
 	}
 	return (0);
 }

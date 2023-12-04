@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 18:52:32 by akortvel          #+#    #+#             */
-/*   Updated: 2023/12/04 15:10:31 by akortvel         ###   ########.fr       */
+/*   Updated: 2023/12/04 19:08:36 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,9 @@ typedef struct s_lexer_pos
 
 typedef struct s_parsing
 {
-	char	*cmd_path;
-	char	**command; //whatever this means?
+	char	**cmd_path;
+	char	**cmd_builtin;
+	int		yon;
 	t_lexer	*lexer;
 	char	**args;
 	char	*in_file;
@@ -97,6 +98,7 @@ void print_tokens(t_lexer *tokens);
 t_lexer *tokenize_input(const char *input);
 void free_tokens(t_lexer *tokens);
 t_lexer *create_token(int type, const char *token);
+
 
 
 
