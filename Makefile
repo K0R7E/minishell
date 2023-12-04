@@ -1,14 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/11/25 18:54:43 by akortvel          #+#    #+#              #
-#    Updated: 2023/12/04 19:07:46 by akortvel         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
 
 NAME			=	minishell
 
@@ -16,7 +5,7 @@ CC				=	cc
 RM				=	rm -rf
 CFLAGS			=	-Wall -Wextra -Werror -g
 FLAGS			=	-lreadline 
-SRCS            =	main.c ft_getpwd.c ft_cpyarry.c parsing.c 
+SRCS            =	main.c ft_getpwd.c ft_cpyarry.c lexer_utils.c lexer.c parsing.c
 
 OBJ_DIR				=	obj
 OBJS				=	$(SRCS:%.c=$(OBJ_DIR)/%.o)

@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/25 18:52:32 by akortvel          #+#    #+#             */
-/*   Updated: 2023/12/04 19:08:36 by akortvel         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -53,6 +42,7 @@ typedef struct s_lexer
 typedef struct s_lexer_pos
 {	
 	int i;
+	int command_number;
 }	t_lexer_pos;
 
 typedef struct s_parsing
@@ -68,7 +58,6 @@ typedef struct s_parsing
 	int		fd_out;
 	int		fd_pipe[2];
 	char 	*check_cmd[7];
-}	t_parsing;
 
 typedef struct s_info
 {
@@ -94,12 +83,11 @@ void 	get_pwd(t_info *info);
 // parsing.c
 void ft_parser(t_lexer *tokens, t_parsing *pars);
 void free_parsing(t_parsing *pars);
-void print_tokens(t_lexer *tokens);
-t_lexer *tokenize_input(const char *input);
-void free_tokens(t_lexer *tokens);
-t_lexer *create_token(int type, const char *token);
+//void print_tokens(t_lexer *tokens);
 
-
-
+//lexer.c
+void	ft_lexer(t_info *info, t_parsing *list);
+/* char	*ft_strldup(char *s, size_t len); */
+char *ft_strldup(char *s, size_t len);
 
 #endif
