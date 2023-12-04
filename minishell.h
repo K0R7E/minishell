@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 18:52:32 by akortvel          #+#    #+#             */
-/*   Updated: 2023/12/03 13:47:53 by akortvel         ###   ########.fr       */
+/*   Updated: 2023/12/04 14:31:04 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,18 @@
 
 # define MAX_INPUT_SIZE 1024
 
+// Token types
+enum {
+    TokenTypeWord = 1,
+    TokenTypeOutputRedirect = 2,
+    TokenTypeInputRedirect = 3,
+    TokenTypeOutputAppend = 4,
+    TokenTypeHeredoc = 5,
+    TokenTypePipe = 6,
+	TokenTypeEnd = 7,
+	TokenTypeDelimiter = 8,
+};
+
 typedef struct s_lexer
 {	
 	int				command;
@@ -47,13 +59,14 @@ typedef struct s_parsing
 {
 	char	*cmd_path;
 	int		command; //whatever this means?
-	t_lexer	lexer;
+	t_lexer	*lexer;
 	char	**args;
 	char	*in_file;
 	char	*out_file;
 	int		fd_in;
 	int		fd_out;
 	int		fd_pipe[2];
+	char 	**check_cmd;
 }	t_parsing;
 
 typedef struct s_info
@@ -71,7 +84,6 @@ typedef struct s_info
 /* void	parser(char* input, t_info *info);
 char 	*replace_dollar(char *input,  t_info *info); */
 char	**ft_arrycpy(char **envp);
-/* void 	ft_echo(char *input); */
 /* void	ft_clearscreen(char *input); */
 //void	ft_printenv(char *input, t_info *info);
 void 	get_pwd(t_info *info);

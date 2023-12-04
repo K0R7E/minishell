@@ -1,39 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <fcntl.h>
-
-// Token types
-enum {
-    TokenTypeWord = 1,
-    TokenTypeOutputRedirect = 2,
-    TokenTypeInputRedirect = 3,
-    TokenTypeOutputAppend = 4,
-    TokenTypeHeredoc = 5,
-    TokenTypePipe = 6,
-	TokenTypeEnd = 7,
-};
-
-typedef struct s_lexer
-{   
-    int             pipes;
-    int             type;
-    char            *token;
-    struct s_lexer  *next;
-}   t_lexer;
-
-typedef struct s_parsing
-{
-    char    *cmd_path;
-    int     command; //whatever this means?
-    t_lexer *lexer;
-    char    **args;
-    char    *in_file;
-    char    *out_file;
-    int     fd_in;
-    int     fd_out;
-    int     fd_pipe[2];
-}   t_parsing;
+#include "minishell.h"
 
 t_lexer *create_token(int type, const char *token) {
     t_lexer *new_token = malloc(sizeof(t_lexer));
@@ -123,7 +88,7 @@ void free_parsing(t_parsing *pars) {
 void ft_parser(t_lexer *tokens, t_parsing *pars) {
     int j = 0;
 
-    pars->cmd_path = NULL;
+    pars->cmd_path = "/usr/bin";
     pars->command = 0;
     pars->args = NULL;
     pars->in_file = NULL;
@@ -133,6 +98,8 @@ void ft_parser(t_lexer *tokens, t_parsing *pars) {
     pars->fd_pipe[0] = 0;
     pars->fd_pipe[1] = 0;
 	pars->lexer = tokens;
+	char *tmp[7] = {"pwd", "echo", "cd", "env", "export", "unset", "exit"};
+	memcpy(pars->check_cmd, tmp, sizeof(tmp));
 
     while (tokens != NULL) {
         if (tokens->type == TokenTypeWord) {
@@ -173,7 +140,7 @@ void ft_parser(t_lexer *tokens, t_parsing *pars) {
 
 int main()
 {
-    const char *input = "ls -l > output.txt < input.txt >> append.txt | grep pattern";
+    const char *input = "ls -l > output.txt < input.txt << append.txt | grep pattern";
 
     t_lexer *tokens = tokenize_input(input);
 

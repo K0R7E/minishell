@@ -35,9 +35,9 @@ int main(int argc, char **argv, char **envp)
  	while (1)
 	{
 		ft_get_input(info);
-/* 		ft_check_input(info);
-		ft_lexer(info, pars);
-		ft_parser(info, pars);
-		ft_exec(info, pars); */
+		//ft_check_input(info);
+		//ft_lexer(info, pars);
+		//ft_parser(info, pars);
+		//ft_exec(info, pars);
 	} 
 }
