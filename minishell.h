@@ -50,7 +50,7 @@ typedef struct s_parsing
 	char	**cmd_path;
 	char	**cmd_builtin;
 	int		yon;
-	t_lexer	*lexer;
+	t_lexer	lexer;
 	char	**args;
 	char	*in_file;
 	char	*out_file;
@@ -58,7 +58,7 @@ typedef struct s_parsing
 	int		fd_out;
 	int		fd_pipe[2];
 	char 	*check_cmd[7];
-
+}	t_parsing;
 typedef struct s_info
 {
 	char **env;

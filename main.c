@@ -33,7 +33,8 @@ int main(int argc, char **argv, char **envp)
 		ft_get_input(info);
 		//ft_check_input(info);
 		ft_lexer(info, pars);
-		ft_parser(pars->lexer, pars);
+		ft_parser(&pars->lexer, pars);
+	}
 	return (0);
 
 }

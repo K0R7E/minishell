@@ -129,7 +129,7 @@ void ft_parser(t_lexer *tokens, t_parsing *pars) {
     pars->fd_out = 0;
     pars->fd_pipe[0] = 0;
     pars->fd_pipe[1] = 0;
-	pars->lexer = tokens;
+	pars->lexer = *tokens;
 
     while (tokens != NULL)
 	{
