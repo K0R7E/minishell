@@ -17,25 +17,25 @@ static void	*ft_free(char **res)
 
 char **ft_arrycpy(char **envp)
 {
-	char	**rtn;
+	char	**tmp;
 	size_t	i;
 
 	i = 0;
 	while (envp[i] != NULL)
 		i++;
-	rtn = ft_calloc(sizeof(char *), i + 1);
-	if (!rtn)
+	tmp = ft_calloc(sizeof(char *), i + 1);
+	if (!tmp)
 		return (NULL);
 	i = 0;
 	while (envp[i] != NULL)
 	{
-		rtn[i] = ft_strdup(envp[i]);
-		if (rtn[i] == NULL)
+		tmp[i] = ft_strdup(envp[i]);
+		if (tmp[i] == NULL)
 		{
-			ft_free(rtn);
-			return (rtn);
+			ft_free(tmp);
+			return (tmp);
 		}
 		i++;
 	}
-	return (rtn);
+	return (tmp);
 }

@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 18:52:32 by akortvel          #+#    #+#             */
-/*   Updated: 2023/12/04 14:31:04 by akortvel         ###   ########.fr       */
+/*   Updated: 2023/12/04 15:10:31 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct s_lexer_pos
 typedef struct s_parsing
 {
 	char	*cmd_path;
-	int		command; //whatever this means?
+	char	**command; //whatever this means?
 	t_lexer	*lexer;
 	char	**args;
 	char	*in_file;
@@ -66,7 +66,7 @@ typedef struct s_parsing
 	int		fd_in;
 	int		fd_out;
 	int		fd_pipe[2];
-	char 	**check_cmd;
+	char 	*check_cmd[7];
 }	t_parsing;
 
 typedef struct s_info
@@ -81,14 +81,23 @@ typedef struct s_info
 }	t_info;
 
 
-/* void	parser(char* input, t_info *info);
-char 	*replace_dollar(char *input,  t_info *info); */
+// main.c
+void ft_get_input(t_info *info);
+
+// ft_cpyarray.c
 char	**ft_arrycpy(char **envp);
-/* void	ft_clearscreen(char *input); */
-//void	ft_printenv(char *input, t_info *info);
+
+// ft_getpwd.c
 void 	get_pwd(t_info *info);
-//void	ft_lexer(t_input *input,  t_info *info);
-/* char	*ft_strldup(char *s, size_t len); */
+
+// parsing.c
+void ft_parser(t_lexer *tokens, t_parsing *pars);
+void free_parsing(t_parsing *pars);
+void print_tokens(t_lexer *tokens);
+t_lexer *tokenize_input(const char *input);
+void free_tokens(t_lexer *tokens);
+t_lexer *create_token(int type, const char *token);
+
 
 
 #endif

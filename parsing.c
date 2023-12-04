@@ -75,20 +75,29 @@ void print_tokens(t_lexer *tokens)
     }
 }
 
-void free_parsing(t_parsing *pars) {
-    free(pars->cmd_path);
-    free(pars->in_file);
-    free(pars->out_file);
-    for (int i = 0; pars->args && pars->args[i] != NULL; i++) {
-        free(pars->args[i]);
-    }
-    free(pars->args);
-}
+/* void free_parsing(t_parsing *pars)
+{
+	if (pars->cmd_path)
+		free(pars->cmd_path);
+    if (pars->in_file)
+		free(pars->in_file);
+	if (pars->out_file)
+		free(pars->in_file);
+    if (pars->out_file)
+		free(pars->out_file);
+	if (pars->args)
+	{
+    	for (int i = 0; pars->args && pars->args[i] != NULL; i++) {
+    	    free(pars->args[i]);
+    	}
+    	free(pars->args);
+	}
+} */
 
 void ft_parser(t_lexer *tokens, t_parsing *pars) {
     int j = 0;
 
-    pars->cmd_path = "/usr/bin";
+    pars->cmd_path = "/usr/bin/";
     pars->command = 0;
     pars->args = NULL;
     pars->in_file = NULL;
@@ -98,10 +107,11 @@ void ft_parser(t_lexer *tokens, t_parsing *pars) {
     pars->fd_pipe[0] = 0;
     pars->fd_pipe[1] = 0;
 	pars->lexer = tokens;
-	char *tmp[7] = {"pwd", "echo", "cd", "env", "export", "unset", "exit"};
-	memcpy(pars->check_cmd, tmp, sizeof(tmp));
+	/* char *tmp[7] = {"pwd", "echo", "cd", "env", "export", "unset", "exit"}; */
+/* 	pars->check_cmd = tmp; */
 
-    while (tokens != NULL) {
+    while (tokens != NULL)
+	{
         if (tokens->type == TokenTypeWord) {
             // Initialize args to NULL before reallocating memory
             if (pars->args == NULL) {
@@ -138,7 +148,7 @@ void ft_parser(t_lexer *tokens, t_parsing *pars) {
 	}
 }
 
-int main()
+/* int main()
 {
     const char *input = "ls -l > output.txt < input.txt << append.txt | grep pattern";
 
@@ -155,5 +165,5 @@ int main()
     free_parsing(&parsing);
 
     return 0;
-}
+} */
 
