@@ -5,12 +5,8 @@ void ft_get_input(t_info *info)
 	char *line;
 
 	line = readline("\033[0;32mminishell> \033[0m");
-	if (line == NULL)
-	{
-		printf("exit\n");
-		exit(0);
-	}
-	else if (line[0] != '\0')
+	//line[strcspn(line, "\n")] = '\0';
+	if (line[0] != '\0')
 	{
 		add_history(line);
 	}
@@ -35,8 +31,9 @@ int main(int argc, char **argv, char **envp)
  	while (1)
 	{
 		ft_get_input(info);
-/* 		ft_check_input(info);
+		//ft_check_input(info);
 		ft_lexer(info, pars);
+		/* 	
 		ft_parser(info, pars);
 		ft_exec(info, pars); */
 	} 

@@ -1,4 +1,4 @@
-#include "push_swap.h"
+#include "minishell.h"
 
 t_list	*ft_lstnew(int value)
 {
