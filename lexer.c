@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 18:52:19 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/05 14:22:58 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/05 16:12:09 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,16 @@ void	ft_new_prompt(t_parsing *list, t_info *info, t_lexer_pos *pos, int start, i
 	new->command = pos->command_number;
 	new->type = type;
 	new->token = ft_strldup(info->input + start, pos->i - start);
+	if (pos->hedoc == 1)
+	{
+		pos->hedoc = 0;
+		if (ft_strchr2(new->token, '\'') || ft_strchr2(new->token, '\"'))
+			new->hd_quote = 1;
+		else
+			new->hd_quote = 0;
+	}
+	else
+		new->hd_quote = 0;
 	new->next = NULL;
 	if (list->lexer.command == 0)
 	{
@@ -105,6 +115,7 @@ void	handle_redirect(t_info *info, t_parsing *list, t_lexer_pos *pos)
 		{
 			pos->i++;
 			ft_new_prompt(list, info, pos, pos->i -2, 5);
+			pos->hedoc = 1;
 		}
 		else
 			ft_new_prompt(list, info, pos, pos->i -1, 3);
@@ -140,27 +151,14 @@ void	handle_prompt(t_info *info, t_parsing *list, t_lexer_pos *pos)
 	ft_new_prompt(list, info, pos, start, 1);
 }
 
-void	init_list(t_parsing *list)
-{
-	/*
-	t_lexer *new;
-	
-	new = malloc(sizeof(t_lexer));
-	
-	new->next = NULL;
-	new->command = 0;
-	list->lexer = *new;	
-	*/
-	list->lexer.command = 0;
-}
-
 void	ft_lexer(t_info *info, t_parsing *list) //input str; env var
 {
 	t_lexer_pos *pos = malloc(sizeof(t_lexer_pos));
 	
-	init_list(list);
+	list->lexer.command = 0;
 	pos->i = 0;
 	pos->command_number = 1;
+	pos->hedoc = 0;
 	while (info->input[pos->i] != '\0')
 	{
 		if (info->input[pos->i] == ' ' || info->input[pos->i] == '\t')
@@ -179,11 +177,13 @@ void	ft_lexer(t_info *info, t_parsing *list) //input str; env var
 	printf("\n");
 	while (tmp.next != NULL)
 	{
+		printf("hd_quote %d\n", tmp.hd_quote);
 		printf("command: %d\n", tmp.command);
 		printf("type: %d\n", tmp.type);
 		printf("token: %s\n\n", tmp.token);
 		tmp = *tmp.next;
 	}
+	printf("hd_quote %d\n", tmp.hd_quote);
 	printf("command: %d\n", tmp.command);
 	printf("type: %d\n", tmp.type);
 	printf("token: %s\n", tmp.token);

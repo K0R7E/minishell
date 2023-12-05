@@ -41,10 +41,12 @@ typedef struct s_lexer
 	struct s_lexer	*next;
 }	t_lexer;
 
+//for lexer
 typedef struct s_lexer_pos
 {	
 	int i;
 	int command_number;
+	int hedoc;
 }	t_lexer_pos;
 
 typedef struct s_parsing
