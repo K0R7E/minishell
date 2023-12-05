@@ -82,14 +82,22 @@ char	**ft_arrycpy(char **envp);
 void 	get_pwd(t_info *info);
 
 // parsing.c
-void ft_parser(t_lexer *tokens, t_parsing *pars);
+void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info);
 void free_parsing(t_parsing *pars);
 //void print_tokens(t_lexer *tokens);
 
+//input check
+int	ft_check_input(t_info *info);
+
 // lexer.c
 void	ft_lexer(t_info *info, t_parsing *list);
-/* char	*ft_strldup(char *s, size_t len); */
 char *ft_strldup(char *s, size_t len);
+int	ft_strchr2(char *s, int c);
+
+// $ variable conversion
+char *replace_dollar(char *input,  t_info *info);
+char	*add_char_to_str(char *str, char c);
+char *ft_strjoin2(char *str, char *add);
 
 // ft_execution.c
 void ft_heredoc(t_parsing *pars, t_info *info);

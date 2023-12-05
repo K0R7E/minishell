@@ -6,76 +6,11 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 13:40:04 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/01 12:46:39 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/05 11:46:39 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*add_char_to_str(char *str, char c)
-{
-	char	*new;
-	int		length;
-
-	length = 0;
-	if (str == NULL)
-		str = "\0";
-	while (str[length] != '\0')
-		length++;
-	new = malloc ((length + 2) * (sizeof(char)));
-	if (new != NULL)
-	{
-		length = 0;
-		while (str[length] != '\0')
-		{
-			new[length] = str[length];
-			length++;
-		}
-		new[length] = c;
-		new[++length] = '\0';
-	}
-	if (str[0] != '\0')
-		free(str);
-	return (new);
-}
-
-char *ft_strjoin2(char *str, char *add)
-{	
-	if (add == NULL)
-		return (NULL);
-	if (str == NULL)
-	{
-		str = malloc(1 * sizeof(char));
-		if (str	== NULL)
-			return(NULL);
-		str[0] = '\0';
-	}
-	char *total; 
-	total = malloc((ft_strlen(str) + ft_strlen(add) + 1) * sizeof(char));
-	if (total == NULL)
-	{
-		free(str);
-		return(NULL);
-	}
-	int i = 0;
-	while (str[i] != '\0')
-	{
-		total[i] = str[i];
-		i++;
-	}
-	int j = 0;
-	while (add[j] != '\0')
-    {
-		total[i + j] = add[j];
-		j++;
-    }
-	total[i + j] = '\0';
-	free(str);
-	free(add);
-	return (total);
-}
-
-
 
 int give_env_variable_pos(char *input, int i, t_info *info, int mode)
 {
@@ -165,6 +100,16 @@ char *replace_dollar(char *input,  t_info *info)
 		}
 		//printf("res after iteration %d: %s\n", i, res);
 	}
-	//free (input);
+	free (input);
 	return(res);
+}
+
+char *change_env_var(char *input,  t_info *info)
+{
+	if (ft_strchr2(input, '$'))
+	{
+		printf("hi\n");
+		input = replace_dollar(input, info);
+	}
+	return (input);
 }

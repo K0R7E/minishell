@@ -2,7 +2,7 @@
 
 void handle_builtin(t_parsing *pars, const char *token, int *i);
 void handle_path(t_parsing *pars, const char *token, int *j);
-void handle_argument(t_parsing *pars, const char *token, int *k);
+void handle_argument(t_parsing *pars, const char *token, int *k, t_info *info);
 
 /* void free_parsing(t_parsing *pars)
 {
@@ -39,7 +39,7 @@ void ft_print(t_parsing *pars)
 	}
 }
 
-void ft_parser(t_lexer *tokens, t_parsing *pars)
+void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 {
     int i = 0;
 	int j = 0;
@@ -64,7 +64,7 @@ void ft_parser(t_lexer *tokens, t_parsing *pars)
 		{
             pars->in_file = strdup(tokens->next->token);
             pars->fd_in = open(pars->in_file, O_RDONLY);
-			handle_argument(pars, tokens->token, &k);
+			handle_argument(pars, tokens->token, &k, info);
 			pars->yon = 1;
             printf("redir_in:    %s\n", pars->in_file);
         }
@@ -72,7 +72,7 @@ void ft_parser(t_lexer *tokens, t_parsing *pars)
 		{
             pars->out_file = strdup(tokens->next->token);
             pars->fd_out = open(pars->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			handle_argument(pars, tokens->token, &k);
+			handle_argument(pars, tokens->token, &k, info);
 			pars->yon = 1;
             printf("redir_out:   %s\n", pars->out_file);
         }
@@ -80,20 +80,20 @@ void ft_parser(t_lexer *tokens, t_parsing *pars)
 		{
             pars->in_file = strdup(tokens->next->token);
             pars->fd_in = open(pars->in_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-			handle_argument(pars, tokens->token, &k);
+			handle_argument(pars, tokens->token, &k, info);
 			pars->yon = 1;
             printf("recir_append: %s\n", pars->in_file);
         }
 		else if (tokens->type == TokenTypePipe)
 		{
-			handle_argument(pars, tokens->token, &k);
+			handle_argument(pars, tokens->token, &k, info);
 			pars->yon = 1;
 			printf("pipe: %s\n", tokens->token);
 		}
 		else if (tokens->type == TokenTypeHeredoc)
 		{
 			pars->heredoc_delimiter = strdup(tokens->next->token);
-			handle_argument(pars, tokens->token, &k);
+			handle_argument(pars, tokens->token, &k, info);
 			pars->yon = 1;
             printf("heredoc_delimiter: %s\n", pars->heredoc_delimiter);
         }
@@ -103,11 +103,11 @@ void ft_parser(t_lexer *tokens, t_parsing *pars)
 				handle_builtin(pars, tokens->token, &i);
 			else
 			 	handle_path(pars, tokens->token, &j);
-			handle_argument(pars, tokens->token, &k);
+			handle_argument(pars, tokens->token, &k, info);
 		} 
         tokens = tokens->next;
     }
-	
+	ft_print(pars);
 	
 }
 
@@ -140,9 +140,13 @@ void handle_path(t_parsing *pars, const char *token, int *j)
     (*j)++;
 }
 
-void handle_argument(t_parsing *pars, const char *token, int *k)
+void handle_argument(t_parsing *pars, const char *token, int *k, t_info *info)
 {
-    if (pars->args == NULL) {
+    if (!pars->heredoc_delimiter)
+		token = replace_dollar((char *)token, info);
+	//printf("token:%s\n", token); 
+	//split up again, if there is a space in the token
+	if (pars->args == NULL) {
         pars->args = malloc(sizeof(char *));
         pars->args[0] = NULL;
     }

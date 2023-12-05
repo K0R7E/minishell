@@ -31,9 +31,10 @@ int main(int argc, char **argv, char **envp)
  	while (1)
 	{
 		ft_get_input(info);
-		//ft_check_input(info);
+		if (ft_check_input(info))
+			continue;
 		ft_lexer(info, pars);
-		ft_parser(&pars->lexer, pars);
+		ft_parser(&pars->lexer, pars, info);
 		ft_executor(pars, info);
 	}
 	return (0);
