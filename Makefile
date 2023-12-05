@@ -5,7 +5,8 @@ CC				=	cc
 RM				=	rm -rf
 CFLAGS			=	-Wall -Wextra -Werror -g
 FLAGS			=	-lreadline 
-SRCS            =	main.c ft_getpwd.c ft_cpyarry.c lexer_utils.c lexer.c parsing.c ft_execution.c change_env_var.c change_env_var_utils.c input_check.c
+
+SRCS            =	main.c ft_getpwd.c ft_cpyarry.c lexer_utils.c lexer.c parsing.c ft_execution.c change_env_var.c change_env_var_utils.c input_check.c ft_signals.c
 
 OBJ_DIR				=	obj
 OBJS				=	$(SRCS:%.c=$(OBJ_DIR)/%.o)

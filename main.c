@@ -30,6 +30,7 @@ int main(int argc, char **argv, char **envp)
 	get_pwd(info);
  	while (1)
 	{
+		ft_signals();
 		ft_get_input(info);
 		if (ft_check_input(info))
 			continue;
