@@ -9,6 +9,7 @@
 # include <stddef.h>
 # include <stdlib.h>
 # include <string.h>
+# include <signal.h>
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/wait.h>
@@ -94,6 +95,11 @@ char *ft_strldup(char *s, size_t len);
 // ft_execution.c
 void ft_heredoc(t_parsing *pars, t_info *info);
 void ft_executor(t_parsing *pars, t_info *info);
+
+// ft_signals.c
+void ft_signals(void);
+void ft_sigquit(int signum);
+void ft_sigint(int signum);
 
 
 #endif
