@@ -86,9 +86,14 @@ void ft_parser(t_lexer *tokens, t_parsing *pars);
 void free_parsing(t_parsing *pars);
 //void print_tokens(t_lexer *tokens);
 
-//lexer.c
+// lexer.c
 void	ft_lexer(t_info *info, t_parsing *list);
 /* char	*ft_strldup(char *s, size_t len); */
 char *ft_strldup(char *s, size_t len);
+
+// ft_execution.c
+void ft_heredoc(t_parsing *pars, t_info *info);
+void ft_executor(t_parsing *pars, t_info *info);
+
 
 #endif

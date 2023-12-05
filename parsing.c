@@ -92,12 +92,10 @@ void ft_parser(t_lexer *tokens, t_parsing *pars)
 		}
 		else if (tokens->type == TokenTypeHeredoc)
 		{
-            pars->out_file = strdup(tokens->next->token);
-            pars->fd_out = open(pars->out_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			pars->heredoc_delimiter = strdup(tokens->next->token);
 			handle_argument(pars, tokens->token, &k);
 			pars->yon = 1;
-			pars->heredoc_delimiter = strdup(tokens->next->token);
-            printf("heredoc_delimiter: %s\n", pars->out_file);
+            printf("heredoc_delimiter: %s\n", pars->heredoc_delimiter);
         }
 		else if (tokens->type == TokenTypeWord)
 		{
@@ -109,7 +107,8 @@ void ft_parser(t_lexer *tokens, t_parsing *pars)
 		} 
         tokens = tokens->next;
     }
-	ft_print(pars);
+	
+	
 }
 
 void handle_builtin(t_parsing *pars, const char *token, int *i)

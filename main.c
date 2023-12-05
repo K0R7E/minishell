@@ -34,7 +34,7 @@ int main(int argc, char **argv, char **envp)
 		//ft_check_input(info);
 		ft_lexer(info, pars);
 		ft_parser(&pars->lexer, pars);
-		//ft_executor(pars, info);
+		ft_executor(pars, info);
 	}
 	return (0);
 }
