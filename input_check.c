@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 12:16:30 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/05 14:17:04 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/05 14:51:08 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ int	ft_check_input(t_info *info)
 	{
 		if (ft_strchr2("><", info->input[i]))
 		{
-			if (info->input[i] != '>' && info->input[i +1] != '>')
+			if (info->input[i] == '>' && info->input[i + 1] == '>')
 				i++;
-			if (info->input[i] != '<' && info->input[i +1] != '<')
+			else if (info->input[i] == '<' && info->input[i + 1] == '<')
 				i++;
 			i++;
 			while (info->input[i] != '\0')

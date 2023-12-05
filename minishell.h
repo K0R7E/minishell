@@ -36,6 +36,7 @@ typedef struct s_lexer
 {	
 	int				command;
 	int				type;
+	int				hd_quote;
 	char			*token;
 	struct s_lexer	*next;
 }	t_lexer;
