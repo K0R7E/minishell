@@ -4,81 +4,6 @@ void handle_builtin(t_parsing *pars, const char *token, int *i);
 void handle_path(t_parsing *pars, const char *token, int *j);
 void handle_argument(t_parsing *pars, const char *token, int *k);
 
-/* t_lexer *create_token(int type, const char *token) {
-    t_lexer *new_token = malloc(sizeof(t_lexer));
-    new_token->type = type;
-    new_token->token = strdup(token);
-    new_token->next = NULL;
-    return new_token;
-} */
-
-/* void free_tokens(t_lexer *tokens) {
-    while (tokens != NULL) {
-        t_lexer *temp = tokens;
-        tokens = tokens->next;
-        free(temp->token);
-        free(temp);
-    }
-} */
-
-// Function to tokenize input
-/* t_lexer *tokenize_input(const char *input) {
-    t_lexer *head = NULL;
-    t_lexer *current = NULL;
-
-    // Tokenize the input based on spaces
-    char *token = strtok(strdup(input), " ");
-    while (token != NULL) {
-        if (strcmp(token, ">") == 0) {
-            // Output redirect
-            current->next = create_token(TokenTypeOutputRedirect, ">");
-			current = current->next;
-        } else if (strcmp(token, "<") == 0) {
-            // Input redirect
-            current->next = create_token(TokenTypeInputRedirect, "<");
-			current = current->next;
-        } else if (strcmp(token, ">>") == 0) {
-            // Output append
-            current->next = create_token(TokenTypeOutputAppend, ">>");
-			current = current->next;
-        } else if (strcmp(token, "<<") == 0) {
-            // Heredoc
-            current->next = create_token(TokenTypeHeredoc, "<<");
-			current = current->next;
-        } else if (strcmp(token, "|") == 0) {
-            // Pipe
-            current->next = create_token(TokenTypePipe, "|");
-			current = current->next;
-        } else {
-            // Word
-            if (head == NULL) {
-                head = create_token(TokenTypeWord, token);
-                current = head;
-            } else {
-                current->next = create_token(TokenTypeWord, token);
-        		current = current->next;
-            }
-        }
-
-        token = strtok(NULL, " ");
-    }
-
-    // Add an end token
-    if (current != NULL) {
-        current->next = create_token(TokenTypeEnd, "");
-    }
-
-    return head;
-} */
-
-/* void print_tokens(t_lexer *tokens)
-{
-    while (tokens != NULL) {
-        printf("Type: %d, Token: %s\n", tokens->type, tokens->token);
-        tokens = tokens->next;
-    }
-} */
-
 /* void free_parsing(t_parsing *pars)
 {
 	if (pars->cmd_path)
@@ -114,7 +39,8 @@ void ft_print(t_parsing *pars)
 	}
 }
 
-void ft_parser(t_lexer *tokens, t_parsing *pars) {
+void ft_parser(t_lexer *tokens, t_parsing *pars)
+{
     int i = 0;
 	int j = 0;
 	int k = 0;
@@ -130,6 +56,7 @@ void ft_parser(t_lexer *tokens, t_parsing *pars) {
     pars->fd_pipe[0] = 0;
     pars->fd_pipe[1] = 0;
 	pars->lexer = *tokens;
+	pars->heredoc_delimiter = NULL;
 
     while (tokens != NULL)
 	{
@@ -157,12 +84,19 @@ void ft_parser(t_lexer *tokens, t_parsing *pars) {
 			pars->yon = 1;
             printf("recir_append: %s\n", pars->in_file);
         }
+		else if (tokens->type == TokenTypePipe)
+		{
+			handle_argument(pars, tokens->token, &k);
+			pars->yon = 1;
+			printf("pipe: %s\n", tokens->token);
+		}
 		else if (tokens->type == TokenTypeHeredoc)
 		{
             pars->out_file = strdup(tokens->next->token);
             pars->fd_out = open(pars->out_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			handle_argument(pars, tokens->token, &k);
 			pars->yon = 1;
+			pars->heredoc_delimiter = strdup(tokens->next->token);
             printf("heredoc_delimiter: %s\n", pars->out_file);
         }
 		else if (tokens->type == TokenTypeWord)
@@ -177,38 +111,6 @@ void ft_parser(t_lexer *tokens, t_parsing *pars) {
     }
 	ft_print(pars);
 }
-
-/* int main()
-{
-    const char *input = "ls -l > output.txt < input.txt << append.txt | grep pattern";
-
-    t_lexer *tokens = tokenize_input(input);
-
-    printf("Tokens:\n");
-    print_tokens(tokens);
-
-    printf("\nParsed:\n");
-    t_parsing parsing;
-    ft_parser(tokens, &parsing);
-
-    free_tokens(tokens);
-    free_parsing(&parsing);
-
-    return 0;
-} */
-
-/* int ft_check_prev_token_type(t_lexer *tokens)
-{
-	if (tokens->type == TokenTypeInputRedirect && tokens->next->type == TokenTypeWord)
-		return (1);
-	else if (tokens->type == TokenTypeOutputRedirect && tokens->next->type == TokenTypeWord)
-		return (1);
-	else if (tokens->type == TokenTypeOutputAppend && tokens->next->type == TokenTypeWord)
-		return (1);
-	else if (tokens->type == TokenTypeHeredoc && tokens->next->type == TokenTypeWord)
-		return (1);
-	return (0);
-} */
 
 void handle_builtin(t_parsing *pars, const char *token, int *i)
 {

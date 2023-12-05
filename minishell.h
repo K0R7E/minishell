@@ -50,6 +50,7 @@ typedef struct s_parsing
 	char	**cmd_path;
 	char	**cmd_builtin;
 	int		yon;
+	char	*heredoc_delimiter;
 	t_lexer	lexer;
 	char	**args;
 	char	*in_file;
