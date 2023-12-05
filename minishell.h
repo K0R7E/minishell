@@ -20,6 +20,12 @@
 
 # define MAX_INPUT_SIZE 1024
 
+# define R "\033[0;31m"
+# define G "\033[0;32m"
+# define Y "\033[0;33m"
+# define LIME "\033[1;32m"
+# define OFF "\033[0m"
+
 // Token types
 enum {
     TokenTypeWord = 1,
@@ -110,5 +116,8 @@ void ft_signals(void);
 void ft_sigquit(int signum);
 void ft_sigint(int signum);
 
+// gui.c
+void print_centered(char *text);
+void ft_print_minishell_gui(void);
 
 #endif

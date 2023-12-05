@@ -4,12 +4,14 @@ void ft_get_input(t_info *info)
 {
 	char *line;
 
-	line = readline("\033[0;32mminishell> \033[0m");
-	//line[strcspn(line, "\n")] = '\0';
-	if (line[0] != '\0')
+	line = readline(LIME"minishell>"OFF);
+	if (line == NULL)
 	{
-		add_history(line);
+		printf("exit\n");
+		exit(0);
 	}
+	if (line[0] != '\0')
+		add_history(line);
 	info->input = ft_strdup(line);
 	free(line);
 	if (ft_check_input(info) == 1)
@@ -30,6 +32,7 @@ int main(int argc, char **argv, char **envp)
 	}
 	info->env = ft_arrycpy(envp);
 	get_pwd(info);
+	ft_print_minishell_gui();
  	while (1)
 	{
 		ft_signals();
