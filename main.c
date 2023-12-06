@@ -18,6 +18,30 @@ void ft_get_input(t_info *info)
 		ft_get_input(info);	
 }
 
+void ft_pipe(t_parsing *pars, t_info *info)
+{
+	pid_t pid;
+	int fd[2];
+
+	pipe(fd);
+	pid = fork();
+	if (pid == 0)
+	{
+		dup2(fd[1], 1);
+		close(fd[0]);
+		close(fd[1]);
+		ft_executor(pars, info);
+	}
+	else
+	{
+		dup2(fd[0], 0);
+		close(fd[0]);
+		close(fd[1]);
+		ft_executor(pars, info);
+	}
+
+}
+
 int main(int argc, char **argv, char **envp)
 {
 	t_info *info;
@@ -39,6 +63,8 @@ int main(int argc, char **argv, char **envp)
 		ft_get_input(info);
 		ft_lexer(info, pars);
 		ft_parser(&pars->lexer, pars, info);
+		if (pars->pipes_count > 0)
+			ft_pipe(pars, info);
 		ft_executor(pars, info);
 	}
 	return (0);
