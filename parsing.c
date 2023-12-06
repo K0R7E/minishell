@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 void handle_builtin(t_parsing *pars, const char *token, int *i);
-void handle_path(t_parsing *pars, const char *token, int *j);
+void handle_command(t_parsing *pars, const char *token, int *j);
 void handle_argument(t_parsing *pars, const char *token, int *k, t_info *info);
 
 /* void free_parsing(t_parsing *pars)
@@ -30,8 +30,8 @@ void ft_print(t_parsing *pars)
 		printf("cmd_builtin: %s\n", pars->cmd_builtin[i]);
 	}
 	// Print the cmd_path array
-	for (int i = 0; pars->cmd_path && pars->cmd_path[i] != NULL; i++) {
-		printf("cmd_path:    %s\n", pars->cmd_path[i]);
+	for (int i = 0; pars->cmd_cmd && pars->cmd_cmd[i] != NULL; i++) {
+		printf("cmd_cmd:    %s\n", pars->cmd_cmd[i]);
 	}
 	// Print the args array
 	for (int i = 0; pars->args && pars->args[i] != NULL; i++) {
@@ -42,10 +42,11 @@ void ft_print(t_parsing *pars)
 void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 {
     int i = 0;
+	int j = 0;
 	int k = 0;
 
 	pars->yon = 0;
-    pars->cmd_path = NULL;
+    pars->cmd_cmd = NULL;
     pars->cmd_builtin = NULL;
     pars->args = NULL;
     pars->in_file = NULL;
@@ -56,8 +57,7 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
     pars->fd_pipe[1] = 0;
 	pars->lexer = *tokens;
 	pars->heredoc_delimiter = NULL;
-	pars->hd_lines = NULL;
-	pars->pipes_count = ft_count_pipes(pars);
+	pars->pipes_count = 0;
 
     while (tokens != NULL)
 	{
@@ -65,7 +65,6 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 		{
             pars->in_file = strdup(tokens->next->token);
             pars->fd_in = open(pars->in_file, O_RDONLY);
-			handle_argument(pars, tokens->token, &k, info);
 			pars->yon = 1;
             printf("redir_in:    %s\n", pars->in_file);
         }
@@ -73,7 +72,6 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 		{
             pars->out_file = strdup(tokens->next->token);
             pars->fd_out = open(pars->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			handle_argument(pars, tokens->token, &k, info);
 			pars->yon = 1;
             printf("redir_out:   %s\n", pars->out_file);
         }
@@ -81,28 +79,33 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 		{
             pars->in_file = strdup(tokens->next->token);
             pars->fd_in = open(pars->in_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-			handle_argument(pars, tokens->token, &k, info);
 			pars->yon = 1;
             printf("recir_append: %s\n", pars->in_file);
         }
 		else if (tokens->type == TokenTypePipe)
 		{
-			handle_argument(pars, tokens->token, &k, info);
-			pars->yon = 1;
+			pars->yon = 0;
+			pars->pipes_count++;
 			printf("pipe: %s\n", tokens->token);
 		}
 		else if (tokens->type == TokenTypeHeredoc)
 		{
 			pars->heredoc_delimiter = strdup(tokens->next->token);
-			handle_argument(pars, tokens->token, &k, info);
+			/* pars->fd_in = 0; */
 			pars->yon = 1;
             printf("heredoc_delimiter: %s\n", pars->heredoc_delimiter);
         }
 		else if (tokens->type == TokenTypeWord)
 		{
 			if (strcmp(tokens->token, "pwd") == 0 || strcmp(tokens->token, "echo") == 0 || strcmp(tokens->token, "cd") == 0 || strcmp(tokens->token, "env") == 0 || strcmp(tokens->token, "export") == 0 || strcmp(tokens->token, "unset") == 0 || strcmp(tokens->token, "exit") == 0)
+			{
 				handle_builtin(pars, tokens->token, &i);
-			handle_argument(pars, tokens->token, &k, info);
+				pars->yon = 1;
+			}
+			else if (pars->yon == 0)
+				handle_command(pars, tokens->token, &j);
+			else
+				handle_argument(pars, tokens->token, &k, info);
 		} 
         tokens = tokens->next;
     }
@@ -122,43 +125,17 @@ void handle_builtin(t_parsing *pars, const char *token, int *i)
     (*i)++;
 }
 
-/* void handle_path(t_parsing *pars, const char *token, int *j)
+void handle_command(t_parsing *pars, const char *token, int *j)
 {
-    int new_size = (*j) + 2;
-
-    char **new_cmd_path = malloc(new_size * sizeof(char *));
-    if (!new_cmd_path)
-    {
-        perror("Memory allocation error");
-        exit(EXIT_FAILURE);
-    }
-
-    for (int i = 0; i < *j; ++i)
-    {
-        new_cmd_path[i] = pars->cmd_path[i];
-    }
-
-    size_t prefix_len = strlen("/usr/bin/");
-    size_t token_len = strlen(token);
-    char *path_token = malloc(prefix_len + token_len + 1);
-    if (!path_token)
-    {
-        perror("Memory allocation error");
-        exit(EXIT_FAILURE);
-    }
-
-    strcpy(path_token, "/usr/bin/");
-    strcat(path_token, token);
-
-    new_cmd_path[*j] = path_token;
-    new_cmd_path[new_size - 1] = NULL;
-
-    free(pars->cmd_path);
-
-    pars->cmd_path = new_cmd_path;
-
-    (*j)++;
-} */
+	if (pars->cmd_cmd == NULL) {
+		pars->cmd_cmd = malloc(sizeof(char *));
+		pars->cmd_cmd[0] = NULL;
+	}
+	pars->cmd_cmd = realloc(pars->cmd_cmd, (*j + 2) * sizeof(char *));
+	pars->cmd_cmd[*j] = strdup(token);
+	pars->cmd_cmd[*j + 1] = NULL;
+	(*j)++;
+}
 
 void handle_argument(t_parsing *pars, const char *token, int *k, t_info *info)
 {

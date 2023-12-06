@@ -12,7 +12,7 @@ void ft_get_input(t_info *info)
 		free(line);
 		ft_get_input(info);
 	}
-	if (line == NULL)
+	else if (line == NULL)
 	{
 		rl_on_new_line();
 	}

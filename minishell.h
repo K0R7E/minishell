@@ -57,11 +57,10 @@ typedef struct s_lexer_pos
 
 typedef struct s_parsing
 {
-	char	**cmd_path;
+	char	**cmd_cmd;
 	char	**cmd_builtin;
 	int		yon;
 	char	*heredoc_delimiter;
-	char 	**hd_lines;
 	int 	pipes_count;
 	t_lexer	lexer;
 	char	**args;
