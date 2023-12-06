@@ -125,18 +125,39 @@ void handle_builtin(t_parsing *pars, const char *token, int *i)
 
 void handle_path(t_parsing *pars, const char *token, int *j)
 {
-	if (pars->yon == 1)
-	{
-		pars->yon = 0;
-		return ;
-	}
-    if (pars->cmd_path == NULL) {
-        pars->cmd_path = malloc(sizeof(char *));
-        pars->cmd_path[0] = NULL;
+    int new_size = (*j) + 2;
+
+    char **new_cmd_path = malloc(new_size * sizeof(char *));
+    if (!new_cmd_path)
+    {
+        perror("Memory allocation error");
+        exit(EXIT_FAILURE);
     }
-    pars->cmd_path = realloc(pars->cmd_path, (*j + 2) * sizeof(char *));
-    pars->cmd_path[*j] = ft_strjoin("/usr/bin/", token);
-    pars->cmd_path[*j + 1] = NULL;
+
+    for (int i = 0; i < *j; ++i)
+    {
+        new_cmd_path[i] = pars->cmd_path[i];
+    }
+
+    size_t prefix_len = strlen("/usr/bin/");
+    size_t token_len = strlen(token);
+    char *path_token = malloc(prefix_len + token_len + 1);
+    if (!path_token)
+    {
+        perror("Memory allocation error");
+        exit(EXIT_FAILURE);
+    }
+
+    strcpy(path_token, "/usr/bin/");
+    strcat(path_token, token);
+
+    new_cmd_path[*j] = path_token;
+    new_cmd_path[new_size - 1] = NULL;
+
+    free(pars->cmd_path);
+
+    pars->cmd_path = new_cmd_path;
+
     (*j)++;
 }
 

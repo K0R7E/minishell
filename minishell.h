@@ -109,9 +109,13 @@ char *replace_dollar(char *input,  t_info *info);
 char	*add_char_to_str(char *str, char c);
 char *ft_strjoin2(char *str, char *add);
 
-// ft_execution.c
+// ft_heredoc.c
 void ft_heredoc(t_parsing *pars, t_info *info);
+
+// ft_executor.c
 void ft_executor(t_parsing *pars, t_info *info);
+int ft_arrylen(char **pars);
+void ft_execute(char *args[], int input_fd, int output_fd);
 
 // ft_signals.c
 void ft_signals(void);
