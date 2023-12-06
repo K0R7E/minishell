@@ -15,6 +15,7 @@
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <dirent.h>
+# include <pthread.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -37,6 +38,13 @@ enum {
 	TokenTypeEnd = 7,
 	TokenTypeDelimiter = 8,
 };
+
+typedef struct s_sig
+{
+	int 	global_interrupt_flag;
+} t_sig;
+
+extern t_sig g_sig;
 
 typedef struct s_lexer
 {	
@@ -120,6 +128,7 @@ void ft_execute(char *args[], int input_fd, int output_fd);
 int ft_count_pipes(t_parsing *pars);
 
 // ft_signals.c
+void handle_signals();
 void ft_signals(void);
 void ft_sigquit(int signum);
 void ft_sigint(int signum);
@@ -127,5 +136,8 @@ void ft_sigint(int signum);
 // gui.c
 void print_centered(char *text);
 void ft_print_minishell_gui(void);
+
+// ft_pipe.c
+void ft_pipe(t_parsing *pars, t_info *info);
 
 #endif
