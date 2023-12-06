@@ -8,14 +8,11 @@ char *ft_check_dir(t_parsing *pars, t_info *info)
 	char *tmp;
 	int i = 0;
 
-	while (pars->args[i] != NULL)
+
+	if (pars->args[0][0] != '/')
 	{
-		if (pars->args[i][0] != '/')
-		{
-			path = ft_strjoin("/usr/bin/", pars->args[i]);
-			return (path);
-		}
-		i++;
+		path = ft_strjoin("/usr/bin/", pars->args[i]);
+		return (path);
 	}
 	i = 0;
 	if (pars->args[0][0] == '/')
