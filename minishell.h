@@ -61,6 +61,7 @@ typedef struct s_parsing
 	char	**cmd_builtin;
 	int		yon;
 	char	*heredoc_delimiter;
+	int 	pipes_count;
 	t_lexer	lexer;
 	char	**args;
 	char	*in_file;
@@ -116,6 +117,7 @@ void ft_heredoc(t_parsing *pars, t_info *info);
 void ft_executor(t_parsing *pars, t_info *info);
 int ft_arrylen(char **pars);
 void ft_execute(char *args[], int input_fd, int output_fd);
+int ft_count_pipes(t_parsing *pars);
 
 // ft_signals.c
 void ft_signals(void);

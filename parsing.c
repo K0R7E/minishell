@@ -23,7 +23,7 @@ void handle_argument(t_parsing *pars, const char *token, int *k, t_info *info);
 	}
 } */
 
-void ft_print(t_parsing *pars)
+/* void ft_print(t_parsing *pars)
 {
 	// Print the cmd_builtins array
 	for (int i = 0; pars->cmd_builtin && pars->cmd_builtin[i] != NULL; i++) {
@@ -37,7 +37,7 @@ void ft_print(t_parsing *pars)
 	for (int i = 0; pars->args && pars->args[i] != NULL; i++) {
 		printf("args: num:   %d %s\n", i, pars->args[i]);
 	}
-}
+} */
 
 void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 {
@@ -57,6 +57,7 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
     pars->fd_pipe[1] = 0;
 	pars->lexer = *tokens;
 	pars->heredoc_delimiter = NULL;
+	pars->pipes_count = ft_count_pipes(pars);
 
     while (tokens != NULL)
 	{
@@ -107,7 +108,7 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 		} 
         tokens = tokens->next;
     }
-	ft_print(pars);
+	/* ft_print(pars); */
 	
 }
 
