@@ -23,7 +23,7 @@ void handle_argument(t_parsing *pars, const char *token, int *k, t_info *info);
 	}
 } */
 
-/* void ft_print(t_parsing *pars)
+void ft_print(t_parsing *pars)
 {
 	// Print the cmd_builtins array
 	for (int i = 0; pars->cmd_builtin && pars->cmd_builtin[i] != NULL; i++) {
@@ -37,12 +37,11 @@ void handle_argument(t_parsing *pars, const char *token, int *k, t_info *info);
 	for (int i = 0; pars->args && pars->args[i] != NULL; i++) {
 		printf("args: num:   %d %s\n", i, pars->args[i]);
 	}
-} */
+}
 
 void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 {
     int i = 0;
-	int j = 0;
 	int k = 0;
 
 	pars->yon = 0;
@@ -57,6 +56,7 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
     pars->fd_pipe[1] = 0;
 	pars->lexer = *tokens;
 	pars->heredoc_delimiter = NULL;
+	pars->hd_lines = NULL;
 	pars->pipes_count = ft_count_pipes(pars);
 
     while (tokens != NULL)
@@ -102,13 +102,11 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 		{
 			if (strcmp(tokens->token, "pwd") == 0 || strcmp(tokens->token, "echo") == 0 || strcmp(tokens->token, "cd") == 0 || strcmp(tokens->token, "env") == 0 || strcmp(tokens->token, "export") == 0 || strcmp(tokens->token, "unset") == 0 || strcmp(tokens->token, "exit") == 0)
 				handle_builtin(pars, tokens->token, &i);
-			else
-			 	handle_path(pars, tokens->token, &j);
 			handle_argument(pars, tokens->token, &k, info);
 		} 
         tokens = tokens->next;
     }
-	/* ft_print(pars); */
+	ft_print(pars);
 	
 }
 
@@ -124,7 +122,7 @@ void handle_builtin(t_parsing *pars, const char *token, int *i)
     (*i)++;
 }
 
-void handle_path(t_parsing *pars, const char *token, int *j)
+/* void handle_path(t_parsing *pars, const char *token, int *j)
 {
     int new_size = (*j) + 2;
 
@@ -160,7 +158,7 @@ void handle_path(t_parsing *pars, const char *token, int *j)
     pars->cmd_path = new_cmd_path;
 
     (*j)++;
-}
+} */
 
 void handle_argument(t_parsing *pars, const char *token, int *k, t_info *info)
 {

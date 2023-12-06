@@ -8,7 +8,6 @@ char *ft_check_dir(t_parsing *pars, t_info *info)
 	char *tmp;
 	int i = 0;
 
-
 	if (pars->args[0][0] != '/')
 	{
 		path = ft_strjoin("/usr/bin/", pars->args[i]);
@@ -40,7 +39,7 @@ char *ft_check_dir(t_parsing *pars, t_info *info)
 void ft_executor(t_parsing *pars, t_info *info)
 {
 	char	*path = ft_check_dir(pars, info);
-	printf("path: %s\n", path);
+/* 	printf("path: %s\n", path); */
 
 	if (pars->heredoc_delimiter)
 		ft_heredoc(pars, info);

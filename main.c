@@ -1,45 +1,27 @@
 #include "minishell.h"
+#include <readline/readline.h>
 
 void ft_get_input(t_info *info)
 {
 	char *line;
 
 	line = readline(LIME"minishell>"OFF);
+	wait(NULL);
+	if (line[0] == '\0')
+	{
+		free(line);
+		ft_get_input(info);
+	}
 	if (line == NULL)
 	{
-		printf("exit\n");
-		exit(0);
+		rl_on_new_line();
 	}
-	if (line[0] != '\0')
+	else /* (line[0] != '\0') */
 		add_history(line);
 	info->input = ft_strdup(line);
 	free(line);
 	if (ft_check_input(info) == 1)
 		ft_get_input(info);	
-}
-
-void ft_pipe(t_parsing *pars, t_info *info)
-{
-	pid_t pid;
-	int fd[2];
-
-	pipe(fd);
-	pid = fork();
-	if (pid == 0)
-	{
-		dup2(fd[1], 1);
-		close(fd[0]);
-		close(fd[1]);
-		ft_executor(pars, info);
-	}
-	else
-	{
-		dup2(fd[0], 0);
-		close(fd[0]);
-		close(fd[1]);
-		ft_executor(pars, info);
-	}
-
 }
 
 int main(int argc, char **argv, char **envp)
@@ -56,7 +38,7 @@ int main(int argc, char **argv, char **envp)
 	}
 	info->env = ft_arrycpy(envp);
 	get_pwd(info);
-	ft_print_minishell_gui();
+	//ft_print_minishell_gui();
  	while (1)
 	{
 		ft_signals();

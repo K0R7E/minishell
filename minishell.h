@@ -61,6 +61,7 @@ typedef struct s_parsing
 	char	**cmd_builtin;
 	int		yon;
 	char	*heredoc_delimiter;
+	char 	**hd_lines;
 	int 	pipes_count;
 	t_lexer	lexer;
 	char	**args;
@@ -127,5 +128,8 @@ void ft_sigint(int signum);
 // gui.c
 void print_centered(char *text);
 void ft_print_minishell_gui(void);
+
+//ft_pipe.c
+void ft_pipe(t_parsing *pars, t_info *info);
 
 #endif
