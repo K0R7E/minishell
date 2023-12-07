@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 18:52:19 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/05 16:12:09 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/07 18:37:26 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,46 @@ void	handle_prompt(t_info *info, t_parsing *list, t_lexer_pos *pos)
 	ft_new_prompt(list, info, pos, start, 1);
 }
 
+void	copy_lexer_list(t_parsing *list, t_info *info)
+{
+	t_lexer *new;
+	t_lexer *tmp;
+	t_lexer tmp2;
+	
+	new = malloc(sizeof(t_lexer));
+	new->command = list->lexer.command;
+	new->type = list->lexer.type;
+	new->token = ft_strdup(list->lexer.token);
+	new->hd_quote = list->lexer.hd_quote;
+	new->next = NULL;
+	info->lexer_save = *new;
+	tmp = &info->lexer_save;
+	tmp2 = list->lexer;
+	while (tmp2.next != NULL)
+	{
+		tmp2 = *tmp2.next;
+		new = malloc(sizeof(t_lexer));
+		new->type = tmp2.type;
+		new->token = ft_strdup(tmp2.token);
+		new->next = NULL;
+		tmp->next = new;
+		tmp = tmp->next;
+	}
+	//print list
+	/*
+	t_lexer tmp3 = info->lexer_save;
+	printf("\n");
+	while (tmp3.next != NULL)
+	{
+		printf("type: %d\n", tmp3.type);
+		printf("token: %s\n\n", tmp3.token);
+		tmp3 = *tmp3.next;
+	}
+	printf("type: %d\n", tmp3.type);
+	printf("token: %s\n", tmp3.token);
+	*/
+}
+
 void	ft_lexer(t_info *info, t_parsing *list) //input str; env var
 {
 	t_lexer_pos *pos = malloc(sizeof(t_lexer_pos));
@@ -171,9 +211,10 @@ void	ft_lexer(t_info *info, t_parsing *list) //input str; env var
 		else
 			handle_prompt(info ,list, pos);
 	}
+	copy_lexer_list(list, info);
 	//print lexer list
 	/*
-	t_lexer	tmp = list->lexer;
+	t_lexer tmp = list->lexer;
 	printf("\n");
 	while (tmp.next != NULL)
 	{
@@ -186,9 +227,9 @@ void	ft_lexer(t_info *info, t_parsing *list) //input str; env var
 	printf("hd_quote %d\n", tmp.hd_quote);
 	printf("command: %d\n", tmp.command);
 	printf("type: %d\n", tmp.type);
-	printf("token: %s\n", tmp.token);
-	*/
+	printf("token: %s\n", tmp.token);*/
 }
+
 	
 	
 
