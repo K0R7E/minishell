@@ -58,6 +58,7 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 	pars->lexer = *tokens;
 	pars->heredoc_delimiter = NULL;
 	pars->pipes_count = 0;
+	pars->command_count = 0;
 
     while (tokens != NULL)
 	{
@@ -100,9 +101,11 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 			if (strcmp(tokens->token, "pwd") == 0 || strcmp(tokens->token, "echo") == 0 || strcmp(tokens->token, "cd") == 0 || strcmp(tokens->token, "env") == 0 || strcmp(tokens->token, "export") == 0 || strcmp(tokens->token, "unset") == 0 || strcmp(tokens->token, "exit") == 0)
 			{
 				handle_builtin(pars, tokens->token, &i);
+				if (strcmp(tokens->next->token, "-n") == 0)
+					pars->command_count = 1;
 				pars->yon = 1;
 			}
-			else if (pars->yon == 0)
+			else if (pars->yon == 0 || ((tokens->token[0] == '-') && pars->command_count == 1))
 				handle_command(pars, tokens->token, &j);
 			else
 				handle_argument(pars, tokens->token, &k, info);
@@ -123,6 +126,7 @@ void handle_builtin(t_parsing *pars, const char *token, int *i)
     pars->cmd_builtin[*i] = strdup(token);
     pars->cmd_builtin[*i + 1] = NULL;
     (*i)++;
+	pars->command_count = 0; //dont reset for echo -n
 }
 
 void handle_command(t_parsing *pars, const char *token, int *j)
@@ -135,6 +139,8 @@ void handle_command(t_parsing *pars, const char *token, int *j)
 	pars->cmd_cmd[*j] = strdup(token);
 	pars->cmd_cmd[*j + 1] = NULL;
 	(*j)++;
+	pars->yon = 1;
+	pars->command_count = 1;
 }
 
 void handle_argument(t_parsing *pars, const char *token, int *k, t_info *info)
@@ -151,4 +157,5 @@ void handle_argument(t_parsing *pars, const char *token, int *k, t_info *info)
     pars->args[*k] = strdup(token);
     pars->args[*k + 1] = NULL;
     (*k)++;
+	pars->command_count = 0;
 }

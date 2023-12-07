@@ -62,6 +62,7 @@ typedef struct s_parsing
 	int		yon;
 	char	*heredoc_delimiter;
 	int 	pipes_count;
+	int		command_count;
 	t_lexer	lexer;
 	char	**args;
 	char	*in_file;
