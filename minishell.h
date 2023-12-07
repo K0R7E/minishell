@@ -57,11 +57,12 @@ typedef struct s_lexer_pos
 
 typedef struct s_parsing
 {
-	char	**cmd_path;
+	char	**cmd_cmd;
 	char	**cmd_builtin;
 	int		yon;
 	char	*heredoc_delimiter;
 	int 	pipes_count;
+	int		command_count;
 	t_lexer	lexer;
 	char	**args;
 	char	*in_file;
@@ -127,5 +128,8 @@ void ft_sigint(int signum);
 // gui.c
 void print_centered(char *text);
 void ft_print_minishell_gui(void);
+
+//ft_pipe.c
+void ft_pipe(t_parsing *pars, t_info *info);
 
 #endif
