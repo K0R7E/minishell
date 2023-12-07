@@ -101,12 +101,19 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 			if (strcmp(tokens->token, "pwd") == 0 || strcmp(tokens->token, "echo") == 0 || strcmp(tokens->token, "cd") == 0 || strcmp(tokens->token, "env") == 0 || strcmp(tokens->token, "export") == 0 || strcmp(tokens->token, "unset") == 0 || strcmp(tokens->token, "exit") == 0)
 			{
 				handle_builtin(pars, tokens->token, &i);
-				if (strcmp(tokens->next->token, "-n") == 0)
-					pars->command_count = 1;
+				if(tokens->next != NULL)
+				{
+					if ((strcmp(tokens->next->token, "-n") == 0))
+						pars->command_count = 1;
+				}
 				pars->yon = 1;
 			}
 			else if (pars->yon == 0 || ((tokens->token[0] == '-') && pars->command_count == 1))
+			{
 				handle_command(pars, tokens->token, &j);
+				if (strcmp(tokens->token, "-n") == 0)
+					pars->command_count = 0;
+			}
 			else
 				handle_argument(pars, tokens->token, &k, info);
 		} 
