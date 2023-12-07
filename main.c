@@ -39,14 +39,13 @@ int main(int argc, char **argv, char **envp)
 	info->env = ft_arrycpy(envp);
 	get_pwd(info);
 	//ft_print_minishell_gui();
+	printf("\033[2J\033[1;1H");
  	while (1)
 	{
 		ft_signals();
 		ft_get_input(info);
 		ft_lexer(info, pars);
 		ft_parser(&pars->lexer, pars, info);
-/* 		if (pars->pipes_count > 0)
-			ft_pipe(pars, info); */
 		ft_executor(pars, info);
 	}
 	return (0);

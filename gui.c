@@ -2,8 +2,8 @@
 
 void ft_print_minishell_gui(void)
 {
-    printf("\033[2J\033[1;1H"); // Clear the screen and set cursor to (1,1)
-    printf("\033[1;32m"); // Set text color to white
+    printf("\033[2J\033[1;1H");
+    printf("\033[1;32m"); 
 
     printf("\n");
     printf("  /$$      /$$ /$$$$$$ /$$   /$$ /$$$$$$            \n");

@@ -60,6 +60,8 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 	pars->pipes_count = 0;
 	pars->command_count = 0;
 
+	//pars = (t_parsing *){0};
+
     while (tokens != NULL)
 	{
 		if (tokens->type == TokenTypeInputRedirect)
@@ -68,6 +70,7 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
             pars->fd_in = open(pars->in_file, O_RDONLY);
 			pars->yon = 1;
             printf("redir_in:    %s\n", pars->in_file);
+			tokens = tokens->next;
         }
 		else if (tokens->type == TokenTypeOutputRedirect)
 		{
@@ -75,6 +78,7 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
             pars->fd_out = open(pars->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			pars->yon = 1;
             printf("redir_out:   %s\n", pars->out_file);
+			tokens = tokens->next;
         }
 		else if (tokens->type == TokenTypeOutputAppend)
 		{
@@ -82,6 +86,7 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
             pars->fd_in = open(pars->in_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			pars->yon = 1;
             printf("recir_append: %s\n", pars->in_file);
+			tokens = tokens->next;
         }
 		else if (tokens->type == TokenTypePipe)
 		{
@@ -104,7 +109,10 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 				if(tokens->next != NULL)
 				{
 					if ((strcmp(tokens->next->token, "-n") == 0))
-						pars->command_count = 1;
+					{
+						handle_builtin(pars, tokens->next->token, &i);
+						tokens = tokens->next;
+					}
 				}
 				pars->yon = 1;
 			}
@@ -133,7 +141,7 @@ void handle_builtin(t_parsing *pars, const char *token, int *i)
     pars->cmd_builtin[*i] = strdup(token);
     pars->cmd_builtin[*i + 1] = NULL;
     (*i)++;
-	pars->command_count = 0; //dont reset for echo -n
+	pars->command_count = 0;
 }
 
 void handle_command(t_parsing *pars, const char *token, int *j)
