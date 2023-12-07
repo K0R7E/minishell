@@ -82,8 +82,8 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
         }
 		else if (tokens->type == TokenTypeOutputAppend)
 		{
-            pars->in_file = strdup(tokens->next->token);
-            pars->fd_in = open(pars->in_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+            pars->out_file = strdup(tokens->next->token);
+            pars->fd_out = open(pars->in_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			pars->yon = 1;
             printf("recir_append: %s\n", pars->in_file);
 			tokens = tokens->next;
