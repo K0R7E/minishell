@@ -1,12 +1,40 @@
 #include "libft/libft.h"
 #include "minishell.h"
 
+char	*ft_strjoin3(char const *s1, char const *s2)
+{
+	char	*join;
+	size_t	len;
+	size_t	i;
+	size_t	n;
+
+	i = 0;
+	n = 0;
+	len = ft_strlen(s1) + ft_strlen(s2);
+	join = (char *)malloc(len + 1);
+	if (join == 0)
+		return (0);
+	while (s1[i] != '\0')
+	{
+		join[i] = s1[i];
+		i++;
+	}
+	while (s2[n] != '\0')
+	{
+		join[i] = s2[n];
+		i++;
+		n++;
+	}
+	join[i] = '\0';
+	free ((char *)s1);
+	return (join);
+}
+
 int	chdir_input(char *path)
 {
 	if (chdir(path) == -1)
 	{
 		printf("bash: cd: %s: No such file or directory\n", path);
-		free(path);
 		return (-1);
 	}
 	return (0);
@@ -14,42 +42,40 @@ int	chdir_input(char *path)
 
 void	update_pwd(t_info *info, char *path)
 {
-	char *tmp;
+	//char *tmp;
 
-	tmp = info->old_pwd;
-	info->old_pwd = info->pwd;
-	info->pwd = path;
+	//tmp = info->old_pwd;
+	free(info->old_pwd);
+	info->old_pwd = ft_strdup(info->pwd);
+	free(info->pwd);
+	info->pwd = ft_strdup(path);
 }
 
 char	*convert_path(t_info *info, char *arg)
 {
 	char *path;
-	char *tmp;
 
 	if (arg[0] == '/')
-		return (arg);
+	{
+		path = ft_strdup(arg);
+		return (path);
+	}
 	else if (arg[0] == '.' && arg[1] == '/')
 	{
 		path = ft_strjoin(info->pwd, "/");
-		tmp = path;
-		path = ft_strjoin(path, arg + 2);
-		free(tmp);
+		path = ft_strjoin3(path, arg + 2);
 		return (path);
 	}
 	else if (arg[0] == '.' && arg[1] == '.' && arg[2] == '/')
 	{
 		path = ft_strjoin(info->pwd, "/");
-		tmp = path;
-		path = ft_strjoin(path, arg + 3);
-		free(tmp);
+		path = ft_strjoin3(path, arg + 3);
 		return (path);
 	}
 	else
 	{
 		path = ft_strjoin(info->pwd, "/");
-		tmp = path;
-		path = ft_strjoin(path, arg);
-		free(tmp);
+		path = ft_strjoin3(path, arg);
 		return (path);
 	}
 }
@@ -57,7 +83,7 @@ char	*convert_path(t_info *info, char *arg)
 void	ft_cd(t_info *info, char **args)
 {
 	char *tmp;
-	
+	int i;
 
 	if(args[1] == NULL || ft_strncmp(args[1], "~", 1) == 0)
 	{
@@ -65,10 +91,12 @@ void	ft_cd(t_info *info, char **args)
 		{
 			update_pwd(info, info->home);
 		}
+		else 
+			printf("bash: cd: %s: No such file or directory\n", info->home);//error message, shouldn't be redirected
 	}
 	else if (args[2] != NULL)
 	{
-		printf("bash: cd: too many arguments\n");//error massage, shouldn't be redirected
+		printf("bash: cd: too many arguments\n");//error message, shouldn't be redirected
 		return ;
 	}
 	else
@@ -76,7 +104,11 @@ void	ft_cd(t_info *info, char **args)
 		if (strncmp(args[1], "-", 1) == 0)
 		{
 			if (chdir(info->old_pwd) == 0)
-				update_pwd(info, info->old_pwd);
+			{
+				tmp = ft_strdup(info->old_pwd);
+				update_pwd(info, ft_strdup(tmp));
+				free(tmp);
+			}
 		}
 		else
 		{
@@ -86,5 +118,13 @@ void	ft_cd(t_info *info, char **args)
 			free (tmp);
 		}
 	}
-	
+	i = 1;
+	while (args[i] != NULL)
+	{
+		free(args[i]);
+		i++;
+	}
+	free(args);
+	//printf ("old_pwd:%s\n", info->old_pwd);
+	//printf ("pwd:%s\n", info->pwd);
 }
