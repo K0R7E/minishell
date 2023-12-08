@@ -57,7 +57,7 @@ char	*convert_path(t_info *info, char *arg)
 
 	if (arg[0] == '/')
 	{
-		path = ft_strdup(arg);
+		path = ft_strjoin(info->pwd, arg);
 		return (path);
 	}
 	else if (arg[0] == '.' && arg[1] == '/')
@@ -101,7 +101,7 @@ void	ft_cd(t_info *info, char **args)
 	}
 	else
 	{
-		if (strncmp(args[1], "-", 1) == 0)
+		if (strncmp(args[1], "-", 1) == 0 || strncmp(args[1], "..", 2) == 0)
 		{
 			if (chdir(info->old_pwd) == 0)
 			{

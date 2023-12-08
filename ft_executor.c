@@ -119,7 +119,7 @@ void ft_executor(t_parsing *pars, t_info *info)
 	{
 		if (pars->cmd_builtin)
 		{
-			//ft_builtin(pars, info);
+			ft_builtin(pars, info);
 		}
 		else
 			ft_binary(pars, info);
@@ -132,7 +132,7 @@ void ft_executor(t_parsing *pars, t_info *info)
 		}
 		if (pars->cmd_builtin)
 		{
-			//ft_builtin(pars, info);
+			ft_builtin(pars, info);
 		}
 		else
 			ft_binary(pars, info);
