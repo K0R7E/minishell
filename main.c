@@ -37,11 +37,14 @@ int main(int argc, char **argv, char **envp)
 		return (1);
 	}
 	info->env = ft_arrycpy(envp);
+	env_conversion(info);
 	get_pwd(info);
 	//ft_print_minishell_gui();
+	printf("\033[2J\033[1;1H");
  	while (1)
 	{
 		ft_signals();
+		info->builtin_command_count = 0;
 		ft_get_input(info);
 		ft_lexer(info, pars);
 		ft_parser(&pars->lexer, pars, info);

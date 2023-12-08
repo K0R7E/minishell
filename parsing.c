@@ -68,6 +68,7 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
             pars->fd_in = open(pars->in_file, O_RDONLY);
 			pars->yon = 1;
             printf("redir_in:    %s\n", pars->in_file);
+			tokens = tokens->next;
         }
 		else if (tokens->type == TokenTypeOutputRedirect)
 		{
@@ -75,6 +76,7 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
             pars->fd_out = open(pars->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			pars->yon = 1;
             printf("redir_out:   %s\n", pars->out_file);
+			tokens = tokens->next;
         }
 		else if (tokens->type == TokenTypeOutputAppend)
 		{
@@ -82,6 +84,7 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
             pars->fd_in = open(pars->in_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			pars->yon = 1;
             printf("recir_append: %s\n", pars->in_file);
+			tokens = tokens->next;
         }
 		else if (tokens->type == TokenTypePipe)
 		{
@@ -95,6 +98,7 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 			/* pars->fd_in = 0; */
 			pars->yon = 1;
             printf("heredoc_delimiter: %s\n", pars->heredoc_delimiter);
+			tokens = tokens->next;
         }
 		else if (tokens->type == TokenTypeWord)
 		{
@@ -104,7 +108,10 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 				if(tokens->next != NULL)
 				{
 					if ((strcmp(tokens->next->token, "-n") == 0))
-						pars->command_count = 1;
+					{
+						handle_builtin(pars, tokens->next->token, &i);
+						tokens = tokens->next;
+					}
 				}
 				pars->yon = 1;
 			}

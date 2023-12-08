@@ -72,7 +72,7 @@ void ft_executor(t_parsing *pars, t_info *info)
 		exit(0);
 	else if (pars->cmd_builtin)
 	{
-		//ft_builtin(pars, info);
+		ft_builtin(pars, info);
 	}
 	else
 		ft_binary(path, pars, info);
