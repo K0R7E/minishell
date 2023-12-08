@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:35:56 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/07 18:34:38 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/08 16:32:08 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,9 @@ char **find_arguments(t_parsing *pars, int command_count, t_info *info)
 	int i;
 	char **input;
 	
-	//tmp = info->lexer_save;
 	
+	tmp = info->lexer_save;
+	/*
 	t_lexer tmp3 = info->lexer_save;
 	printf("\n");
 	while (tmp3.next != NULL)
@@ -66,7 +67,7 @@ char **find_arguments(t_parsing *pars, int command_count, t_info *info)
 	}
 	printf("type: %d\n", tmp3.type);
 	printf("token: %s\n", tmp3.token);
-	
+	*/
 	i = 0;
 	while (i < command_count)
 	{
@@ -74,7 +75,7 @@ char **find_arguments(t_parsing *pars, int command_count, t_info *info)
 			i++;
 		tmp = *tmp.next;
 	}
-	printf("length to malloc:%d\n", find_arguments_length(tmp) + 1);
+	//printf("length to malloc:%d\n", find_arguments_length(tmp) + 1);
 	input = malloc((find_arguments_length(tmp) + 1) * sizeof(char *));
 	i = 0;
 	while (tmp.type == 1 && tmp.next != NULL)
@@ -83,35 +84,43 @@ char **find_arguments(t_parsing *pars, int command_count, t_info *info)
 		tmp = *tmp.next;
 		i++;
 	}
+	if (tmp.type == 1)
+	{
+		input[i] = ft_strdup(tmp.token);
+		i++;
+	}
 	input[i] = NULL;
 	//print input
+	/*
 	i = 0;
 	while (input[i] != NULL)
 	{
 		printf("input[%d]:%s\n", i, input[i]);
 		i++;
 	}
+	*/
 	return (input);
 }
 
 void	ft_builtin(t_parsing *pars, t_info *info)
 {
-	int command_count = 0;
-	printf("cmd:%s\n", pars->cmd_builtin[command_count]);
-	if (ft_strncmp2(pars->cmd_builtin[command_count],  "echo", 4) == 0)
+	if (ft_strncmp2(pars->cmd_builtin[info->builtin_command_count],  "echo", 4) == 0)
 	{
-		if (ft_strncmp2(pars->cmd_builtin[command_count + 1], "-n", 2) == 0)
+		if (ft_strncmp2(pars->cmd_builtin[info->builtin_command_count + 1], "-n", 2) == 0)
 		{
-			command_count++;
-			ft_echo(0, find_arguments(pars, command_count, info));
+			info->builtin_command_count++;
+			ft_echo(1, find_arguments(pars, info->builtin_command_count, info));
 		}
 		else
-			ft_echo(0, find_arguments(pars, command_count, info));
+			ft_echo(0, find_arguments(pars, info->builtin_command_count, info));
 	}
-	if (ft_strncmp2(pars->cmd_builtin[command_count],  "export", 6) == 0)
-		ft_export(info, find_arguments(pars, command_count, info));
-	command_count++;
-
-	//link to the correct builtins, and execute them with the right input
-	
+	if (ft_strncmp2(pars->cmd_builtin[info->builtin_command_count],  "export", 6) == 0)
+		ft_export(info, find_arguments(pars, info->builtin_command_count, info));
+	if (ft_strncmp2(pars->cmd_builtin[info->builtin_command_count],  "unset", 5) == 0)
+		ft_unset(info, find_arguments(pars, info->builtin_command_count, info));
+	if (ft_strncmp2(pars->cmd_builtin[info->builtin_command_count],  "env", 3) == 0)
+		ft_env(info);
+	if (ft_strncmp2(pars->cmd_builtin[info->builtin_command_count],  "cd", 2) == 0)
+		ft_cd(info, find_arguments(pars, info->builtin_command_count, info));
+	info->builtin_command_count++;
 }

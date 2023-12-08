@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 18:14:21 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/07 15:52:59 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/08 12:54:42 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,6 @@ int		ft_strcmp(char *str1, char *str2)
 }
 
 //compare the first n digits of two strings
-int strlcmp_export(char *str1, char *str2, int n)
-{
-	int i;
-
-	i = 0;
-	while (str1[i] && str2[i] && i < n)
-	{
-		if (str1[i] > str2[i])
-			return (1);
-		if (str1[i] < str2[i])
-			return (-1);
-		i++;
-	}
-	if (str2[i] == '\0' && str1[i] == '=')
-		return (0);
-	return (1);
-}
 
 /*
 int	ft_arrylen(char **arr)
@@ -157,6 +140,7 @@ void	print_export(t_info *info)
 	}
 }
 
+/*
 void add_element(t_info *info, char *arg)
 {
 	t_env	*tmp;
@@ -170,7 +154,7 @@ void add_element(t_info *info, char *arg)
 		return ;
 	while (strlcmp_export(arg, tmp->var, i) != 0 && tmp->next != NULL)
 		tmp = tmp->next;
-	printf("compare: %s with %s for the first %d digits \n output: %d\n",arg, tmp->var, i -1, strlcmp_export(arg, tmp->var, i));
+	//printf("compare: %s with %s for the first %d digits \n output: %d\n",arg, tmp->var, i -1, strlcmp_export(arg, tmp->var, i));
 	if (strlcmp_export(arg, tmp->var, i) != 0)
 	{
 		printf("%d\n", strlcmp_export(arg, tmp->var, i -1));
@@ -187,17 +171,27 @@ void add_element(t_info *info, char *arg)
 		tmp->value = ft_strdup(arg + i + 1);
 	}
 }
+*/
 
 void	ft_export(t_info *info, char **args)
 {
 	int i;
 	
-	i = 0;
-	if (args[0] == NULL)
+	i = 1;
+	if (args[1] == NULL)
 		print_export(info);
 	else
+	{
+		while (args[i] != NULL)
+			add_element(info, args[i++]);
+	}
+	i = 1;
 	while (args[i] != NULL)
-		add_element(info, args[i++]);
+	{
+		free(args[i]);
+		i++;
+	}
+	free(args);
 }
 /*
 		ft_export(info, NULL);

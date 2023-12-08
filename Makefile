@@ -12,7 +12,7 @@ SRCS            =	main.c \
 					change_env_var_utils.c input_check.c ft_signals.c \
 					gui.c ft_heredoc.c env_conversion.c ft_export.c \
 					ft_env.c ft_builtin.c ft_echo.c\
-					#ft_pipe.c 
+					ft_unset.c builtins_utils.c ft_cd.c #ft_pipe.c 
 
 OBJ_DIR				=	obj
 OBJS				=	$(SRCS:%.c=$(OBJ_DIR)/%.o)

@@ -90,6 +90,7 @@ typedef struct s_info
 	char *pwd;
 	char *home;
 	t_lexer	lexer_save;
+	int		builtin_command_count;
 }	t_info;
 
 
@@ -149,5 +150,11 @@ void	ft_builtin(t_parsing *pars, t_info *info);
 void	ft_export(t_info *info, char **args);
 void	ft_env(t_info *info);
 void	ft_echo(int mode, char **input);
+void	ft_unset(t_info *info, char **args);
+void	ft_cd(t_info *info, char **args);
+
+//builtin utils
+int strlcmp_export(char *str1, char *str2, int n);
+void add_element(t_info *info, char *arg);
 
 #endif

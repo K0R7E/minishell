@@ -44,6 +44,7 @@ int main(int argc, char **argv, char **envp)
  	while (1)
 	{
 		ft_signals();
+		info->builtin_command_count = 0;
 		ft_get_input(info);
 		ft_lexer(info, pars);
 		ft_parser(&pars->lexer, pars, info);
