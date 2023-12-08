@@ -148,6 +148,7 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 				create_fds_list(pars, tokens->next->type, tokens->token);
 			else
 			 	create_fds_list(pars, -1, tokens->token);
+
         }
 		else if (tokens->type == TokenTypeOutputAppend)
 		{
@@ -173,6 +174,7 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 			/* pars->fd_in = 0; */
 			pars->yon = 1;
             printf("heredoc_delimiter: %s\n", pars->heredoc_delimiter);
+			tokens = tokens->next;
         }
 		else if (tokens->type == TokenTypeWord)
 		{

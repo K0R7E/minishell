@@ -82,15 +82,25 @@ typedef struct s_parsing
 	int		fd_pipe[2];
 	char 	*check_cmd[7];
 }	t_parsing;
+
+typedef struct s_env
+{	
+	int 			printed;
+	char 			*var;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
 typedef struct s_info
 {
 	char **env;
-	t_lexer *lexer;
+	t_env *env_list;
 	char *input;
 	char *path;
 	char *old_pwd;
 	char *pwd;
 	char *home;
+	t_lexer	lexer_save;
+	int		builtin_command_count;
 }	t_info;
 
 
@@ -139,10 +149,23 @@ void ft_sigint(int signum);
 void print_centered(char *text);
 void ft_print_minishell_gui(void);
 
-//ft_pipe.c
-void ft_pipe(t_parsing *pars, t_info *info);
-
 //utils.c
 void	ft_close(int fd);
+
+// env conversion
+void	env_conversion(t_info *info);
+
+//builtin
+void	ft_builtin(t_parsing *pars, t_info *info);
+void	ft_export(t_info *info, char **args);
+void	ft_env(t_info *info);
+void	ft_echo(int mode, char **input);
+void	ft_unset(t_info *info, char **args);
+void	ft_cd(t_info *info, char **args);
+
+//builtin utils
+int strlcmp_export(char *str1, char *str2, int n);
+void add_element(t_info *info, char *arg);
+
 
 #endif

@@ -17,11 +17,11 @@ void get_pwd(t_info *info)
 		}
 		if (!ft_strncmp(info->env[i], "HOME=", 5))
 		{
-			info->old_pwd = ft_substr(info->env[i], 7, ft_strlen(info->env[i]) - 5);
+			info->home = ft_substr(info->env[i], 5, ft_strlen(info->env[i]) - 5);
 		}
 		if (!ft_strncmp(info->env[i], "PATH=", 5))
 		{
-			info->path = ft_substr(info->env[i], 7, ft_strlen(info->env[i]) - 5);
+			info->path = ft_substr(info->env[i], 5, ft_strlen(info->env[i]) - 5);
 		}
 		i++;
 	}
