@@ -10,7 +10,7 @@ SRCS            =	main.c \
 					ft_getpwd.c ft_cpyarry.c lexer_utils.c lexer.c \
 					parsing.c ft_executor.c change_env_var.c \
 					change_env_var_utils.c input_check.c ft_signals.c \
-					gui.c ft_heredoc.c #ft_pipe.c
+					gui.c ft_heredoc.c
 
 OBJ_DIR				=	obj
 OBJS				=	$(SRCS:%.c=$(OBJ_DIR)/%.o)

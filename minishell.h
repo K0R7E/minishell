@@ -38,6 +38,15 @@ enum {
 	TokenTypeDelimiter = 8,
 };
 
+typedef struct s_fds
+{
+	int flag;
+	int fd_in;
+	int fd_out;
+	char *value;
+	struct s_fds *next;
+}	t_fds;
+
 typedef struct s_lexer
 {	
 	int				command;
@@ -64,6 +73,7 @@ typedef struct s_parsing
 	int 	pipes_count;
 	int		command_count;
 	t_lexer	lexer;
+	t_fds	fds;
 	char	**args;
 	char	*in_file;
 	char	*out_file;
@@ -131,5 +141,8 @@ void ft_print_minishell_gui(void);
 
 //ft_pipe.c
 void ft_pipe(t_parsing *pars, t_info *info);
+
+//utils.c
+void	ft_close(int fd);
 
 #endif
