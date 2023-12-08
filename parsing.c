@@ -202,7 +202,6 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
     }
 	ft_print(pars);
 	ft_print_fds(&pars->fds);
-
 }
 
 void handle_builtin(t_parsing *pars, const char *token, int *i)
