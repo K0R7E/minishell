@@ -1,4 +1,4 @@
-# include "minishell.h"
+#include "minishell.h"
 
 void	exit_handler(int n_exit)
 {
@@ -103,40 +103,39 @@ void	exec(char *cmd, char **env)
 	}
 }
 
-void	here_doc_put_in(char **av, int *p_fd)
+void	here_doc_put_in(t_parsing *pars, int *fd)
 {
-	char	*ret;
+	char	*line;
 
-	close(p_fd[0]);
+	close(fd[0]);
 	while (1)
 	{
-		ret = get_next_line(0);
-		if (ft_strncmp(ret, av[2], ft_strlen(av[2])) == 0)
+		line = readline("> ");
+		if (strcmp(line, pars->heredoc_delimiter) == 0)
 		{
-			free(ret);
-			exit(0);
+			free(line);
+			break;
 		}
-		ft_putstr_fd(ret, p_fd[1]);
-		free(ret);
+		ft_putstr_fd(line, fd[1]);
+		free(line);
 	}
 }
 
-void	here_doc(char **av)
+void	here_doc(t_parsing *pars)
 {
-	int		p_fd[2];
 	pid_t	pid;
 
-	if (pipe(p_fd) == -1)
+	if (pipe(pars->fd_pipe) == -1)
 		exit(0);
 	pid = fork();
 	if (pid == -1)
 		exit(0);
 	if (!pid)
-		here_doc_put_in(av, p_fd);
+		here_doc_put_in(pars, pars->fd_pipe);
 	else
 	{
-		close(p_fd[1]);
-		dup2(p_fd[0], 0);
+		close(pars->fd_pipe[1]);
+		dup2(pars->fd_pipe[0], 0);
 		wait(NULL);
 	}
 }
@@ -144,51 +143,47 @@ void	here_doc(char **av)
 void	do_pipe(char *cmd, char **env)
 {
 	pid_t	pid;
-	int		p_fd[2];
+	int		fd[2];
 
-	if (pipe(p_fd) == -1)
+	if (pipe(fd) == -1)
 		exit(0);
 	pid = fork();
 	if (pid == -1)
 		exit(0);
 	if (!pid)
 	{
-		close(p_fd[0]);
-		dup2(p_fd[1], 1);
+		close(fd[0]);
+		dup2(fd[1], 1);
 		exec(cmd, env);
 	}
 	else
 	{
-		close(p_fd[1]);
-		dup2(p_fd[0], 0);
+		close(fd[1]);
+		dup2(fd[0], 0);
 	}
 }
 
-int	main(int ac, char **av, char **env)
+void test(t_parsing *pars, t_info *info)
 {
-	int		i;
-	int		fd_in;
-	int		fd_out;
 
-	if (ac < 5)
-		exit_handler(1);
-	if (strcmp(av[1], "<<") == 0)
+	int		i = 0;
+	int		j = 0;
+
+	if (pars->heredoc_delimiter)
 	{
-		if (ac < 6)
-			exit_handler(1);
-		i = 3;
-		fd_out = open_file(av[ac - 1], 2);
-		here_doc(av);
+		here_doc(pars);
 	}
 	else
 	{
-		i = 2;
-		fd_in = open_file(av[1], 0);
-		fd_out = open_file(av[ac - 1], 1);
-		dup2(fd_in, 0);
+		dup2(pars->fd_in, 0);
 	}
-	while (i < ac - 2)
-		do_pipe(av[i++], env);
-	dup2(fd_out, 1);
-	exec(av[ac - 2], env);
+	while (i < pars->pipes_count)
+	{
+		do_pipe(pars->cmd_cmd[i++], info->env);
+	}
+	dup2(pars->fd_out, 1);
+	if (pars)
+	{
+		exec(pars->cmd_cmd[j], info->env);
+	}
 }

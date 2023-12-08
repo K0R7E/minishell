@@ -48,8 +48,6 @@ int main(int argc, char **argv, char **envp)
 		ft_get_input(info);
 		ft_lexer(info, pars);
 		ft_parser(&pars->lexer, pars, info);
-/* 		if (pars->pipes_count > 0)
-			ft_pipe(pars, info); */
 		ft_executor(pars, info);
 	}
 	return (0);
