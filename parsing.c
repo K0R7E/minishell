@@ -23,6 +23,66 @@ void handle_argument(t_parsing *pars, const char *token, int *k, t_info *info);
 	}
 } */
 
+void init_fds(t_parsing *pars)
+{
+	pars->fds.flag = -2;
+	pars->fds.fd_in = -2;
+	pars->fds.fd_out = -2;
+	pars->fds.value = NULL;
+}
+
+void create_fds_list(t_parsing *pars, int type, char *token)
+{
+	t_fds *tmp;
+
+	tmp = malloc(sizeof(t_fds));
+	if (type == TokenTypePipe)
+		tmp->flag = 1;
+	else
+		tmp->flag = 0;
+	if (type == TokenTypeInputRedirect)
+	{
+		tmp->fd_in = dup(pars->fd_in);
+		tmp->fd_out = -1;
+	}
+	else
+	{
+		tmp->fd_out = dup(pars->fd_out);
+		tmp->fd_in = -1;
+	}
+	tmp->value = ft_strdup(token);
+	tmp->next = NULL;
+	if (pars->fds.flag == -2)
+	{
+		pars->fds = *tmp;
+	}
+	else
+	{
+		t_fds *tmp2;
+
+		tmp2 = &pars->fds;
+		while (tmp2->next != NULL)
+			tmp2 = tmp2->next;
+		tmp2->next = tmp;
+	}
+
+}
+
+void ft_print_fds(t_fds *fds)
+{
+	t_fds *tmp;
+	
+	tmp = fds;
+	while (tmp != NULL)
+	{
+		printf("flag: %d\n", tmp->flag);
+		printf("fd_in: %d\n", tmp->fd_in);
+		printf("fd_out: %d\n", tmp->fd_out);
+		printf("value: %s\n", tmp->value);
+		tmp = tmp->next;
+	}
+}
+
 void ft_print(t_parsing *pars)
 {
 	// Print the cmd_builtins array
@@ -59,6 +119,7 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 	pars->heredoc_delimiter = NULL;
 	pars->pipes_count = 0;
 	pars->command_count = 0;
+	init_fds(pars);
 
 	//pars = (t_parsing *){0};
 
@@ -71,6 +132,10 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 			pars->yon = 1;
             printf("redir_in:    %s\n", pars->in_file);
 			tokens = tokens->next;
+			if (tokens->next)
+				create_fds_list(pars, tokens->next->type, tokens->token);
+			else
+			 	create_fds_list(pars, -1, tokens->token);
         }
 		else if (tokens->type == TokenTypeOutputRedirect)
 		{
@@ -79,6 +144,10 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 			pars->yon = 1;
             printf("redir_out:   %s\n", pars->out_file);
 			tokens = tokens->next;
+			if (tokens->next)
+				create_fds_list(pars, tokens->next->type, tokens->token);
+			else
+			 	create_fds_list(pars, -1, tokens->token);
         }
 		else if (tokens->type == TokenTypeOutputAppend)
 		{
@@ -87,6 +156,10 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 			pars->yon = 1;
             printf("recir_append: %s\n", pars->in_file);
 			tokens = tokens->next;
+			if (tokens->next)
+				create_fds_list(pars, tokens->next->type, tokens->token);
+			else
+			 	create_fds_list(pars, -1, tokens->token);
         }
 		else if (tokens->type == TokenTypePipe)
 		{
@@ -128,7 +201,8 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
         tokens = tokens->next;
     }
 	ft_print(pars);
-	
+	ft_print_fds(&pars->fds);
+
 }
 
 void handle_builtin(t_parsing *pars, const char *token, int *i)
