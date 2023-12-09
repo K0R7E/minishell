@@ -8,7 +8,7 @@
 			"type": "lldb",
 			"request": "launch",
 			"name": "Debug",
-			"program": "/nfs/homes/akortvel/minishell/./minishell",
+			"program": "/nfs/homes/akortvel/minishell/./test",
 			"args": [],
 			"cwd": "/nfs/homes/akortvel/minishell"
 		}

@@ -101,6 +101,8 @@ typedef struct s_info
 	char *old_pwd;
 	char *pwd;
 	char *home;
+	int val;
+	int	exit_status;
 	t_lexer	lexer_save;
 	int		builtin_command_count;
 }	t_info;
