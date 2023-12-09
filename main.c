@@ -60,13 +60,12 @@ int main(int argc, char **argv, char **envp)
 		info->builtin_command_count = 0;
 		ft_get_input(info);
 		ft_lexer(info, pars);
-		//ft_parser(&pars->lexer, pars, info); just for testing#####################
-		//test_lexer_print(pars);
 		ft_parser(&pars->lexer, pars, info);
-		//test_lexer_print(pars);
+		printf("-----------------------------------------------------------------------------\n");
+		test_lexer_print(pars);
 		ft_executor(pars, info);
 	}
 	return (0);
 }
-//echo "hello" > file1 | cat < file1 | cat -e > file2 | cat file2 | echo szia > szia | cat szia
+//echo "hello" > file1 | cat < file1 | cat -e > file2 | cat file2 | ls -l | wc -l
 

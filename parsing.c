@@ -106,7 +106,7 @@ int check_if_after_hd(t_lexer *tokens, t_parsing *pars)
 
 	(void)pars;
 	tmp = tokens;
-	while (tmp != NULL)
+	while (tmp != NULL && tmp->next != NULL)
 	{
 		if (tmp->type == TokenTypeHeredoc)
 		{
@@ -149,8 +149,8 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 
     while (tokens != NULL)
 	{
-/* 		if (check_if_after_hd(tokens, pars) != 1)
-			tokens->token = change_env_var(tokens->token, info); */
+		if (check_if_after_hd(tokens, pars) != 1)
+			tokens->token = change_env_var(tokens->token, info);
 		if (tokens->type == TokenTypeInputRedirect)
 		{
             pars->in_file = strdup(tokens->next->token);
@@ -231,8 +231,10 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 		} 
         tokens = tokens->next;
     }
+	printf("-----------------------------------------------------------------------------\n");
 	ft_print(pars);
-	//ft_print_fds(&pars->fds);
+	printf("-----------------------------------------------------------------------------\n");
+	ft_print_fds(&pars->fds);
 }
 
 void handle_builtin(t_parsing *pars, const char *token, int *i)
@@ -241,51 +243,71 @@ void handle_builtin(t_parsing *pars, const char *token, int *i)
         pars->cmd_builtin = malloc(sizeof(char *));
         pars->cmd_builtin[0] = NULL;
     }
-    pars->cmd_builtin = realloc(pars->cmd_builtin, (*i + 2) * sizeof(char *));
-    pars->cmd_builtin[*i] = strdup(token);
-    pars->cmd_builtin[*i + 1] = NULL;
+    char **new_cmd_builtin = malloc((*i + 2) * sizeof(char *));
+    for (int j = 0; j <= *i; j++) {
+        new_cmd_builtin[j] = pars->cmd_builtin[j];
+    }
+    new_cmd_builtin[*i] = strdup(token);
+    new_cmd_builtin[*i + 1] = NULL;
+    free(pars->cmd_builtin);
+    pars->cmd_builtin = new_cmd_builtin;
     (*i)++;
-	pars->command_count = 0;
+    pars->command_count = 0;
 }
 
 void handle_command(t_parsing *pars, const char *token, int *j)
 {
-	if (pars->cmd_cmd == NULL) {
-		pars->cmd_cmd = malloc(sizeof(char *));
-		pars->cmd_cmd[0] = NULL;
-	}
-	pars->cmd_cmd = realloc(pars->cmd_cmd, (*j + 2) * sizeof(char *));
-	pars->cmd_cmd[*j] = strdup(token);
-	pars->cmd_cmd[*j + 1] = NULL;
-	(*j)++;
-	pars->yon = 1;
-	pars->command_count = 1;
+    if (pars->cmd_cmd == NULL) {
+        pars->cmd_cmd = malloc(sizeof(char *));
+        pars->cmd_cmd[0] = NULL;
+    }
+    char **new_cmd_cmd = malloc((*j + 2) * sizeof(char *));
+    for (int i = 0; i <= *j; i++) {
+        new_cmd_cmd[i] = pars->cmd_cmd[i];
+    }
+    new_cmd_cmd[*j] = strdup(token);
+    new_cmd_cmd[*j + 1] = NULL;
+    free(pars->cmd_cmd);
+    pars->cmd_cmd = new_cmd_cmd;
+    (*j)++;
+    pars->yon = 1;
+    pars->command_count = 1;
 }
 
 void handle_argument(t_parsing *pars, const char *token, int *k, t_info *info)
 {
-	(void)info;
-	//printf("token:%s\n", token); 
-	//split up again, if there is a space in the token
-	if (pars->args == NULL) {
+    (void)info;
+    //printf("token:%s\n", token); 
+    //split up again, if there is a space in the token
+    if (pars->args == NULL) {
         pars->args = malloc(sizeof(char *));
         pars->args[0] = NULL;
     }
-    pars->args = realloc(pars->args, (*k + 2) * sizeof(char *));
-    pars->args[*k] = strdup(token);
-    pars->args[*k + 1] = NULL;
+    char **new_args = malloc((*k + 2) * sizeof(char *));
+    for (int i = 0; i <= *k; i++) {
+        new_args[i] = pars->args[i];
+    }
+    new_args[*k] = strdup(token);
+    new_args[*k + 1] = NULL;
+    free(pars->args);
+    pars->args = new_args;
     (*k)++;
-	pars->command_count = 0;
+    pars->command_count = 0;
 }
 
 void handle_cmd_path(t_parsing *pars, const char *token, int *n, t_info *info)
 {
-	if (pars->cmd_path == NULL) {
-		pars->cmd_path = malloc(sizeof(char *));
-		pars->cmd_path[0] = NULL;
-	}
-	pars->cmd_path = realloc(pars->cmd_path, (*n + 2) * sizeof(char *));
-	pars->cmd_path[*n] = strdup(get_path((char *)token, info));
-	pars->cmd_path[*n + 1] = NULL;
-	(*n)++;
+    if (pars->cmd_path == NULL) {
+        pars->cmd_path = malloc(sizeof(char *));
+        pars->cmd_path[0] = NULL;
+    }
+    char **new_cmd_path = malloc((*n + 2) * sizeof(char *));
+    for (int i = 0; i <= *n; i++) {
+        new_cmd_path[i] = pars->cmd_path[i];
+    }
+    new_cmd_path[*n] = strdup(get_path((char *)token, info));
+    new_cmd_path[*n + 1] = NULL;
+    free(pars->cmd_path);
+    pars->cmd_path = new_cmd_path;
+    (*n)++;
 }
