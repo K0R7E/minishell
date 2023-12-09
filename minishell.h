@@ -168,4 +168,11 @@ int strlcmp_export(char *str1, char *str2, int n);
 void add_element(t_info *info, char *arg);
 
 
+
+
+//FOR TESTING
+void test_lexer_print(t_parsing *pars);
+char *change_env_var(char *input,  t_info *info);
+
+
 #endif

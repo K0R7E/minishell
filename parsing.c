@@ -99,6 +99,26 @@ void ft_print(t_parsing *pars)
 	}
 }
 
+int check_if_after_hd(t_lexer *tokens, t_parsing *pars)
+{
+	t_lexer *tmp;
+
+	(void)pars;
+	tmp = tokens;
+	while (tmp != NULL)
+	{
+		if (tmp->type == TokenTypeHeredoc)
+		{
+			if (tmp->next->type == TokenTypeWord)
+				return (1);
+			else
+				return (0);
+		}
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
 void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 {
     int i = 0;
@@ -125,6 +145,8 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 
     while (tokens != NULL)
 	{
+		if (check_if_after_hd(tokens, pars) != 1)
+			tokens->token = change_env_var(tokens->token, info);
 		if (tokens->type == TokenTypeInputRedirect)
 		{
             pars->in_file = strdup(tokens->next->token);
@@ -235,8 +257,7 @@ void handle_command(t_parsing *pars, const char *token, int *j)
 
 void handle_argument(t_parsing *pars, const char *token, int *k, t_info *info)
 {
-    if (!pars->heredoc_delimiter)
-		token = replace_dollar((char *)token, info);
+	(void)info;
 	//printf("token:%s\n", token); 
 	//split up again, if there is a space in the token
 	if (pars->args == NULL) {

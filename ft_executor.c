@@ -32,6 +32,7 @@ void ft_binary(t_parsing *pars, t_info *info)
 	char *path;
 
 	path = get_path(pars, info);
+	printf("path: %s\n", path);
 
 	pid = fork();
 	if (pid == -1)
@@ -75,33 +76,63 @@ void ft_binary(t_parsing *pars, t_info *info)
 
 void executeCommand(t_parsing *pars, t_info *info)
 {
-	pid_t pid;
 
-	if (pipe(pars->fd_pipe) == -1)
-	{
-		perror("pipe failed");
-		exit(EXIT_FAILURE);
-	}
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("fork failed");
-		exit(EXIT_FAILURE);
-	}
-	else if (pid == 0)
-	{
-		// Child process
-		ft_close(pars->fd_pipe[0]);
-		dup2(pars->fd_pipe[1], 1);
-		ft_binary(pars, info);
-	}
-	else
-	{
-		// Parent process
-		//waitpid(pid, NULL, WNOHANG); // if -1 is passed as the option, waitpid() will wait for any child process to end
-		close(pars->fd_pipe[1]);
-		dup2(pars->fd_pipe[0], 0);
-	}
+    int (*pipes)[2] = malloc(sizeof(int[pars->pipes_count][2]));
+    if (pipes == NULL) {
+        perror("malloc");
+        exit(EXIT_FAILURE);
+    }
+
+    pid_t child_pid;
+
+    // Create pipes
+    for (int i = 0; i < pars->pipes_count - 1; ++i) {
+        if (pipe(pipes[i]) == -1) {
+            perror("pipe");
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    // Fork processes
+    for (int i = 0; i < pars->pipes_count; ++i) {
+        if ((child_pid = fork()) == -1) {
+            perror("fork");
+            exit(EXIT_FAILURE);
+        }
+
+        if (child_pid == 0) { // Child process
+            // Redirect input from previous pipe (if not the first stage)
+            if (i > 0) {
+                dup2(pipes[i - 1][0], STDIN_FILENO);
+                close(pipes[i - 1][0]);
+                close(pipes[i - 1][1]);
+            }
+
+            // Redirect output to next pipe (if not the last stage)
+            if (i < pars->pipes_count - 1) {
+                dup2(pipes[i][1], STDOUT_FILENO);
+                close(pipes[i][0]);
+                close(pipes[i][1]);
+            }
+
+            // Execute command
+			ft_binary(pars, info);
+			exit(EXIT_SUCCESS);
+        }
+    }
+
+    // Close all pipes in the parent process
+    for (int i = 0; i < pars->pipes_count - 1; ++i) {
+        close(pipes[i][0]);
+        close(pipes[i][1]);
+    }
+
+    // Wait for all child processes to finish
+    for (int i = 0; i < pars->pipes_count; ++i) {
+        wait(NULL);
+    }
+
+    free(pipes); // Free dynamically allocated memory
 }
 
 void ft_executor(t_parsing *pars, t_info *info)
@@ -119,7 +150,7 @@ void ft_executor(t_parsing *pars, t_info *info)
 	{
 		if (pars->cmd_builtin)
 		{
-			//ft_builtin(pars, info);
+			ft_builtin(pars, info);
 		}
 		else
 			ft_binary(pars, info);
@@ -132,7 +163,7 @@ void ft_executor(t_parsing *pars, t_info *info)
 		}
 		if (pars->cmd_builtin)
 		{
-			//ft_builtin(pars, info);
+			ft_builtin(pars, info);
 		}
 		else
 			ft_binary(pars, info);

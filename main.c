@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include <readline/readline.h>
 
 void ft_get_input(t_info *info)
 {
@@ -7,14 +6,14 @@ void ft_get_input(t_info *info)
 
 	line = readline(LIME"minishell>"OFF);
 	wait(NULL);
-	if (line[0] == '\0')
+	if (line == NULL)
+	{
+		rl_on_new_line();
+	}
+	else if (line[0] == '\0')
 	{
 		free(line);
 		ft_get_input(info);
-	}
-	else if (line == NULL)
-	{
-		rl_on_new_line();
 	}
 	else /* (line[0] != '\0') */
 		add_history(line);
@@ -22,6 +21,20 @@ void ft_get_input(t_info *info)
 	free(line);
 	if (ft_check_input(info) == 1)
 		ft_get_input(info);	
+}
+
+void test_lexer_print(t_parsing *pars)
+{
+	t_lexer *tmp;
+	int i = 0;
+
+	tmp = &pars->lexer;
+	while (tmp)
+	{
+		printf("Token: %d: %s\n", i, tmp->token);
+		tmp = tmp->next;
+		i++;
+	}
 }
 
 int main(int argc, char **argv, char **envp)
@@ -47,8 +60,12 @@ int main(int argc, char **argv, char **envp)
 		info->builtin_command_count = 0;
 		ft_get_input(info);
 		ft_lexer(info, pars);
+		test_lexer_print(pars);
 		ft_parser(&pars->lexer, pars, info);
+		test_lexer_print(pars);
 		ft_executor(pars, info);
 	}
 	return (0);
 }
+//echo "hello" > file1 | cat < file1 | cat -e > file2 | cat file2 | echo szia > szia | cat szia
+
