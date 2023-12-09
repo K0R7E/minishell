@@ -64,8 +64,10 @@ typedef struct s_lexer_pos
 	int hedoc;
 }	t_lexer_pos;
 
+
 typedef struct s_parsing
 {
+	char	**cmd_path;
 	char	**cmd_cmd;
 	char	**cmd_builtin;
 	int		yon;
@@ -166,6 +168,7 @@ void	ft_cd(t_info *info, char **args);
 //builtin utils
 int strlcmp_export(char *str1, char *str2, int n);
 void add_element(t_info *info, char *arg);
+char *get_path(char *token, t_info *info);
 
 
 
@@ -173,6 +176,10 @@ void add_element(t_info *info, char *arg);
 //FOR TESTING
 void test_lexer_print(t_parsing *pars);
 char *change_env_var(char *input,  t_info *info);
+
+
+//new linked list parser
+void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info);
 
 
 #endif

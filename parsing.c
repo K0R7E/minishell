@@ -3,6 +3,7 @@
 void handle_builtin(t_parsing *pars, const char *token, int *i);
 void handle_command(t_parsing *pars, const char *token, int *j);
 void handle_argument(t_parsing *pars, const char *token, int *k, t_info *info);
+void handle_cmd_path(t_parsing *pars, const char *token, int *n, t_info *info);
 
 /* void free_parsing(t_parsing *pars)
 {
@@ -124,8 +125,10 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
     int i = 0;
 	int j = 0;
 	int k = 0;
+	int n = 0;
 
 	pars->yon = 0;
+	pars->cmd_path = NULL;
     pars->cmd_cmd = NULL;
     pars->cmd_builtin = NULL;
     pars->args = NULL;
@@ -140,13 +143,14 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 	pars->pipes_count = 0;
 	pars->command_count = 0;
 	init_fds(pars);
+	pars->cmd_path = malloc(sizeof(char *));
 
 	//pars = (t_parsing *){0};
 
     while (tokens != NULL)
 	{
-		if (check_if_after_hd(tokens, pars) != 1)
-			tokens->token = change_env_var(tokens->token, info);
+/* 		if (check_if_after_hd(tokens, pars) != 1)
+			tokens->token = change_env_var(tokens->token, info); */
 		if (tokens->type == TokenTypeInputRedirect)
 		{
             pars->in_file = strdup(tokens->next->token);
@@ -216,6 +220,9 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
 			else if (pars->yon == 0 || ((tokens->token[0] == '-') && pars->command_count == 1))
 			{
 				handle_command(pars, tokens->token, &j);
+				handle_cmd_path(pars, tokens->token, &n, info);
+				printf("cmd_path: %s\n", pars->cmd_path[n - 1]);
+				n++;
 				if (strcmp(tokens->token, "-n") == 0)
 					pars->command_count = 0;
 			}
@@ -225,7 +232,7 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info)
         tokens = tokens->next;
     }
 	ft_print(pars);
-	ft_print_fds(&pars->fds);
+	//ft_print_fds(&pars->fds);
 }
 
 void handle_builtin(t_parsing *pars, const char *token, int *i)
@@ -269,4 +276,16 @@ void handle_argument(t_parsing *pars, const char *token, int *k, t_info *info)
     pars->args[*k + 1] = NULL;
     (*k)++;
 	pars->command_count = 0;
+}
+
+void handle_cmd_path(t_parsing *pars, const char *token, int *n, t_info *info)
+{
+	if (pars->cmd_path == NULL) {
+		pars->cmd_path = malloc(sizeof(char *));
+		pars->cmd_path[0] = NULL;
+	}
+	pars->cmd_path = realloc(pars->cmd_path, (*n + 2) * sizeof(char *));
+	pars->cmd_path[*n] = strdup(get_path((char *)token, info));
+	pars->cmd_path[*n + 1] = NULL;
+	(*n)++;
 }
