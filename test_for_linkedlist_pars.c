@@ -71,8 +71,7 @@ char *get_path_new(t_pars *pars, t_lexer *tokens, char *token, t_info *info)
     char **s_cmd;
 
     i = -1;
-	if ((ft_check_word_type(pars, tokens, info) == 1)
-		|| tokens->token[0] == '-')
+	if (ft_check_word_type(pars, tokens, info) == 1)
 		return (NULL);
     allpath = ft_split(info->path, ':');
     s_cmd = ft_split(token, ' ');
@@ -90,11 +89,22 @@ char *get_path_new(t_pars *pars, t_lexer *tokens, char *token, t_info *info)
     return (token);
 }
 
+int is_next_args(t_pars **pars, t_lexer *tokens, t_info *info)
+{
+	(void)info;
+	(void)pars;
+
+	if (tokens->next != NULL && (tokens->next->token[0] == '-' || ft_strncmp(tokens->next->token, "/bin/", 5) == 0))
+		return (1);
+	return (0);
+}
+
+
 void ft_print_pars(t_pars *pars)
 {
 	int i = 0;
 
-	while (pars)
+	while (pars != NULL)
 	{
 		printf("Node: %d\n", i);
 		printf("----------------------\n");
@@ -109,11 +119,13 @@ void ft_print_pars(t_pars *pars)
 		printf("Other: %s\n", pars->other);
 		printf("Type: %d\n", pars->type);
 		printf("Args: ");
-		if (pars->args)
+		if (pars->args != NULL)
 		{
-			for (int j = 0; pars->args[j] != NULL; j++)
+			i = 0;
+			while (pars->args[i])
 			{
-				printf("%s ", pars->args[j]);
+				printf("%s ", pars->args[i]);
+				i++;
 			}
 		}
 		printf("\n");
@@ -247,24 +259,46 @@ t_pars *node_for_heredoc(t_pars *pars, t_lexer *tmp, t_info *info)
 	return(node);
 }
 
+int ft_lstsize(t_lexer *tokens)
+{
+	int i;
+
+	i = 0;
+	while (tokens != NULL)
+	{
+		tokens = tokens->next;
+		i++;
+	}
+	return (i);
+}
+
 t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 {
-	t_pars *node;
+	t_pars	*node;
+	int		i;
 
-	(void)pars;
+	i = 1;
 	node = malloc(sizeof(t_pars));
-	if (((ft_check_word_type(pars, tmp, info) == 1) && info->val == 1)
-		|| tmp->token[0] == '-' || info->val == 2)
+	node->args = malloc(sizeof(char *) * (ft_lstsize(tmp) + 1));
+	if (((ft_check_word_type(pars, tmp, info) == 1) || info->val == 1)
+		|| info->val == 2 || info->val == 3)
 	{
 		node->command = ft_strdup(tmp->token);
 		node->other = NULL;
 		node->cmd_path = get_path_new(pars, tmp, tmp->token, info);
+		node->args[0] = ft_strdup(tmp->token);
+		while (is_next_args(&pars, tmp, info) == 1)
+		{
+			node->args[i++] = ft_strdup(tmp->next->token);
+			tmp = tmp->next;
+		}
 	}
 	else
 	{
 		node->command = NULL;
 		node->other = ft_strdup(tmp->token);
 		node->cmd_path = NULL;
+		node->args = NULL;
 	}
 	node->type = tmp->type;
 	node->in_file = NULL;
@@ -327,20 +361,25 @@ void ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info)
 		if (tmp->type == TokenTypeInputRedirect || tmp->type == TokenTypeOutputRedirect
 			|| tmp->type == TokenTypeOutputAppend || tmp->type == TokenTypeHeredoc)
 			{
-				info->val = 1;
 				add_pars_node(*pars, pars, tmp, info);
-				info->val = 0;
+				info->val = 1;
 				tmp = tmp->next;	
 			}
 		else if (tmp->type == TokenTypePipe) 
 		{
-			info->val = 1;
 			add_pars_node(*pars, pars, tmp, info);
-			info->val = 0;
+			info->val = 3;
 		}
 		else
+		{
 			add_pars_node(*pars, pars, tmp, info);
-		info->val = 0;
+			if (tmp->next != NULL)
+			{
+				while(is_next_args(pars, tmp, info) == 1)
+					tmp = tmp->next;
+			}
+			info->val = 4;
+		}
 		tmp = tmp->next;
 	}
 }

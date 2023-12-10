@@ -109,5 +109,12 @@ int main(int argc, char **argv, char **envp)
 	}
 	return (0);
 } */
-//echo "hello" > file1 | cat < file1 | cat -e > file2 | cat file2 | ls -l | wc -l
+
+/*
+
+echo "hello" > file1 | cat < file1 | cat -e > file2 | cat file2 | ls -l | wc -l
+
+/bin/ls /bin/ -l
+
+*/
 

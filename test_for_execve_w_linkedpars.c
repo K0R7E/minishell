@@ -25,27 +25,32 @@ int is_builtin (t_pars **pars)
 
 void ft_test_bin(t_pars **pars, t_info *info)
 {
-	t_pars *tmp;
-	pid_t pid;
+    t_pars *tmp;
+    pid_t pid;
+    //char *args[4];
 
-	tmp = *pars;
-	pid = fork();
-	if (pid == 0)
-	{
-		if (execve(tmp->cmd_path, &tmp->command, info->env) == -1)
-		{
-			perror("Error");
-			exit(0);
-		}
-	}
-	else if (pid < 0)
-	{
-		perror("Error");
-		exit(0);
-	}
-	else
-		waitpid(pid, &info->exit_status, 0);
+    tmp = *pars;
+    pid = fork();
+    if (pid == 0)
+    {
+/*      args[0] = "/usr/bin/ls";
+        args[1] = "/bin/";
+		args[2] = "-l";
+		args[3] = NULL; */
 
+        if (execve(tmp->cmd_path, tmp->args, info->env) == -1)
+        {
+            perror("Error");
+            exit(0);
+        }
+    }
+    else if (pid < 0)
+    {
+        perror("Error");
+        exit(0);
+    }
+    else
+        waitpid(pid, &info->exit_status, 0);
 }
 
 void ft_test_executor(t_pars **pars, t_info *info)
@@ -53,7 +58,7 @@ void ft_test_executor(t_pars **pars, t_info *info)
 	t_pars *tmp;
 
 	tmp = *pars;
-	ft_print_pars(tmp);
+	//ft_print_pars(tmp);
 
 	while(tmp != NULL)
 	{
