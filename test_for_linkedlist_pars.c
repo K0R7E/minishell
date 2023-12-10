@@ -1,22 +1,5 @@
 #include "minishell.h"
 
-
-typedef struct s_pars
-{
-	char			*cmd_path;
-	char			*command;
-	char			*other;
-	char			**args;
-	int				type;
-	t_lexer			*lexer;
-	char			*in_file;
-	char			*out_file;
-	int				fd_in;
-	int				fd_out;
-	int				fd_pipe[2];
-	struct s_pars	*next;
-}	t_pars;
-
 void free_pars_list(t_pars *head)
 {
 	t_pars *current;
@@ -44,7 +27,7 @@ void free_pars_list(t_pars *head)
     }
 }
 
-void ft_get_input(t_info *info)
+/* void ft_get_input(t_info *info)
 {
 	char *line;
 
@@ -59,13 +42,13 @@ void ft_get_input(t_info *info)
 		free(line);
 		ft_get_input(info);
 	}
-	else /* (line[0] != '\0') */
+	else //(line[0] != '\0')
 		add_history(line);
 	info->input = ft_strdup(line);
 	free(line);
 	if (ft_check_input(info) == 1)
 		ft_get_input(info);	
-}
+} */
 
 int ft_check_word_type(t_pars *pars, t_lexer *tokens, t_info *info)
 {
@@ -88,7 +71,8 @@ char *get_path_new(t_pars *pars, t_lexer *tokens, char *token, t_info *info)
     char **s_cmd;
 
     i = -1;
-	if (ft_check_word_type(pars, tokens, info) == 1)
+	if ((ft_check_word_type(pars, tokens, info) == 1)
+		|| tokens->token[0] == '-')
 		return (NULL);
     allpath = ft_split(info->path, ':');
     s_cmd = ft_split(token, ' ');
@@ -238,6 +222,7 @@ t_pars *node_for_pipe(t_pars *pars, t_lexer *tmp, t_info *info)
 	node->fd_out = -1;
 	node->fd_pipe[0] = -1;
 	node->fd_pipe[1] = -1;
+	info->command_count++;
 	return(node);
 }
 
@@ -268,17 +253,18 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 
 	(void)pars;
 	node = malloc(sizeof(t_pars));
-	node->cmd_path = get_path_new(pars, tmp, tmp->token, info);
 	if (((ft_check_word_type(pars, tmp, info) == 1) && info->val == 1)
 		|| tmp->token[0] == '-' || info->val == 2)
 	{
 		node->command = ft_strdup(tmp->token);
 		node->other = NULL;
+		node->cmd_path = get_path_new(pars, tmp, tmp->token, info);
 	}
 	else
 	{
 		node->command = NULL;
 		node->other = ft_strdup(tmp->token);
+		node->cmd_path = NULL;
 	}
 	node->type = tmp->type;
 	node->in_file = NULL;
@@ -358,7 +344,7 @@ void ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info)
 		tmp = tmp->next;
 	}
 }
-
+/* 
 int main(int argc, char **argv, char **envp)
 {
 	t_info *info;
@@ -391,7 +377,7 @@ int main(int argc, char **argv, char **envp)
 		free_pars_list(pars);
 	}
 	return (0);
-}
+} */
 
 
 /*
