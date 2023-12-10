@@ -93,8 +93,21 @@ int is_next_args(t_pars **pars, t_lexer *tokens, t_info *info)
 {
 	(void)info;
 	(void)pars;
-
-	if (tokens->next != NULL && (tokens->next->token[0] == '-' || ft_strncmp(tokens->next->token, "/bin/", 5) == 0))
+	if (tokens->next != NULL && (ft_check_word_type(*pars, tokens, info) == 1))
+	{
+		if (((strcmp(tokens->token, "echo") == 0) && tokens->next->token[0] == '-')
+			|| ((strcmp(tokens->token, "echo") == 0) && tokens->next->token[0] != '-'))
+			return (1);
+		else if ((strcmp(tokens->token, "cd") == 0) && tokens->next->token[0] == '/')
+			return (1);
+		else if ((strcmp(tokens->token, "export") == 0) || (strcmp(tokens->token, "unset") == 0))
+			return (1);
+		else
+		 	return (0);
+	}
+	else if (tokens->next != NULL && (tokens->next->type != TokenTypePipe
+		&& tokens->next->type != TokenTypeInputRedirect && tokens->next->type != TokenTypeOutputRedirect
+		&& tokens->next->type != TokenTypeOutputAppend && tokens->next->type != TokenTypeHeredoc)) 
 		return (1);
 	return (0);
 }
