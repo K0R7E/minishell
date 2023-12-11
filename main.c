@@ -3,24 +3,23 @@
 void ft_get_input(t_info *info)
 {
 	char *line;
-
+	
 	line = readline(LIME"minishell>"OFF);
-	wait(NULL);
-	if (line == NULL)
+	puts("readline");
+	if (!line)
 	{
-		rl_on_new_line();
+		return  ;
 	}
-	else if (line[0] == '\0')
+	if ((line && line[0] == '\0'))
 	{
 		free(line);
-		ft_get_input(info);
+		info->input = NULL;
+		return ;
 	}
-	else /* (line[0] != '\0') */
+	else
 		add_history(line);
 	info->input = ft_strdup(line);
 	free(line);
-	if (ft_check_input(info) == 1)
-		ft_get_input(info);	
 }
 
 void test_lexer_print(t_parsing *pars)
@@ -58,18 +57,24 @@ int main(int argc, char **argv, char **envp)
 	get_pwd(info);
 	info->exit_status = 0;
 	printf("\033[2J\033[1;1H");
+	pars = malloc(sizeof(t_pars));
  	while (1)
 	{
-		pars = malloc(sizeof(t_pars));
 		pars = NULL;
 		info->command_count = 1;
 		info->builtin_command_count = 0;
 		ft_get_input(info);
+/* 		if (!info->input)
+			continue ; */
 		ft_lexer(info, parsing);
 		ft_parsing(&pars, &parsing->lexer, info);
-		//ft_print_pars(pars);
+		// ft_print_pars(pars);
+		//printf("%d\n", info->command_count);
 		ft_test_executor(&pars, info);
-		//free_pars_list(pars);
+		free_pars_list(pars);
+		free(info->input);
+		info->input = NULL;
+		puts("end of loop");
 	}
 	return (0);
 }

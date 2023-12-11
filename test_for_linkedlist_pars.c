@@ -314,7 +314,7 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 			node->args[i++] = ft_strdup(tmp->next->token);
 			tmp = tmp->next;
 		}
-		node->args[i] = NULL;
+		//node->args[i] = NULL;
 	}
 	else
 	{
@@ -328,8 +328,8 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 	node->out_file = NULL;
 	node->fd_in = -1;
 	node->fd_out = -1;
-	node->fd_pipe[0] = STDIN_FILENO;
-	node->fd_pipe[1] = STDOUT_FILENO;	
+	node->fd_pipe[0] = 0;
+	node->fd_pipe[1] = 1;	
 	return(node);
 }
 
