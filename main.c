@@ -112,7 +112,7 @@ int main(int argc, char **argv, char **envp)
 
 /*
 
-echo "hello" > file1 | cat < file1 | cat -e > file2 | cat file2 | ls -l | wc -l
+echo "hello" > file1 | echo -n "hello" | cat < file1 | cat -e > file2 | cat file2 | ls -l | wc -l
 
 /bin/ls /bin/ -l
 

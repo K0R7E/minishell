@@ -1,4 +1,6 @@
 #include "minishell.h"
+#include <stdio.h>
+#include <unistd.h>
 
 void free_pars_list(t_pars *head)
 {
@@ -298,7 +300,7 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 	i = 1;
 	j = 0;
 	node = malloc(sizeof(t_pars));
-	printf("size to malloc:%d\n", ft_lstsize(tmp));
+	//printf("size to malloc:%d\n", ft_lstsize(tmp));
 	node->args = malloc(sizeof(char *) * (ft_lstsize(tmp) + 1));
 	if (((ft_check_word_type(pars, tmp, info) == 1) || info->val == 1)
 		|| info->val == 2 || info->val == 3)
@@ -326,8 +328,8 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 	node->out_file = NULL;
 	node->fd_in = -1;
 	node->fd_out = -1;
-	node->fd_pipe[0] = -1;
-	node->fd_pipe[1] = -1;	
+	node->fd_pipe[0] = STDIN_FILENO;
+	node->fd_pipe[1] = STDOUT_FILENO;	
 	return(node);
 }
 
