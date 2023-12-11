@@ -64,8 +64,26 @@ typedef struct s_lexer_pos
 	int hedoc;
 }	t_lexer_pos;
 
+//linked pars
+typedef struct s_pars
+{
+	char			*cmd_path;
+	char			*command;
+	char			*other;
+	char			**args;
+	int				type;
+	t_lexer			*lexer;
+	char			*in_file;
+	char			*out_file;
+	int				fd_in;
+	int				fd_out;
+	int				fd_pipe[2];
+	struct s_pars	*next;
+}	t_pars;
+
 typedef struct s_parsing
 {
+	char	**cmd_path;
 	char	**cmd_cmd;
 	char	**cmd_builtin;
 	int		yon;
@@ -92,13 +110,16 @@ typedef struct s_env
 }	t_env;
 typedef struct s_info
 {
-	char **env;
-	t_env *env_list;
-	char *input;
-	char *path;
-	char *old_pwd;
-	char *pwd;
-	char *home;
+	char	**env;
+	t_env	*env_list;
+	char	*input;
+	char	*path;
+	char	*old_pwd;
+	char	*pwd;
+	char	*home;
+	int		val;
+	int		command_count;
+	int		exit_status;
 	t_lexer	lexer_save;
 	int		builtin_command_count;
 }	t_info;
@@ -166,6 +187,22 @@ void	ft_cd(t_info *info, char **args);
 //builtin utils
 int strlcmp_export(char *str1, char *str2, int n);
 void add_element(t_info *info, char *arg);
+char *get_path(char *token, t_info *info);
+
+
+
+
+//FOR TESTING
+void test_lexer_print(t_parsing *pars);
+char *change_env_var(char *input,  t_info *info);
+
+
+//new linked list parser
+void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info);
+void ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info);
+void ft_print_pars(t_pars *pars);
+void free_pars_list(t_pars *head);
+void ft_test_executor(t_pars **pars, t_info *info);
 
 
 #endif
