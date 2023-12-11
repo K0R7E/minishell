@@ -67,8 +67,8 @@ int main(int argc, char **argv, char **envp)
 		ft_get_input(info);
 		ft_lexer(info, parsing);
 		ft_parsing(&pars, &parsing->lexer, info);
-		ft_print_pars(pars);
-		//ft_test_executor(&pars, info);
+		//ft_print_pars(pars);
+		ft_test_executor(&pars, info);
 		//free_pars_list(pars);
 	}
 	return (0);

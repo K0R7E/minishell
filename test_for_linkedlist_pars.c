@@ -116,6 +116,7 @@ int is_next_args(t_pars **pars, t_lexer *tokens, t_info *info)
 void ft_print_pars(t_pars *pars)
 {
 	int i = 0;
+	int j = 0;
 
 	while (pars != NULL)
 	{
@@ -134,11 +135,11 @@ void ft_print_pars(t_pars *pars)
 		printf("Args: ");
 		if (pars->args != NULL)
 		{
-			i = 0;
-			while (pars->args[i])
+			j = 0;
+			while (pars->args[j])
 			{
-				printf("%s ", pars->args[i]);
-				i++;
+				printf("%s ", pars->args[j]);
+				j++;
 			}
 		}
 		printf("\n");
@@ -274,24 +275,30 @@ t_pars *node_for_heredoc(t_pars *pars, t_lexer *tmp, t_info *info)
 
 int ft_lstsize(t_lexer *tokens)
 {
-	int i;
+	int count;
 
-	i = 0;
-	while (tokens != NULL)
+	count = 0;
+
+	while ((tokens->next != NULL) && (tokens != NULL || tokens->type != TokenTypePipe || tokens->type != TokenTypeInputRedirect
+		|| tokens->type != TokenTypeOutputRedirect || tokens->type != TokenTypeOutputAppend
+		|| tokens->type != TokenTypeHeredoc))
 	{
+		count++;
 		tokens = tokens->next;
-		i++;
 	}
-	return (i);
+	return (count);
 }
 
 t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 {
 	t_pars	*node;
 	int		i;
+	int 	j;	
 
 	i = 1;
+	j = 0;
 	node = malloc(sizeof(t_pars));
+	printf("size to malloc:%d\n", ft_lstsize(tmp));
 	node->args = malloc(sizeof(char *) * (ft_lstsize(tmp) + 1));
 	if (((ft_check_word_type(pars, tmp, info) == 1) || info->val == 1)
 		|| info->val == 2 || info->val == 3)
@@ -305,6 +312,7 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 			node->args[i++] = ft_strdup(tmp->next->token);
 			tmp = tmp->next;
 		}
+		node->args[i] = NULL;
 	}
 	else
 	{
