@@ -177,12 +177,13 @@ void	ft_close(int fd);
 void	env_conversion(t_info *info);
 
 //builtin
-void	ft_builtin(t_parsing *pars, t_info *info);
+void	ft_builtin(t_pars *pars, t_info *info);
 void	ft_export(t_info *info, char **args);
 void	ft_env(t_info *info);
-void	ft_echo(int mode, char **input);
+void	ft_echo(char **input);
 void	ft_unset(t_info *info, char **args);
 void	ft_cd(t_info *info, char **args);
+void	ft_pwd(t_info *info);
 
 //builtin utils
 int strlcmp_export(char *str1, char *str2, int n);

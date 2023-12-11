@@ -13,7 +13,7 @@ SRCS            =	main.c \
 					env_conversion.c ft_export.c \
 					ft_env.c ft_builtin.c ft_echo.c\
 					ft_unset.c builtins_utils.c ft_cd.c gui.c ft_heredoc.c \
-					utils.c test_for_linkedlist_pars.c \
+					utils.c test_for_linkedlist_pars.c ft_pwd.c\
 					test_for_execve_w_linkedpars.c \
 					#parsing.c ft_executor.c
 

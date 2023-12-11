@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 13:40:04 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/05 11:46:39 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/11 15:47:51 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int give_env_variable_pos(char *input, int i, t_info *info, int mode)
 {
 	int j;
 	int pos;
+	t_env *tmp;
 
 	j = 0;
 	pos = 0;
@@ -26,16 +27,18 @@ int give_env_variable_pos(char *input, int i, t_info *info, int mode)
 	}
 	if (mode == 1)
 		return (j);
-	while(info->env[pos] != NULL)
+	tmp = info->env_list;
+	while (tmp)
 	{
-		if (ft_strncmp(info->env[pos], input + (i + 1), j - 1) == 0 && info->env[pos][j - 1] == '=')
+		if (ft_strncmp(tmp->var, input + (i + 1), j - 1) == 0)
 		{
-			//printf("found env variable: %s\n", info->env[pos]);
+			printf("found env variable: %s\n", info->env[pos]);
 			return(pos);
 		}
+		tmp = tmp->next;
 		pos++;
 	}
-	//printf("env variable not found\n");
+	printf("env variable not found\n");
 	return(-1);
 }
 
@@ -43,22 +46,22 @@ char *copy_env_value(int j, t_info *info)
 {
 	int i;
 	char *res;
+	t_env *tmp;
 
+	tmp = info->env_list;
+	i = -1;
+	while (++i < j)
+		tmp = tmp->next;
 	i = 0;
-	while (info->env[j][i] != '=')
-		i++;
-	res = malloc(((ft_strlen(info->env[j]) + 1) - i) * sizeof(char));
+	res = malloc((ft_strlen(tmp->value + 1)) * sizeof(char));
 	if (res == NULL)
 		return(NULL);
-	i++;
-	int k = 0;
-	while (info->env[j][i] != '\0')
+	while (tmp->value[i] != '\0')
 	{
-		res[k] = info->env[j][i];
+		res[i] = tmp->value[i];
 		i++;
-		k++;
 	}
-	res[k] = '\0';
+	res[i] = '\0';
 	//printf("res: %s\n", res);
 	return (res);
 }
@@ -101,6 +104,8 @@ char *replace_dollar(char *input,  t_info *info)
 		//printf("res after iteration %d: %s\n", i, res);
 	}
 	free (input);
+	if (res == NULL)
+		return (strdup("\0"));
 	return(res);
 }
 
@@ -108,7 +113,6 @@ char *change_env_var(char *input,  t_info *info)
 {
 	if (ft_strchr2(input, '$'))
 	{
-		printf("hi\n");
 		input = replace_dollar(input, info);
 	}
 	return (input);
