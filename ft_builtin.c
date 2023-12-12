@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:35:56 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/11 16:04:34 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/12 12:31:15 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,11 @@ void	ft_builtin(t_pars *pars, t_info *info)
 		ft_env(info);
 	if (ft_strncmp2(pars->command,  "cd", 2) == 0)
 		ft_cd(info, pars->args);
-	if (ft_strncmp2(pars->command,  "pwd", 2) == 0)
+	if (ft_strncmp2(pars->command,  "pwd", 3) == 0)
 		ft_pwd(info);
+	
+	//if (ft_strncmp2(pars->command,  "exit", 4) == 0)
+		//ft_exit(info, pars->args);
+	
 	//info->builtin_command_count++;
 }

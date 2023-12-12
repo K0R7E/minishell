@@ -112,6 +112,8 @@ typedef struct s_info
 {
 	char	**env;
 	t_env	*env_list;
+	char	**converted_env;
+	int 	exit_code;
 	char	*input;
 	char	*path;
 	char	*old_pwd;
@@ -123,7 +125,6 @@ typedef struct s_info
 	t_lexer	lexer_save;
 	int		builtin_command_count;
 }	t_info;
-
 
 // main.c
 void ft_get_input(t_info *info);
@@ -175,6 +176,7 @@ void	ft_close(int fd);
 
 // env conversion
 void	env_conversion(t_info *info);
+char	**env_conversion_back(t_info *info);
 
 //builtin
 void	ft_builtin(t_pars *pars, t_info *info);
@@ -189,8 +191,7 @@ void	ft_pwd(t_info *info);
 int strlcmp_export(char *str1, char *str2, int n);
 void add_element(t_info *info, char *arg);
 char *get_path(char *token, t_info *info);
-
-
+void	update_info(t_info *info);
 
 
 //FOR TESTING

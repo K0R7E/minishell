@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 12:31:30 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/11 18:09:48 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/12 14:13:26 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,3 +66,41 @@ void add_element(t_info *info, char *arg)
 	}
 }
 
+void	update_info(t_info *info)
+{
+	t_env *tmp;
+	char *unset;
+	
+	free(info->home);
+	//free(info->pwd);
+	//free(info->old_pwd);
+	tmp = info->env_list;
+	unset = strdup("000");
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->var, "HOME", 4) == 0)
+		{
+			unset[0] = '1';
+			info->home = ft_strdup(tmp->value);
+		}
+		/*
+		if (ft_strncmp(tmp->var, "OLDPWD", 6) == 0)
+		{
+			unset[1] = '1';
+			info->old_pwd = ft_strdup(tmp->value);
+		}
+		if (ft_strncmp(tmp->var, "PWD", 3) == 0)
+		{
+			unset[2] = '1';
+			info->pwd = ft_strdup(tmp->value);
+		}*/
+		tmp = tmp->next;
+	}
+	if (unset[0] == '0')
+		info->home = ft_strdup("");
+	/*
+	if (unset[1] == '0')
+		info->old_pwd = ft_strdup("");
+	if (unset[2] == '0')
+		info->pwd = ft_strdup("");*/
+}
