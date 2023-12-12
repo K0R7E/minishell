@@ -1,25 +1,26 @@
 #include "minishell.h"
+#include <readline/readline.h>
 
 void ft_get_input(t_info *info)
 {
 	char *line;
 	
 	line = readline(LIME"minishell>"OFF);
-	puts("readline");
-	if (!line)
+	info->input = ft_strdup(line);
+	free(line);
+	if (!info->input)
 	{
-		return ;
+		ft_putendl_fd("exit", STDOUT_FILENO);
+		exit(EXIT_SUCCESS);
 	}
-	if ((line && line[0] == '\0'))
+	if (info->input[0] == '\0')
 	{
-		free(line);
+		free(info->input);
 		info->input = NULL;
 		return ;
 	}
-	else
-		add_history(line);
-	info->input = ft_strdup(line);
-	free(line);
+	add_history(info->input);
+
 }
 
 void test_lexer_print(t_parsing *pars)
@@ -64,17 +65,15 @@ int main(int argc, char **argv, char **envp)
 		info->command_count = 1;
 		info->builtin_command_count = 0;
 		ft_get_input(info);
-/* 		if (!info->input)
-			continue ; */
 		ft_lexer(info, parsing);
 		ft_parsing(&pars, &parsing->lexer, info);
-		ft_print_pars(pars);
-		//printf("%d\n", info->command_count);
-		ft_test_executor(&pars, info);
+		//test_lexer_print(pars);
+		//ft_print_pars(pars);
+		//ft_test_executor(&pars, info);
+		ft_executor_pars(pars, info);
 		free_pars_list(pars);
 		free(info->input);
 		info->input = NULL;
-		puts("end of loop");
 	}
 	return (0);
 }

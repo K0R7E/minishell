@@ -120,9 +120,12 @@ typedef struct s_info
 	int		val;
 	int		command_count;
 	int		exit_status;
+	int 	*pid;
 	t_lexer	lexer_save;
 	int		builtin_command_count;
 }	t_info;
+
+void ft_executor_pars(t_pars *pars, t_info *info);
 
 
 // main.c
@@ -156,7 +159,7 @@ char *ft_strjoin2(char *str, char *add);
 void ft_heredoc(t_parsing *pars, t_info *info);
 
 // ft_executor.c
-void ft_executor(t_parsing *pars, t_info *info);
+//void ft_executor(t_parsing *pars, t_info *info);
 int ft_arrylen(char **pars);
 void ft_execute(char *args[], int input_fd, int output_fd);
 int ft_count_pipes(t_parsing *pars);

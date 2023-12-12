@@ -77,15 +77,15 @@ void ft_bin(t_pars **pars, t_info *info)
 		ft_proc_no(&exec_node, info, -1);
 }
 
-void ft_idk(t_pars *pars, t_info *info, int num)
+/* void ft_idk(t_pars *pars, t_info *info, int num)
 {
 	t_pars *tmp;
-	int i = num;
 	int fd[2];
 
 	tmp = pars;
 	pid_t pid[num];
 	pipe(fd);
+	printf("DEBUG_1\n");
 	while (num > 0 && tmp)
 	{
 		pid[num] = fork();
@@ -97,17 +97,23 @@ void ft_idk(t_pars *pars, t_info *info, int num)
 		if (pid[num] == 0)
 		{
 			// Child process
+			printf("DEBUG_CHILD -> %d\n", num);
 			dup2(fd[1], STDOUT_FILENO);
 			close(fd[1]);
-			close(fd[0]);
+			ft_close(fd[0]);
 			ft_bin(&tmp, info);
 		}
 		else
 		{
 			// Parent process
+			ft_close(fd[1]);
+
+			//close(fd[1]);
+			printf("DEBUG_WAIT -> %d\n", num);
+			waitpid(pid[num], &info->exit_status, 0);
+			printf("DEBUG_PARENT -> %d\n", num);
 			dup2(fd[0], STDIN_FILENO);
 			close(fd[0]);
-			close(fd[1]);
 		}
 		num--;
 		close(fd[1]);
@@ -116,16 +122,18 @@ void ft_idk(t_pars *pars, t_info *info, int num)
 		tmp = tmp->next;
 	}
 
-	while (i > num)
-	{
-		/* close(fd[1]); */
-		close(fd[0]);
-		close(fd[1]);
-		waitpid(pid[num], &info->exit_status, 0);
-		num++;
-	}
 
-}
+	printf("DEBUG_END\n");
+
+} */
+
+/* void ft_pipeline(t_pars *pars, t_info *info)
+{
+	//check and change fd_in and fd_out with pipe
+	
+	//check and change fd_in and fd_out with redirection
+	
+} */
 
 void ft_test_executor(t_pars **pars, t_info *info)
 {
@@ -152,7 +160,7 @@ void ft_test_executor(t_pars **pars, t_info *info)
 	}
 	else
 	{
-		ft_idk(tmp, info, info->command_count);
+		//ft_pipeline(tmp, info, info->command_count);
 		//ft_bin(&tmp, info);
 	}
 }
