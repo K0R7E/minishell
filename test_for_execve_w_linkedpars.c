@@ -24,7 +24,142 @@ int is_builtin (t_pars **pars)
 		return (0);
 }
 
-void ft_test_bin(t_pars **pars, t_info *info)
+void ft_proc_no(t_pars **pars, t_info *info, int fd)
+{
+	t_pars *tmp;
+	pid_t pid;
+
+	tmp = *pars;
+    pid = fork();
+    if (pid < 0)
+    {
+        perror("Error");
+        exit(0);
+    }
+    if (pid == 0)
+    {
+        // Child process
+		if (fd != -1)
+		{
+			dup2(fd, STDOUT_FILENO);
+        	close(fd);
+		}
+        if (execve(tmp->cmd_path, tmp->args, info->env) == -1)
+        {
+            perror("Error");
+            exit(0);
+        }
+    }
+    waitpid(pid, &info->exit_status, 0);
+	if (fd != -1)
+		close(fd);
+}
+
+
+
+
+void ft_bin(t_pars **pars, t_info *info)
+{
+    t_pars *tmp;
+    t_pars *exec_node;
+
+    tmp = *pars;
+    exec_node = tmp;
+
+    // Find the last node with TokenTypeOutputRedirect
+	if (tmp->next && tmp->next->type != TokenTypePipe)
+	{
+    	while (tmp->next && (tmp->next->type == 2 || tmp->next->type == 4))
+    	    tmp = tmp->next;
+		ft_proc_no(&exec_node, info, tmp->fd_out);
+	}
+	else
+		ft_proc_no(&exec_node, info, -1);
+}
+
+void ft_idk(t_pars *pars, t_info *info, int num)
+{
+	t_pars *tmp;
+	int i = num;
+	int fd[2];
+
+	tmp = pars;
+	pid_t pid[num];
+	pipe(fd);
+	while (num > 0 && tmp)
+	{
+		pid[num] = fork();
+		if (pid[num] < 0)
+		{
+			perror("Error");
+			exit(0);
+		}
+		if (pid[num] == 0)
+		{
+			// Child process
+			dup2(fd[1], STDOUT_FILENO);
+			close(fd[1]);
+			close(fd[0]);
+			ft_bin(&tmp, info);
+		}
+		else
+		{
+			// Parent process
+			dup2(fd[0], STDIN_FILENO);
+			close(fd[0]);
+			close(fd[1]);
+		}
+		num--;
+		close(fd[1]);
+		if (tmp->next && tmp->next->type == TokenTypePipe)
+			tmp = tmp->next;
+		tmp = tmp->next;
+	}
+
+	while (i > num)
+	{
+		/* close(fd[1]); */
+		close(fd[0]);
+		close(fd[1]);
+		waitpid(pid[num], &info->exit_status, 0);
+		num++;
+	}
+
+}
+
+void ft_test_executor(t_pars **pars, t_info *info)
+{
+	t_pars *tmp;
+
+	tmp = *pars;
+	
+	if (info->command_count == 0)
+		return ;
+	if (tmp->command && strncmp(tmp->command, "exit", 4) == 0)
+		exit(0);
+	else if (info->command_count == 1)
+	{
+		if (is_builtin(&tmp) == 1)
+		{
+			//printf("builtin\n");
+			//ft_builtin(tmp, info);
+		}
+		else
+		{
+			//printf("not builtin\n");
+			ft_bin(&tmp, info);
+		}
+	}
+	else
+	{
+		ft_idk(tmp, info, info->command_count);
+		//ft_bin(&tmp, info);
+	}
+}
+
+
+
+/* void ft_test_bin(t_pars **pars, t_info *info)
 {
     t_pars *tmp;
     pid_t pid;
@@ -43,10 +178,10 @@ void ft_test_bin(t_pars **pars, t_info *info)
     if (pid == 0)
     {
 		//close(tmp->fd_pipe[0]);
-/*      args[0] = "/usr/bin/ls";
-        args[1] = "/bin/";
-		args[2] = "-l";
-		args[3] = NULL; */
+    	//args[0] = "/usr/bin/ls";
+        //args[1] = "/bin/";
+		//args[2] = "-l";
+		//args[3] = NULL;
 		dup2(tmp->fd_pipe[1], STDOUT_FILENO);
 		close(tmp->fd_pipe[0]);
 		close(tmp->fd_pipe[1]);
@@ -150,4 +285,4 @@ void ft_test_executor(t_pars **pars, t_info *info)
 		info->command_count--;
 		tmp = tmp->next;
 	}
-}
+} */

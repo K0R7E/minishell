@@ -8,7 +8,7 @@ void ft_get_input(t_info *info)
 	puts("readline");
 	if (!line)
 	{
-		return  ;
+		return ;
 	}
 	if ((line && line[0] == '\0'))
 	{
@@ -68,7 +68,7 @@ int main(int argc, char **argv, char **envp)
 			continue ; */
 		ft_lexer(info, parsing);
 		ft_parsing(&pars, &parsing->lexer, info);
-		// ft_print_pars(pars);
+		ft_print_pars(pars);
 		//printf("%d\n", info->command_count);
 		ft_test_executor(&pars, info);
 		free_pars_list(pars);
