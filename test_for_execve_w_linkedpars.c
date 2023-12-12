@@ -1,4 +1,6 @@
 #include "minishell.h"
+#include <stdio.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 int is_builtin (t_pars **pars)
@@ -77,7 +79,8 @@ void ft_bin(t_pars **pars, t_info *info)
 		ft_proc_no(&exec_node, info, -1);
 }
 
-/* void ft_idk(t_pars *pars, t_info *info, int num)
+/*
+void ft_idk(t_pars *pars, t_info *info, int num)
 {
 	t_pars *tmp;
 	int fd[2];
@@ -125,7 +128,210 @@ void ft_bin(t_pars **pars, t_info *info)
 
 	printf("DEBUG_END\n");
 
-} */
+}*/
+
+void ft_idk(t_pars **input, t_info *info, int num)
+{
+	int **fd;
+	int i;
+	int j;
+	int *pids;
+    t_pars *pars;
+
+    pars = *input;
+	pids = malloc(sizeof(int) * num -1);
+	fd = malloc(sizeof(int) * num -1);
+	i=0;
+	while (i < num)
+	{
+		fd[i] = malloc(sizeof(int) * 2);
+		i++;
+	}
+	i=0;
+	while (i < num)
+	{
+		if (pipe(fd[i]) == -1)
+		{
+			perror("Error");
+			exit(0);
+		}
+		i++;
+	}
+	j = num -1;
+	while (j > 0)
+	{
+		pids[j] = fork();
+		if (pids[j] == 0)
+			break ;
+		j--;
+	}
+	i = 0;
+	if (pids[j] == 0 && j != num -1)
+	{
+		
+		printf("DEBUG_CHILD -> %d\n", j);
+		if (j > 0)
+		{
+			waitpid(pids[j -1], &info->exit_status, 0);
+			dup2(fd[j][0], STDIN_FILENO);
+		}
+		printf("DEBUG_CHILD_STARTED -> %d\n", j);
+		dup2(fd[j +1][1], STDOUT_FILENO);
+		while (i < j)
+		{
+			pars = pars->next;
+			pars = pars->next;
+			i++;
+		}
+		ft_bin(&pars, info);
+		i = j;
+		close(fd[++j -1][1]);
+		while (j < num -1)
+		{
+			close(fd[++j +1][1]);
+			close(fd[j][0]);
+		}
+		close(fd[i +1][1]);
+		close(fd[i][0]);
+		return ;
+	}
+	else if (pids[j] == 0) 
+	{
+		printf("DEBUG_CHILD_LAST -> %d\n", j);
+		if (j > 0)
+		{
+			printf("waiting for %d\n", j -1);
+			waitpid(pids[j -1], &info->exit_status, 0);
+			dup2(fd[j][0], STDIN_FILENO);
+		}
+		printf("DEBUG_CHILD_LAST_STARTED -> %d\n", j);
+		while (i < j)
+		{
+			pars = pars->next;
+			pars = pars->next;
+			i++;
+		}
+		i = j;
+		printf("hi\n");
+		return ;
+		ft_bin(&pars, info);
+		while (j < num -1)
+		{
+			close(fd[++j][1]);
+			close(fd[j][0]);
+		}
+		close(fd[i][1]);
+		close(fd[i][0]);
+		printf("DEBUG_CHILD_LAST_DONE -> %d\n", j);
+		return ;
+	}
+	else
+	{
+		while (i < num)
+		{
+			waitpid(pids[i], &info->exit_status, 0);
+			sleep(10);
+			i++;
+		}
+		while (i < num -1)
+		{
+			close(fd[++i][1]);
+			close(fd[i][0]);
+		}
+	}
+	i = 0;
+	while (i < num)
+	{
+		free(fd[i]);
+		i++;
+	}
+	free(pids);
+	free(fd);
+	
+}
+
+/*
+void ft_idk(t_pars* pars, t_info* info, int num) {
+    int fd[num - 1][2]; // Corrected the array size
+    int i;
+    int j;
+    int* pids;
+
+    pids = malloc(sizeof(int) * num);
+    i = 0;
+    while (i < num - 1) { // Corrected the loop condition
+        pipe(fd[i]);
+        i++;
+    }
+
+    j = 0;
+    while (j < num - 1) { // Corrected the loop condition
+        pids[j] = fork();
+        if (pids[j] == 0)
+            break;
+        j++;
+    }
+
+    i = 0;
+    if (pids[j] == 0 && j != num - 1) {
+        printf("DEBUG_CHILD -> %d\n", j);
+        if (j > 0) {
+            waitpid(pids[j - 1], &info->exit_status, 0);
+            dup2(fd[j][0], STDIN_FILENO);
+        }
+        printf("DEBUG_CHILD_STARTED -> %d\n", j);
+        dup2(fd[j + 1][1], STDOUT_FILENO);
+
+        // Use a different variable for loop control to avoid modifying 'i'
+        int k = 0;
+        while (k < j) {
+            pars = pars->next;
+            pars = pars->next;
+            k++;
+        }
+
+        ft_bin(&pars, info);
+
+        // Close the correct file descriptors
+        close(fd[j][1]);
+        close(fd[j][0]);
+        printf("DEBUG_CHILD_DONE -> %d\n", j);
+        return;
+    } else if (pids[j] == 0) {
+        printf("DEBUG_CHILD_LAST -> %d\n", j);
+        if (j > 0) {
+            waitpid(pids[j - 1], &info->exit_status, 0);
+            dup2(fd[j][0], STDIN_FILENO);
+        }
+        printf("DEBUG_CHILD_LAST_STARTED -> %d\n", j);
+
+        int k = 0;
+        while (k < j) {
+            pars = pars->next;
+            pars = pars->next;
+            k++;
+        }
+
+        ft_bin(&pars, info);
+
+        close(fd[j][1]);
+        close(fd[j][0]);
+        printf("DEBUG_CHILD_LAST_DONE -> %d\n", j);
+        return;
+    } else {
+        while (i < num) {
+            waitpid(pids[i], &info->exit_status, 0);
+            i++;
+        }
+        while (i < num - 1) {
+            close(fd[i][1]);
+            close(fd[i][0]);
+            i++;
+        }
+    }
+
+    free(pids); // Free the allocated memory
+}*/
 
 /* void ft_pipeline(t_pars *pars, t_info *info)
 {
@@ -135,12 +341,13 @@ void ft_bin(t_pars **pars, t_info *info)
 	
 } */
 
+
+
 void ft_test_executor(t_pars **pars, t_info *info)
 {
 	t_pars *tmp;
 
 	tmp = *pars;
-	
 	if (info->command_count == 0)
 		return ;
 	if (tmp->command && strncmp(tmp->command, "exit", 4) == 0)
@@ -160,7 +367,7 @@ void ft_test_executor(t_pars **pars, t_info *info)
 	}
 	else
 	{
-		//ft_pipeline(tmp, info, info->command_count);
+		ft_idk(&tmp, info, info->command_count);
 		//ft_bin(&tmp, info);
 	}
 }

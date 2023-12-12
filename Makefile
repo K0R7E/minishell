@@ -1,7 +1,7 @@
 
 NAME			=	minishell
 
-CC				=	cc
+CC				=	clang
 RM				=	rm -rf
 CFLAGS			=	-Wall -Wextra -Werror -g
 FLAGS			=	-lreadline 
@@ -15,7 +15,7 @@ SRCS            =	main.c \
 					ft_unset.c builtins_utils.c ft_cd.c gui.c ft_heredoc.c \
 					utils.c test_for_linkedlist_pars.c \
 					ft_executor_new.c \
-					#test_for_execve_w_linkedpars.c \
+					test_for_execve_w_linkedpars.c \
 					#parsing.c ft_executor.c
 
 
