@@ -70,6 +70,7 @@ typedef struct s_pars
 	char			*cmd_path;
 	char			*command;
 	char			**args;
+	char			**cmd_args;
 	t_lexer			*lexer;
 	char			*in_file;
 	char			*out_file;
