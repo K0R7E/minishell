@@ -1,4 +1,7 @@
+#include "libft/libft.h"
 #include "minishell.h"
+#include <stdio.h>
+#include <unistd.h>
 
 void free_pars_list(t_pars *head)
 {
@@ -26,29 +29,6 @@ void free_pars_list(t_pars *head)
         current = next;
     }
 }
-
-/* void ft_get_input(t_info *info)
-{
-	char *line;
-
-	line = readline(LIME"minishell>"OFF);
-	wait(NULL);
-	if (line == NULL)
-	{
-		rl_on_new_line();
-	}
-	else if (line[0] == '\0')
-	{
-		free(line);
-		ft_get_input(info);
-	}
-	else //(line[0] != '\0')
-		add_history(line);
-	info->input = ft_strdup(line);
-	free(line);
-	if (ft_check_input(info) == 1)
-		ft_get_input(info);	
-} */
 
 int ft_check_word_type(t_pars *pars, t_lexer *tokens, t_info *info)
 {
@@ -93,7 +73,7 @@ int is_next_args(t_pars **pars, t_lexer *tokens, t_info *info)
 {
 	(void)info;
 	(void)pars;
-	if (tokens->next != NULL && (ft_check_word_type(*pars, tokens, info) == 1))
+/* 	if (tokens->next != NULL && (ft_check_word_type(*pars, tokens, info) == 1))
 	{
 		if (((strcmp(tokens->token, "echo") == 0) && tokens->next->token[0] == '-')
 			|| ((strcmp(tokens->token, "echo") == 0) && tokens->next->token[0] != '-'))
@@ -104,14 +84,13 @@ int is_next_args(t_pars **pars, t_lexer *tokens, t_info *info)
 			return (1);
 		else
 		 	return (0);
-	}
-	else if (tokens->next != NULL && (tokens->next->type != TokenTypePipe
+	} */
+	if (tokens->next != NULL && (tokens->next->type != TokenTypePipe
 		&& tokens->next->type != TokenTypeInputRedirect && tokens->next->type != TokenTypeOutputRedirect
 		&& tokens->next->type != TokenTypeOutputAppend && tokens->next->type != TokenTypeHeredoc)) 
 		return (1);
 	return (0);
 }
-
 
 void ft_print_pars(t_pars *pars)
 {
@@ -163,7 +142,7 @@ t_pars *node_for_inputredirect(t_pars *pars, t_lexer *tmp, t_info *info)
 	node->in_file = ft_strdup(tmp->next->token);
 	node->out_file = NULL;	
 	node->fd_in = open(node->in_file, O_RDONLY);
-	node->fd_out = -1;
+	node->fd_out = 1;
 	node->fd_pipe[0] = -1;
 	node->fd_pipe[1] = -1;	
 	if (node->fd_in == -1)
@@ -189,8 +168,8 @@ t_pars *node_for_outputredirect(t_pars *pars, t_lexer *tmp, t_info *info)
 	node->type = tmp->type;
 	node->in_file = NULL;
 	node->out_file = ft_strdup(tmp->next->token);
-	node->fd_in = -1;
-	node->fd_out = open(node->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	node->fd_in = 0;
+	node->fd_out = open(node->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	node->fd_pipe[0] = -1;
 	node->fd_pipe[1] = -1;	
 	if (node->fd_out == -1)
@@ -216,8 +195,8 @@ t_pars *node_for_outputappend(t_pars *pars, t_lexer *tmp, t_info *info)
 	node->type = tmp->type;
 	node->in_file = NULL;
 	node->out_file = ft_strdup(tmp->next->token);
-	node->fd_in = -1;
-	node->fd_out = open(node->out_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	node->fd_in = 0;
+	node->fd_out = open(node->out_file, O_WRONLY | O_CREAT | O_APPEND, 0777);
 	node->fd_pipe[0] = -1;
 	node->fd_pipe[1] = -1;
 	if (node->fd_out == -1)
@@ -244,8 +223,8 @@ t_pars *node_for_pipe(t_pars *pars, t_lexer *tmp, t_info *info)
 	node->type = tmp->type;
 	node->in_file = NULL;
 	node->out_file = NULL;
-	node->fd_in = -1;
-	node->fd_out = -1;
+	node->fd_in = 0;
+	node->fd_out = 1;
 	node->fd_pipe[0] = -1;
 	node->fd_pipe[1] = -1;
 	info->command_count++;
@@ -265,8 +244,8 @@ t_pars *node_for_heredoc(t_pars *pars, t_lexer *tmp, t_info *info)
 	node->type = tmp->type;
 	node->in_file = NULL;
 	node->out_file = NULL;
-	node->fd_in = -1;
-	node->fd_out = -1;
+	node->fd_in = 0;
+	node->fd_out = 1;
 	node->fd_pipe[0] = -1;
 	node->fd_pipe[1] = -1;
 	tmp = tmp->next;
@@ -298,7 +277,7 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 	i = 1;
 	j = 0;
 	node = malloc(sizeof(t_pars));
-	printf("size to malloc:%d\n", ft_lstsize(tmp));
+	//printf("size to malloc:%d\n", ft_lstsize(tmp));
 	node->args = malloc(sizeof(char *) * (ft_lstsize(tmp) + 1));
 	if (((ft_check_word_type(pars, tmp, info) == 1) || info->val == 1)
 		|| info->val == 2 || info->val == 3)
@@ -324,10 +303,10 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 	node->type = tmp->type;
 	node->in_file = NULL;
 	node->out_file = NULL;
-	node->fd_in = -1;
-	node->fd_out = -1;
-	node->fd_pipe[0] = -1;
-	node->fd_pipe[1] = -1;	
+	node->fd_in = 0;
+	node->fd_out = 1;
+	node->fd_pipe[0] = 0;
+	node->fd_pipe[1] = 1;	
 	return(node);
 }
 
@@ -369,6 +348,17 @@ void add_pars_node(t_pars *pars, t_pars **head, t_lexer *tmp, t_info *info)
 
 }
 
+char *convert_to_cmd(char *str, t_info *info)
+{
+	(void)info;
+	if (ft_strncmp(str, "/usr/bin/", 9) == 0)
+		return (str = ft_substr(str, 9, ft_strlen(str) - 9));
+	else if (ft_strncmp(str, "/bin/", 5) == 0)
+		return (str = ft_substr(str, 5, ft_strlen(str) - 5));
+	else 
+		return (str);
+}	
+
 void ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info)
 {
 	t_lexer *tmp;
@@ -393,6 +383,7 @@ void ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info)
 		}
 		else
 		{
+			tmp->token = convert_to_cmd(tmp->token, info);
 			add_pars_node(*pars, pars, tmp, info);
 			if (tmp->next != NULL)
 			{
@@ -404,6 +395,7 @@ void ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info)
 		tmp = tmp->next;
 	}
 }
+
 /* 
 int main(int argc, char **argv, char **envp)
 {

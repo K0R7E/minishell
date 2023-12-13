@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 17:16:44 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/08 17:23:50 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/11 17:28:15 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ void	ft_env(t_info *info)
 	tmp = info->env_list;
 	while (tmp)
 	{
-		printf("%s=%s\n", tmp->var, tmp->value);
+		if (tmp->var != NULL && tmp->value != NULL && tmp->value[0] != '\0')
+			printf("%s=%s\n", tmp->var, tmp->value);
 		tmp = tmp->next;
 	}
 	i = 1;

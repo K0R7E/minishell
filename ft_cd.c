@@ -80,11 +80,51 @@ char	*convert_path(t_info *info, char *arg)
 	}
 }
 
+/*
+void	update_info(t_info *info)
+{
+	t_env *tmp;
+	char *unset;
+	
+	free(info->home);
+	free(info->pwd);
+	free(info->old_pwd);
+	tmp = info->env_list;
+	unset = strdup("000");
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->var, "HOME", 4) == 0)
+		{
+			unset[0] = '1';
+			info->home = ft_strdup(tmp->value);
+		}
+		if (ft_strncmp(tmp->var, "OLDPWD", 6) == 0)
+		{
+			unset[1] = '1';
+			info->old_pwd = ft_strdup(tmp->value);
+		}
+		if (ft_strncmp(tmp->var, "PWD", 3) == 0)
+		{
+			unset[2] = '1';
+			info->pwd = ft_strdup(tmp->value);
+		}
+		tmp = tmp->next;
+	}
+	if (unset[0] == '0')
+		info->home = ft_strdup("");
+	if (unset[1] == '0')
+		info->old_pwd = ft_strdup("");
+	if (unset[2] == '0')
+		info->pwd = ft_strdup("");
+}*/
+
 void	ft_cd(t_info *info, char **args)
 {
 	char *tmp;
-	int i;
-
+	//int i;
+	update_info(info);
+	//print args 
+	int i = 0;
 	if(args[1] == NULL || ft_strncmp(args[1], "~", 1) == 0)
 	{
 		if (chdir(info->home) == 0)
@@ -118,13 +158,14 @@ void	ft_cd(t_info *info, char **args)
 			free (tmp);
 		}
 	}
+	/*
 	i = 1;
 	while (args[i] != NULL)
 	{
 		free(args[i]);
 		i++;
 	}
-	free(args);
+	free(args);*/
 	//printf ("old_pwd:%s\n", info->old_pwd);
 	//printf ("pwd:%s\n", info->pwd);
 }
