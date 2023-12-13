@@ -2,9 +2,6 @@
 
 static void	*ft_free(char **res)
 {
-	int	i;
-
-	i = 0;
 	while (res)
 	{
 		free (res);

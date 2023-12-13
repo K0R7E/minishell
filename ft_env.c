@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 17:16:44 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/11 17:28:15 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/13 23:38:06 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ void add_element(t_info *info, char *arg)
 void	ft_env(t_info *info)
 {
 	t_env	*tmp;
-	int i;
-	i = 1;
+/* 	int i;
+	i = 1; */
 	
 	tmp = info->env_list;
 	while (tmp)
@@ -58,6 +58,6 @@ void	ft_env(t_info *info)
 			printf("%s=%s\n", tmp->var, tmp->value);
 		tmp = tmp->next;
 	}
-	i = 1;
+	/* i = 1; */
 }
 

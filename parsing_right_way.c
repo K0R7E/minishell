@@ -170,7 +170,7 @@ char **ft_add_cmd_args(char **args)
 	j = 0;
 	while(args[i])
 	{
-		printf("args[%d]: %s\n", i, args[i]);
+		//printf("args[%d]: %s\n", i, args[i]);
 		i++;
 	}
 	tmp = malloc(sizeof(char *) * (i + 1));
@@ -201,12 +201,8 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 {
 	t_pars	*node;
 	int		i;
-	int 	j;
-	int		flag;
 
 	i = 1;
-	j = 0;
-	flag = 0;
 	node = malloc(sizeof(t_pars));
 	//printf("size to malloc:%d\n", ft_lstsize(tmp));
 	node->args = malloc(sizeof(char *) * (ft_lstsize(tmp) + 1));
