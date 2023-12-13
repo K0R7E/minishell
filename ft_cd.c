@@ -124,7 +124,6 @@ void	ft_cd(t_info *info, char **args)
 	//int i;
 	update_info(info);
 	//print args 
-	int i = 0;
 	if(args[1] == NULL || ft_strncmp(args[1], "~", 1) == 0)
 	{
 		if (chdir(info->home) == 0)

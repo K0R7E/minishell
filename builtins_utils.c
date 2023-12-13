@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 12:31:30 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/13 16:11:09 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/13 18:41:21 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void add_element(t_info *info, char *arg)
 	//printf("compare: %s with %s for the first %d digits \n output: %d\n",arg, tmp->var, i -1, strlcmp_export(arg, tmp->var, i));
 	if (strlcmp_export(arg, tmp->var, i) != 0)
 	{
-		printf("%d\n", strlcmp_export(arg, tmp->var, i -1));
+		//printf("%d\n", strlcmp_export(arg, tmp->var, i -1));
 		tmp->next = malloc(sizeof(t_env));
 		tmp = tmp->next;
 		tmp->next = NULL;

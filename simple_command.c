@@ -2,19 +2,19 @@
 
 int	is_builtin(char *command)
 {
-	if (ft_strncmp(command, "echo", 5) == 0)
+	if (ft_strncmp(command, "echo", 4) == 0)
 		return (1);
-	if (ft_strncmp(command, "cd", 3) == 0)
+	if (ft_strncmp(command, "cd", 2) == 0)
 		return (1);
-	if (ft_strncmp(command, "pwd", 4) == 0)
+	if (ft_strncmp(command, "pwd", 3) == 0)
 		return (1);
-	if (ft_strncmp(command, "export", 7) == 0)
+	if (ft_strncmp(command, "export", 6) == 0)
 		return (1);
-	if (ft_strncmp(command, "unset", 6) == 0)
+	if (ft_strncmp(command, "unset", 5) == 0)
 		return (1);
-	if (ft_strncmp(command, "env", 4) == 0)
+	if (ft_strncmp(command, "env", 3) == 0)
 		return (1);
-	if (ft_strncmp(command, "exit", 5) == 0)
+	if (ft_strncmp(command, "exit", 4) == 0)
 		return (1);
 	return (0);
 }
@@ -62,13 +62,25 @@ void ft_command_execute(t_pars *node, int numsimplecommands, t_info *info)
 
 		// Create child process
 		ret=fork();
+		if (ret == -1)
+		{
+			perror("fork");
+			exit(1);
+		}
 		if(ret==0) 
 		{
-			if (is_builtin(node->command))
-				ft_builtin(node, info);
+			if (is_builtin(node->command) == 1)
+				exit(1);
 			else
 				execve(node->cmd_path, node->cmd_args, env_conversion_back(info));
 			exit(1);
+		}
+		else {
+			// Parent process
+			// Wait for child process to finish
+			waitpid(ret, 0, 0);
+			if (is_builtin(node->command) == 1)
+				ft_builtin(node, info);
 		}
 	} //  for
 
@@ -77,8 +89,5 @@ void ft_command_execute(t_pars *node, int numsimplecommands, t_info *info)
 	dup2(tmpout,1);
 	close(tmpin);
 	close(tmpout);
-
-	// Wait for last command
-	waitpid(ret, 0, 0);
 }
 
