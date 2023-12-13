@@ -11,7 +11,10 @@ void free_pars_list(t_pars *head)
 	{
 		next = current->next;
 		free(current->cmd_path);
+		printf("freeing args\n");
+		printf("current->command: %s\n", current->command);
 		free(current->command);
+		printf("freeing args\n");
 		if (current->args != NULL)
 		{
 			i = 0; // Reset i to 0
@@ -110,129 +113,6 @@ void ft_print_pars(t_pars *pars)
 	}
 }
 
-/* t_pars *node_for_inputredirect(t_pars *pars, t_lexer *tmp, t_info *info)
-{
-	t_pars *node;
-
-	(void)info;
-	(void)pars;
-	node = malloc(sizeof(t_pars));
-	node->cmd_path = NULL;
-	node->command = NULL;
-	node->other = NULL;
-	node->type = tmp->type;
-	node->in_file = ft_strdup(tmp->next->token);
-	node->out_file = NULL;	
-	node->fd_in = open(node->in_file, O_RDONLY);
-	node->fd_out = 1;
-	node->fd_pipe[0] = -1;
-	node->fd_pipe[1] = -1;	
-	if (node->fd_in == -1)
-	{
-		printf("minishell: %s: No such file or directory\n", pars->in_file);
-		info->exit_status = 1;
-		return NULL;
-	}
-	tmp = tmp->next;
-	return(node);
-} */
-
-/* t_pars *node_for_outputredirect(t_pars *pars, t_lexer *tmp, t_info *info)
-{
-	t_pars *node;
-
-	(void)info;
-	(void)pars;
-	node = malloc(sizeof(t_pars));
-	node->cmd_path = NULL;
-	node->command = NULL;
-	node->other = NULL;
-	node->type = tmp->type;
-	node->in_file = NULL;
-	node->out_file = ft_strdup(tmp->next->token);
-	node->fd_in = 0;
-	node->fd_out = open(node->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	node->fd_pipe[0] = -1;
-	node->fd_pipe[1] = -1;	
-	if (node->fd_out == -1)
-	{
-		printf("minishell: %s: No such file or directory\n", node->out_file);
-		info->exit_status = 1;
-		return NULL;
-	}
-	tmp = tmp->next;
-	return (node);
-} */
-
-/* t_pars *node_for_outputappend(t_pars *pars, t_lexer *tmp, t_info *info)
-{
-	t_pars *node;
-
-	(void)info;
-	(void)pars;
-	node = malloc(sizeof(t_pars));
-	node->cmd_path = NULL;
-	node->command = NULL;
-	node->other = NULL;
-	node->type = tmp->type;
-	node->in_file = NULL;
-	node->out_file = ft_strdup(tmp->next->token);
-	node->fd_in = 0;
-	node->fd_out = open(node->out_file, O_WRONLY | O_CREAT | O_APPEND, 0777);
-	node->fd_pipe[0] = -1;
-	node->fd_pipe[1] = -1;
-	if (node->fd_out == -1)
-	{
-		printf("minishell: %s: No such file or directory\n", node->out_file);
-		info->exit_status = 1;
-		return NULL;
-	}
-	tmp = tmp->next;
-	return(node);
-} */
-
-/* t_pars *node_for_pipe(t_pars *pars, t_lexer *tmp, t_info *info)
-{
-	t_pars *node;
-
-	(void)info;
-	(void)pars;
-	(void)tmp;
-	node = malloc(sizeof(t_pars));
-	node->cmd_path = NULL;
-	node->command = ft_strdup(tmp->token);
-	node->other = NULL;
-	node->type = tmp->type;
-	node->in_file = NULL;
-	node->out_file = NULL;
-	node->fd_in = 0;
-	node->fd_out = 1;
-	node->fd_pipe[0] = -1;
-	node->fd_pipe[1] = -1;
-	info->command_count++;
-	return(node);
-}
- */
-/* t_pars *node_for_heredoc(t_pars *pars, t_lexer *tmp, t_info *info)
-{
-	t_pars *node;
-
-	(void)info;
-	(void)pars;
-	node = malloc(sizeof(t_pars));
-	node->cmd_path = NULL;
-	node->command = ft_strdup(tmp->next->token);
-	node->other = NULL;
-	node->type = tmp->type;
-	node->in_file = NULL;
-	node->out_file = NULL;
-	node->fd_in = 0;
-	node->fd_out = 1;
-	node->fd_pipe[0] = -1;
-	node->fd_pipe[1] = -1;
-	tmp = tmp->next;
-	return(node);
-} */
 
 int ft_lstsize(t_lexer *tokens)
 {

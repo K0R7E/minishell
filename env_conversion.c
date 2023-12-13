@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 14:34:23 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/08 11:32:44 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/13 14:52:13 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,37 @@ void	env_conversion(t_info *info)
 		tmp = tmp->next;
 	}
 	*/
+}
+
+int	ft_lstsize2(t_env *lst)
+{
+	int i;
+
+	i = 0;
+	while (lst)
+	{
+		lst = lst->next;
+		i++;
+	}
+	return (i);
+}
+
+char **env_conversion_back(t_info *info)
+{
+	t_env	*tmp;
+	int		i;
+	char	**res;
+
+	i = 0;
+	tmp = info->env_list;
+	res = malloc((ft_lstsize2(tmp) + 1) * sizeof(char *));
+	while (tmp)
+	{
+		res[i] = ft_strjoin(tmp->var, "=");
+		res[i] = ft_strjoin(res[i], tmp->value);
+		tmp = tmp->next;
+		i++;
+	}
+	res[i] = NULL;
+	return (res);
 }

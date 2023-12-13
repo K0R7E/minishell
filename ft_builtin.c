@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:35:56 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/08 16:32:08 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/13 17:54:30 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,25 +102,18 @@ char **find_arguments(t_parsing *pars, int command_count, t_info *info)
 	return (input);
 }
 
-void	ft_builtin(t_parsing *pars, t_info *info)
+void	ft_builtin(t_pars *pars, t_info *info)
 {
-	if (ft_strncmp2(pars->cmd_builtin[info->builtin_command_count],  "echo", 4) == 0)
-	{
-		if (ft_strncmp2(pars->cmd_builtin[info->builtin_command_count + 1], "-n", 2) == 0)
-		{
-			info->builtin_command_count++;
-			ft_echo(1, find_arguments(pars, info->builtin_command_count, info));
-		}
-		else
-			ft_echo(0, find_arguments(pars, info->builtin_command_count, info));
-	}
-	if (ft_strncmp2(pars->cmd_builtin[info->builtin_command_count],  "export", 6) == 0)
-		ft_export(info, find_arguments(pars, info->builtin_command_count, info));
-	if (ft_strncmp2(pars->cmd_builtin[info->builtin_command_count],  "unset", 5) == 0)
-		ft_unset(info, find_arguments(pars, info->builtin_command_count, info));
-	if (ft_strncmp2(pars->cmd_builtin[info->builtin_command_count],  "env", 3) == 0)
+	if (ft_strncmp2(pars->command,  "echo", 4) == 0)
+		ft_echo(pars->args);
+	if (ft_strncmp2(pars->command,  "export", 6) == 0)
+		ft_export(info, pars->args);
+	if (ft_strncmp2(pars->command,  "unset", 5) == 0)
+		ft_unset(info, pars->args);
+	if (ft_strncmp2(pars->command,  "env", 3) == 0)
 		ft_env(info);
-	if (ft_strncmp2(pars->cmd_builtin[info->builtin_command_count],  "cd", 2) == 0)
-		ft_cd(info, find_arguments(pars, info->builtin_command_count, info));
-	info->builtin_command_count++;
+	if (ft_strncmp2(pars->command,  "cd", 2) == 0)
+		ft_cd(info, pars->args);
+	if (ft_strncmp2(pars->command,  "pwd", 3) == 0)
+		ft_pwd(info);
 }

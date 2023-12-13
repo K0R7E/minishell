@@ -37,6 +37,21 @@ void test_lexer_print(t_parsing *pars)
 	}
 }
 
+int ft_listsize(t_pars *pars)
+{
+	int i;
+	t_pars *tmp;
+
+	i = 0;
+	tmp = pars;
+	while (tmp)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	return (i);
+}
+
 
 int main(int argc, char **argv, char **envp)
 {
@@ -67,10 +82,9 @@ int main(int argc, char **argv, char **envp)
 		ft_get_input(info);
 		ft_lexer(info, parsing);
 		ft_parsing(&pars, &parsing->lexer, info);
-
 		ft_print_pars(pars);
-
-		free_pars_list(pars);
+		ft_command_execute(pars, ft_listsize(pars), info);
+		//free_pars_list(pars);
 		free(info->input);
 		info->input = NULL;
 	}

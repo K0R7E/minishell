@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 12:31:30 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/08 12:42:26 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/13 16:11:09 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void add_element(t_info *info, char *arg)
 	tmp = info->env_list;
 	while (arg[i] != '=' && arg[i] != '\0')
 		i++;
-	if (arg[i] == '\0')
-		return ;
+	//if (arg[i] == '\0')
+		//return ;
 	while (strlcmp_export(arg, tmp->var, i) != 0 && tmp->next != NULL)
 		tmp = tmp->next;
 	//printf("compare: %s with %s for the first %d digits \n output: %d\n",arg, tmp->var, i -1, strlcmp_export(arg, tmp->var, i));
@@ -52,12 +52,55 @@ void add_element(t_info *info, char *arg)
 		tmp->next = NULL;
 		tmp->printed = 0;
 		tmp->var = ft_strldup(arg, i);
-		tmp->value = ft_strdup(arg + i + 1);
+		if (arg[i] == '=')
+			tmp->value = ft_strdup(arg + i + 1);
+		else
+			tmp->value = NULL;
 	}
 	else
 	{
+		if (arg[i] != '=')
+			return;
 		free(tmp->value);
 		tmp->value = ft_strdup(arg + i + 1);
 	}
 }
 
+void	update_info(t_info *info)
+{
+	t_env *tmp;
+	char *unset;
+	
+	free(info->home);
+	//free(info->pwd);
+	//free(info->old_pwd);
+	tmp = info->env_list;
+	unset = strdup("000");
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->var, "HOME", 4) == 0)
+		{
+			unset[0] = '1';
+			info->home = ft_strdup(tmp->value);
+		}
+		/*
+		if (ft_strncmp(tmp->var, "OLDPWD", 6) == 0)
+		{
+			unset[1] = '1';
+			info->old_pwd = ft_strdup(tmp->value);
+		}
+		if (ft_strncmp(tmp->var, "PWD", 3) == 0)
+		{
+			unset[2] = '1';
+			info->pwd = ft_strdup(tmp->value);
+		}*/
+		tmp = tmp->next;
+	}
+	if (unset[0] == '0')
+		info->home = ft_strdup("");
+	/*
+	if (unset[1] == '0')
+		info->old_pwd = ft_strdup("");
+	if (unset[2] == '0')
+		info->pwd = ft_strdup("");*/
+}
