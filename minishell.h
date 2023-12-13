@@ -154,13 +154,9 @@ char	*add_char_to_str(char *str, char c);
 char *ft_strjoin2(char *str, char *add);
 
 // ft_heredoc.c
-void ft_heredoc(t_parsing *pars, t_info *info);
 
-// ft_executor.c
-//void ft_executor(t_parsing *pars, t_info *info);
-int ft_arrylen(char **pars);
-void ft_execute(char *args[], int input_fd, int output_fd);
-int ft_count_pipes(t_parsing *pars);
+// ft_simple_command.c
+void ft_command_execute(t_pars *node, int numsimplecommands, t_info *info);
 
 // ft_signals.c
 void ft_signals(void);
@@ -176,34 +172,30 @@ void	ft_close(int fd);
 
 // env conversion
 void	env_conversion(t_info *info);
+char **env_conversion_back(t_info *info);
 
 //builtin
-void	ft_builtin(t_parsing *pars, t_info *info);
+void	ft_builtin(t_pars *pars, t_info *info);
 void	ft_export(t_info *info, char **args);
 void	ft_env(t_info *info);
-void	ft_echo(int mode, char **input);
+void	ft_echo(char **input);
 void	ft_unset(t_info *info, char **args);
 void	ft_cd(t_info *info, char **args);
+void	ft_pwd(t_info *info);
+
 
 //builtin utils
 int strlcmp_export(char *str1, char *str2, int n);
 void add_element(t_info *info, char *arg);
 char *get_path(char *token, t_info *info);
+void	update_info(t_info *info);
 
 
 
-
-//FOR TESTING
-void test_lexer_print(t_parsing *pars);
-char *change_env_var(char *input,  t_info *info);
-
-
-//new linked list parser
-void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info);
+//parsing_right_way.c
 void ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info);
-void ft_print_pars(t_pars *pars);
 void free_pars_list(t_pars *head);
-void ft_test_executor(t_pars **pars, t_info *info);
+void ft_print_pars(t_pars *pars);
 
 
 #endif
