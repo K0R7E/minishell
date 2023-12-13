@@ -191,6 +191,9 @@ char *get_path(char *token, t_info *info);
 void	update_info(t_info *info);
 
 
+//executor.c
+void	ft_executor(t_pars *pars, t_info *info);
+
 
 //parsing_right_way.c
 void ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info);

@@ -52,7 +52,6 @@ int ft_listsize(t_pars *pars)
 	return (i);
 }
 
-
 int main(int argc, char **argv, char **envp)
 {
 	t_info *info;
@@ -82,8 +81,8 @@ int main(int argc, char **argv, char **envp)
 		ft_get_input(info);
 		ft_lexer(info, parsing);
 		ft_parsing(&pars, &parsing->lexer, info);
-		ft_print_pars(pars);
-		ft_command_execute(pars, ft_listsize(pars), info);
+		//ft_print_pars(pars);
+		ft_command_execute(pars, info->command_count, info);
 		//free_pars_list(pars);
 		free(info->input);
 		info->input = NULL;

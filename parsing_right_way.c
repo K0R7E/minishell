@@ -170,7 +170,7 @@ char **ft_add_cmd_args(char **args)
 	j = 0;
 	while(args[i])
 	{
-		printf("args[%d]: %s\n", i, args[i]);
+		/* printf("args[%d]: %s\n", i, args[i]); */
 		i++;
 	}
 	tmp = malloc(sizeof(char *) * (i + 1));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:35:56 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/13 17:54:30 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/13 18:04:24 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,15 +105,15 @@ char **find_arguments(t_parsing *pars, int command_count, t_info *info)
 void	ft_builtin(t_pars *pars, t_info *info)
 {
 	if (ft_strncmp2(pars->command,  "echo", 4) == 0)
-		ft_echo(pars->args);
+		ft_echo(pars->cmd_args);
 	if (ft_strncmp2(pars->command,  "export", 6) == 0)
-		ft_export(info, pars->args);
+		ft_export(info, pars->cmd_args);
 	if (ft_strncmp2(pars->command,  "unset", 5) == 0)
-		ft_unset(info, pars->args);
+		ft_unset(info, pars->cmd_args);
 	if (ft_strncmp2(pars->command,  "env", 3) == 0)
 		ft_env(info);
 	if (ft_strncmp2(pars->command,  "cd", 2) == 0)
-		ft_cd(info, pars->args);
+		ft_cd(info, pars->cmd_args);
 	if (ft_strncmp2(pars->command,  "pwd", 3) == 0)
 		ft_pwd(info);
 }
