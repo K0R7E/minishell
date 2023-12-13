@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include <stdio.h>
 
 void free_pars_list(t_pars *head)
 {
@@ -11,10 +12,17 @@ void free_pars_list(t_pars *head)
 	{
 		next = current->next;
 		free(current->cmd_path);
-		printf("freeing args\n");
-		printf("current->command: %s\n", current->command);
 		free(current->command);
-		printf("freeing args\n");
+		if (current->cmd_args != NULL)
+		{
+			i = 0; // Reset i to 0
+			while (current->cmd_args[i])
+			{
+				free(current->cmd_args[i]);
+				i++;
+			}
+		}
+		free(current->cmd_args);
 		if (current->args != NULL)
 		{
 			i = 0; // Reset i to 0
@@ -85,6 +93,7 @@ void ft_print_pars(t_pars *pars)
 {
 	int i = 0;
 	int j = 0;
+	int k = 0;
 
 	while (pars != NULL)
 	{
@@ -96,6 +105,17 @@ void ft_print_pars(t_pars *pars)
 		printf("Out_file: %s\n", pars->out_file);
 		printf("Cmd_path: %s\n", pars->cmd_path);
 		printf("Command: %s\n", pars->command);
+		printf("cmd_args: ");
+		if (pars->cmd_args != NULL)
+		{
+			k = 0;
+			while (pars->cmd_args[k])
+			{
+				printf("%s ", pars->cmd_args[k]);
+				k++;
+			}
+		}
+		printf("\n");
 		printf("Args: ");
 		if (pars->args != NULL)
 		{
@@ -128,14 +148,65 @@ int ft_lstsize(t_lexer *tokens)
 	return (count);
 }
 
+int ft_can_be_cmd_args(t_lexer *lexer)
+{
+	t_lexer *tmp;
+
+	tmp = lexer;
+	if (tmp->type == TokenTypeInputRedirect || tmp->type == TokenTypeOutputRedirect
+		|| tmp->type == TokenTypeOutputAppend || tmp->type == TokenTypeHeredoc)
+		return (0);
+	return (1);
+
+}
+
+char **ft_add_cmd_args(char **args)
+{
+	int i;
+	int j;
+	char **tmp;
+
+	i = 0;
+	j = 0;
+	while(args[i])
+	{
+		printf("args[%d]: %s\n", i, args[i]);
+		i++;
+	}
+	tmp = malloc(sizeof(char *) * (i + 1));
+	i = 0;
+	while (args[i])
+	{
+		if (args[i] == NULL)
+			break ;
+		if (args[i] && (ft_strncmp(args[i], ">>", 2) == 0 || ft_strncmp(args[i], "<<", 2) == 0
+			|| ft_strncmp(args[i], ">", 1) == 0 || ft_strncmp(args[i], "<", 1) == 0))
+		{
+			i += 2;
+			if (args[i] == NULL)
+				break ;
+		}
+		else
+		{
+			tmp[j] = ft_strdup(args[i]);
+			i++;
+			j++;
+		}
+	}
+	tmp[j] = NULL;
+	return (tmp);
+}
+
 t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 {
 	t_pars	*node;
 	int		i;
-	int 	j;	
+	int 	j;
+	int		flag;
 
 	i = 1;
 	j = 0;
+	flag = 0;
 	node = malloc(sizeof(t_pars));
 	//printf("size to malloc:%d\n", ft_lstsize(tmp));
 	node->args = malloc(sizeof(char *) * (ft_lstsize(tmp) + 1));
@@ -149,14 +220,15 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 	{
 		node->command = ft_strdup(tmp->token);
 		node->cmd_path = get_path_new(pars, tmp, tmp->token, info);
-	}
-	node->args[0] = ft_strdup(tmp->token);
-	while (is_next_args(tmp) == 1)
-	{
-		node->args[i++] = ft_strdup(tmp->next->token);
-		tmp = tmp->next;
+		node->args[0] = ft_strdup(tmp->token);
+		while (is_next_args(tmp) == 1)
+		{
+			node->args[i++] = ft_strdup(tmp->next->token);
+			tmp = tmp->next;
+		}
 	}
 	node->args[i] = NULL;
+	node->cmd_args = ft_add_cmd_args(node->args);
 	node->in_file = NULL;
 	node->out_file = NULL;
 	node->fd_in = 0;
