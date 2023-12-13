@@ -69,15 +69,12 @@ typedef struct s_pars
 {
 	char			*cmd_path;
 	char			*command;
-	char			*other;
 	char			**args;
-	int				type;
 	t_lexer			*lexer;
 	char			*in_file;
 	char			*out_file;
 	int				fd_in;
 	int				fd_out;
-	int				fd_pipe[2];
 	struct s_pars	*next;
 }	t_pars;
 

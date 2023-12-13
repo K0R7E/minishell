@@ -12,11 +12,9 @@ SRCS            =	main.c \
 					change_env_var_utils.c input_check.c ft_signals.c \
 					env_conversion.c ft_export.c \
 					ft_env.c ft_builtin.c ft_echo.c\
-					ft_unset.c builtins_utils.c ft_cd.c gui.c ft_heredoc.c \
-					utils.c test_for_linkedlist_pars.c \
-					ft_executor_new.c \
-					#test_for_execve_w_linkedpars.c \
-					#parsing.c ft_executor.c
+					ft_unset.c builtins_utils.c ft_cd.c gui.c \
+					utils.c parsing_right_way.c\
+
 
 
 OBJ_DIR				=	obj

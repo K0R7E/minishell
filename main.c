@@ -67,52 +67,15 @@ int main(int argc, char **argv, char **envp)
 		ft_get_input(info);
 		ft_lexer(info, parsing);
 		ft_parsing(&pars, &parsing->lexer, info);
-		//test_lexer_print(pars);
-		//ft_print_pars(pars);
-		//ft_test_executor(&pars, info);
-		ft_executor_pars(pars, info);
+
+		ft_print_pars(pars);
+
 		free_pars_list(pars);
 		free(info->input);
 		info->input = NULL;
 	}
 	return (0);
 }
-
-/* int main(int argc, char **argv, char **envp)
-{
-	t_info *info;
-	t_parsing *parsing;
-	t_pars *pars;
-
-	info = malloc(sizeof(t_info));
-	parsing = malloc(sizeof(t_parsing));
-	if (argc != 1 || argv[1])
-	{
-		printf("Please do not add parameters\n");
-		return (1);
-	}
-	info->env = ft_arrycpy(envp);
-	env_conversion(info);
-	get_pwd(info);
-	//ft_print_minishell_gui();
-	printf("\033[2J\033[1;1H");
- 	while (1)
-	{
-		pars = malloc(sizeof(t_pars));
-		pars = NULL;
-		ft_signals();
-		info->builtin_command_count = 0;
-		ft_get_input(info);
-		ft_lexer(info, parsing);
-		ft_parsing((t_pars **)pars, &parsing->lexer, info);
-		//ft_parser(&pars->lexer, pars, info);
-		//printf("-----------------------------------------------------------------------------\n");
-		//test_lexer_print(pars);
-		ft_print_pars((t_pars *)pars);
-		//ft_executor(pars, info);
-	}
-	return (0);
-} */
 
 /*
 
