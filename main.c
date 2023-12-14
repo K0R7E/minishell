@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include <readline/readline.h>
 
 void ft_get_input(t_info *info)
 {
@@ -72,6 +71,10 @@ int main(int argc, char **argv, char **envp)
 	env_conversion(info);
 	get_pwd(info);
 	info->exit_status = 0;
+	g_global.stop = 0;
+	g_global.in_cmd = 0;
+	g_global.in_hd = 0;
+	init_signals();
 	//ft_print_minishell_gui();
 	printf("\033[2J\033[1;1H");
 	pars = malloc(sizeof(t_pars));
@@ -84,6 +87,7 @@ int main(int argc, char **argv, char **envp)
 		if (!info->input)
 			continue ;
 		ft_lexer(info, parsing);
+
 		ft_parsing(&pars, &parsing->lexer, info);
 		info->command_count = ft_listsize(pars);
 		//ft_print_pars(pars);

@@ -337,8 +337,8 @@ void ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 		printf("minishell: %s: No such file or directory\n", ".tmp");
 		info->exit_status = 1;
 		return ;
-	}
-	while (1)
+	}	
+	while (!g_global.stop)
 	{
 		line = readline("> ");
 		if (ft_strncmp(line, pars->args[i + 1], ft_strlen(pars->args[i + 1])) == 0)
@@ -348,6 +348,8 @@ void ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 		free(line);
 		free(str);
 	}
+	if (g_global.stop || !line)
+		return ;
 	close(fd);
 	if (i == count)
 	{
@@ -388,7 +390,12 @@ void ft_redir(t_pars *pars, t_info *info)
 			if (ft_strncmp(tmp->args[i], ">>", 2) == 0)
 				ft_redir_output_app(tmp, info, i, ft_check_num(tmp->args, ">>"));
 			else if (ft_strncmp(tmp->args[i], "<<", 2) == 0)
+			{
+				g_global.stop = 0;
+				g_global.in_hd = 1;
 				ft_redir_heredoc(tmp, info, i, ft_check_num(tmp->args, "<<"));
+				g_global.in_hd = 0;
+			}
 			else if (ft_strncmp(tmp->args[i], "<", 1) == 0)
 				ft_redir_input(tmp, info, i, ft_check_num(tmp->args, "<"));
 			else if (ft_strncmp(tmp->args[i], ">", 1)	== 0)	

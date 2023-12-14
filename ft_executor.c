@@ -114,10 +114,12 @@ void ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 
 void ft_executor(t_pars *pars, t_info *info)
 {
+	signal(SIGQUIT, sigquit_handler);
     t_pars *tmp;
     int fd[2], fd_in = 0, fd_out = 1;
  
     tmp = pars;
+	g_global.in_cmd = 1;
     while(tmp)
     {
         pipe(fd);
@@ -135,5 +137,6 @@ void ft_executor(t_pars *pars, t_info *info)
         fd_in = fd[0];
         tmp = tmp->next;
     }
+	g_global.in_cmd = 0;
 }
 

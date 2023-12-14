@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 12:15:15 by akortvel          #+#    #+#             */
-/*   Updated: 2023/12/13 16:22:30 by akortvel         ###   ########.fr       */
+/*   Updated: 2023/12/14 18:13:58 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char	*ft_strdup(const char *s)
 	i = 0;
 	dups = (char *)malloc((ft_strlen(s) +1) * sizeof(*s));
 	if (dups == 0)
+		return (0);
+	if(!s)
 		return (0);
 	while (s[i] != '\0')
 	{

@@ -72,6 +72,7 @@ typedef struct s_pars
 	char			**args;
 	char			**cmd_args;
 	t_lexer			*lexer;
+	char			*hd_delim;
 	char			*in_file;
 	char			*out_file;
 	int				fd_in;
@@ -123,6 +124,20 @@ typedef struct s_info
 	t_lexer	lexer_save;
 	int		builtin_command_count;
 }	t_info;
+
+typedef struct s_global
+{
+	int	error;
+	int	stop;
+	int	in_cmd;
+	int	in_hd;
+}	t_global;
+
+extern t_global	g_global;
+
+void	sigint_handler(int sig);
+void	sigquit_handler(int sig);
+void	init_signals(void);
 
 void ft_executor_pars(t_pars *pars, t_info *info);
 void ft_executor(t_pars *pars, t_info *info);
