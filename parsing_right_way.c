@@ -206,7 +206,7 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 	node = malloc(sizeof(t_pars));
 	//printf("size to malloc:%d\n", ft_lstsize(tmp));
 	node->args = malloc(sizeof(char *) * (ft_lstsize(tmp) + 1));
-	if (tmp->type == TokenTypeHeredoc || tmp->type == TokenTypeOutputRedirect
+/* 	if (tmp->type == TokenTypeHeredoc || tmp->type == TokenTypeOutputRedirect
 		|| tmp->type == TokenTypeOutputAppend || tmp->type == TokenTypeInputRedirect)
 	{
 		node->command = NULL;
@@ -214,14 +214,14 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 	}
 	else
 	{
-		node->command = ft_strdup(tmp->token);
-		node->cmd_path = get_path_new(pars, tmp, tmp->token, info);
-		node->args[0] = ft_strdup(tmp->token);
-		while (is_next_args(tmp) == 1)
-		{
-			node->args[i++] = ft_strdup(tmp->next->token);
-			tmp = tmp->next;
-		}
+	} */
+	node->command = ft_strdup(tmp->token);
+	node->cmd_path = get_path_new(pars, tmp, tmp->token, info);
+	node->args[0] = ft_strdup(tmp->token);
+	while (is_next_args(tmp) == 1)
+	{
+		node->args[i++] = ft_strdup(tmp->next->token);
+		tmp = tmp->next;
 	}
 	node->args[i] = NULL;
 	node->cmd_args = ft_add_cmd_args(node->args);
