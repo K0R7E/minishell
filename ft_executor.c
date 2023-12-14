@@ -1,5 +1,25 @@
 #include "minishell.h"
 
+
+int	is_builtin_a(char *command)
+{
+	if (ft_strncmp(command, "echo", 5) == 0)
+		return (1);
+	if (ft_strncmp(command, "cd", 3) == 0)
+		return (1);
+	if (ft_strncmp(command, "pwd", 4) == 0)
+		return (1);
+	if (ft_strncmp(command, "export", 7) == 0)
+		return (1);
+	if (ft_strncmp(command, "unset", 6) == 0)
+		return (1);
+	if (ft_strncmp(command, "env", 4) == 0)
+		return (1);
+	if (ft_strncmp(command, "exit", 5) == 0)
+		return (1);
+	return (0);
+}
+
 void ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 {
     pid_t pid;
@@ -40,7 +60,10 @@ void ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
             dup2(file_fd, STDIN_FILENO);
             close(file_fd);
         }
-        if (execve(tmp->cmd_path, tmp->cmd_args, env_conversion_back(info)) == -1)
+		if (is_builtin_a(tmp->command))
+		{
+			ft_builtin(tmp, info);
+		} else if (execve(tmp->cmd_path, tmp->cmd_args, env_conversion_back(info)) == -1)
         {
             ft_putstr_fd("Error: command not found: ", STDERR_FILENO);
             ft_putendl_fd(tmp->command, STDERR_FILENO);
