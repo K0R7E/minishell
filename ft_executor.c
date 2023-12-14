@@ -70,18 +70,18 @@ void ft_executor(t_pars *pars, t_info *info)
     while(tmp)
     {
         pipe(fd);
-        if (tmp->next == NULL) // if this is the last command
+        if (tmp->next == NULL)
         {
-            fd_out = 1; // open a file to write the output
+            fd_out = 1;
         }
         else
         {
-            fd_out = fd[1]; // write to the pipe
+            fd_out = fd[1];
         }
         ft_fork(tmp, info, fd_in, fd_out);
         close(fd[1]);
         if (fd_in != 0) close(fd_in);
-        fd_in = fd[0]; // next child will read from here
+        fd_in = fd[0];
         tmp = tmp->next;
     }
 }
