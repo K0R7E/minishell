@@ -200,31 +200,46 @@ char **ft_add_cmd_args(char **args)
 t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 {
 	t_pars	*node;
+	t_lexer	*tmp1;
 	int		i;
 
 	i = 1;
+	tmp1 = tmp;
 	node = malloc(sizeof(t_pars));
 	//printf("size to malloc:%d\n", ft_lstsize(tmp));
 	node->args = malloc(sizeof(char *) * (ft_lstsize(tmp) + 1));
-/* 	if (tmp->type == TokenTypeHeredoc || tmp->type == TokenTypeOutputRedirect
+	if ((tmp->type == TokenTypeHeredoc || tmp->type == TokenTypeOutputRedirect
 		|| tmp->type == TokenTypeOutputAppend || tmp->type == TokenTypeInputRedirect)
+		&& tmp->next && tmp->next->next)
 	{
-		node->command = NULL;
-		node->cmd_path = NULL;
+		if (tmp->next)
+			tmp = tmp->next;
+		if (tmp->next)
+			tmp = tmp->next;
+		node->command = ft_strdup(tmp->token);
+		node->cmd_path = get_path_new(pars, tmp, tmp->token, info);
+		node->args[0] = ft_strdup(tmp1->token);
+		while (is_next_args(tmp1) == 1)
+		{
+			node->args[i++] = ft_strdup(tmp1->next->token);
+			tmp1 = tmp1->next;
+			}
+		node->args[i] = NULL;
+		node->cmd_args = ft_add_cmd_args(node->args);
 	}
 	else
 	{
-	} */
-	node->command = ft_strdup(tmp->token);
-	node->cmd_path = get_path_new(pars, tmp, tmp->token, info);
-	node->args[0] = ft_strdup(tmp->token);
-	while (is_next_args(tmp) == 1)
-	{
-		node->args[i++] = ft_strdup(tmp->next->token);
-		tmp = tmp->next;
+		node->command = ft_strdup(tmp->token);
+		node->cmd_path = get_path_new(pars, tmp, tmp->token, info);
+		node->args[0] = ft_strdup(tmp->token);
+		while (is_next_args(tmp) == 1)
+		{
+			node->args[i++] = ft_strdup(tmp->next->token);
+			tmp = tmp->next;
+			}
+		node->args[i] = NULL;
+		node->cmd_args = ft_add_cmd_args(node->args);
 	}
-	node->args[i] = NULL;
-	node->cmd_args = ft_add_cmd_args(node->args);
 	node->in_file = NULL;
 	node->out_file = NULL;
 	node->fd_in = 0;
