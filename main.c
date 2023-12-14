@@ -72,6 +72,7 @@ int main(int argc, char **argv, char **envp)
 	env_conversion(info);
 	get_pwd(info);
 	info->exit_status = 0;
+	//ft_print_minishell_gui();
 	printf("\033[2J\033[1;1H");
 	pars = malloc(sizeof(t_pars));
  	while (1)
@@ -80,10 +81,14 @@ int main(int argc, char **argv, char **envp)
 		info->command_count = 1;
 		info->builtin_command_count = 0;
 		ft_get_input(info);
+		if (!info->input)
+			continue ;
 		ft_lexer(info, parsing);
 		ft_parsing(&pars, &parsing->lexer, info);
-		ft_print_pars(pars);
-		ft_command_execute(pars, ft_listsize(pars), info);
+		info->command_count = ft_listsize(pars);
+		//ft_print_pars(pars);
+		ft_executor(pars, info);
+		//ft_command_execute(pars, ft_listsize(pars), info);
 		//free_pars_list(pars);
 		free(info->input);
 		info->input = NULL;

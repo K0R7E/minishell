@@ -31,7 +31,7 @@ void ft_command_execute(t_pars *node, int numsimplecommands, t_info *info)
 
 	if (node->in_file)
 		fdin = node->fd_in;
-	else 
+	else
 		fdin = dup(tmpin);
 	for(i = 0; i < numsimplecommands; i++)
 	{
