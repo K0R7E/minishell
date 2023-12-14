@@ -85,6 +85,7 @@ int main(int argc, char **argv, char **envp)
 			continue ;
 		ft_lexer(info, parsing);
 		ft_parsing(&pars, &parsing->lexer, info);
+		info->command_count = ft_listsize(pars);
 		//ft_print_pars(pars);
 		ft_executor(pars, info);
 		//ft_command_execute(pars, ft_listsize(pars), info);

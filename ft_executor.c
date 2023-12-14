@@ -1,19 +1,41 @@
 #include "minishell.h"
 
-
-int	is_builtin_a(char *command)
+int	is_builtin_1(char *command)
 {
 	if (ft_strncmp(command, "echo", 5) == 0)
 		return (1);
-	if (ft_strncmp(command, "cd", 3) == 0)
-		return (1);
+
 	if (ft_strncmp(command, "pwd", 4) == 0)
 		return (1);
+
+	if (ft_strncmp(command, "env", 4) == 0)
+		return (1);
+/* 	if (ft_strncmp(command, "export", 7) == 0)
+		return (1);
+	if (ft_strncmp(command, "unset", 6) == 0)
+		return (1);
+	if (ft_strncmp(command, "cd", 3) == 0)
+		return (1);
+	if (ft_strncmp(command, "exit", 5) == 0)
+		return (1);*/
+	return (0);
+}
+
+int	is_builtin_2(char *command)
+{
+/* 	if (ft_strncmp(command, "echo", 5) == 0)
+		return (1);
+
+	if (ft_strncmp(command, "pwd", 4) == 0)
+		return (1);
+
+	if (ft_strncmp(command, "env", 4) == 0)
+		return (1); */
 	if (ft_strncmp(command, "export", 7) == 0)
 		return (1);
 	if (ft_strncmp(command, "unset", 6) == 0)
 		return (1);
-	if (ft_strncmp(command, "env", 4) == 0)
+	if (ft_strncmp(command, "cd", 3) == 0)
 		return (1);
 	if (ft_strncmp(command, "exit", 5) == 0)
 		return (1);
@@ -60,10 +82,13 @@ void ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
             dup2(file_fd, STDIN_FILENO);
             close(file_fd);
         }
-		if (is_builtin_a(tmp->command))
-		{
+		if (is_builtin_1(tmp->command))
 			ft_builtin(tmp, info);
-		} else if (execve(tmp->cmd_path, tmp->cmd_args, env_conversion_back(info)) == -1)
+		else if (strcmp(tmp->command, "export") == 0 && tmp->cmd_args[1] == NULL)
+			ft_builtin(tmp, info);
+		else if (is_builtin_2(tmp->command))
+			exit(EXIT_SUCCESS);
+		else if (execve(tmp->cmd_path, tmp->cmd_args, env_conversion_back(info)) == -1)
         {
             ft_putstr_fd("Error: command not found: ", STDERR_FILENO);
             ft_putendl_fd(tmp->command, STDERR_FILENO);
@@ -79,6 +104,9 @@ void ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
     else
     {
         waitpid(pid, &status, 0);
+		//printf("command_count:%d\n", info->command_count);
+		if (is_builtin_2(tmp->command) && info->command_count == 1)
+			ft_builtin(tmp, info);
         if (fd_in != 0) close(fd_in);
         if (fd_out != 1) close(fd_out);
     }
@@ -88,7 +116,7 @@ void ft_executor(t_pars *pars, t_info *info)
 {
     t_pars *tmp;
     int fd[2], fd_in = 0, fd_out = 1;
-
+ 
     tmp = pars;
     while(tmp)
     {
