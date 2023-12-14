@@ -241,6 +241,7 @@ void add_pars_node(t_pars *pars, t_pars **head, t_lexer *tmp, t_info *info)
 
 	new_node = node_for_word(pars, tmp, info);
 	new_node->next = NULL;
+	new_node->prev = NULL;
 
 	if (*head == NULL)
 	{
@@ -252,6 +253,7 @@ void add_pars_node(t_pars *pars, t_pars **head, t_lexer *tmp, t_info *info)
 		last_node = last_node->next;
 	}
 	last_node->next = new_node;
+	new_node->prev = last_node;
 
 }
 

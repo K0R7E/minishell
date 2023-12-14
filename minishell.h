@@ -77,6 +77,7 @@ typedef struct s_pars
 	int				fd_in;
 	int				fd_out;
 	struct s_pars	*next;
+	struct s_pars	*prev;
 }	t_pars;
 
 typedef struct s_parsing
@@ -124,7 +125,8 @@ typedef struct s_info
 }	t_info;
 
 void ft_executor_pars(t_pars *pars, t_info *info);
-
+void ft_executor(t_pars *pars, t_info *info);
+int ft_listsize(t_pars *pars);
 
 // main.c
 void ft_get_input(t_info *info);
