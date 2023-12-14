@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 18:52:19 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/07 18:37:26 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/14 19:14:32 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,8 @@ void	ft_lexer(t_info *info, t_parsing *list) //input str; env var
 	pos->i = 0;
 	pos->command_number = 1;
 	pos->hedoc = 0;
+	info->input = replace_dollar(info->input, info);
+	printf("input: %s\n", info->input);
 	while (info->input[pos->i] != '\0')
 	{
 		if (info->input[pos->i] == ' ' || info->input[pos->i] == '\t')
