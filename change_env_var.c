@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 13:40:04 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/14 19:44:36 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/15 15:07:37 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,29 +119,31 @@ int	hedoc_length(t_info *info, int i)
 char *replace_dollar(char *input,  t_info *info)
 {
 	int i;
-	int state;
+	int stateDouble;
+	int stateSingle;
 	char *res = NULL;
 	int j;
 
 	i = 0;
-	state = 0;
+	stateDouble = 0;
+	stateSingle = 0;
 	while (input[i] != '\0')
 	{
-		if (input[i] == '\'')
+		if (input[i] == '\'' &&  stateDouble == 0)
 		{
-			if (state == 0)
-				state = 1;
-			else if (state == 1)
-				state = 0;
+			if (stateSingle == 0)
+				stateSingle = 1;
+			else if (stateSingle == 1)
+				stateSingle = 0;
 		}
-		if (input[i] == '\"')
+		if (input[i] == '\"' &&  stateSingle == 0)
 		{
-			if (state == 0)
-				state = 2;
-			else if (state == 2)
-				state = 0;
+			if (stateDouble == 0)
+				stateDouble = 2;
+			else if (stateDouble == 2)
+				stateDouble = 0;
 		}
-		if (input[i] == '<' && input[i + 1] == '<' && state == 0)
+		if (input[i] == '<' && input[i + 1] == '<' && stateSingle == 0 && stateDouble == 0)
 		{
 			res = add_char_to_str(res, input[i++]);
 			res = add_char_to_str(res, input[i++]);
@@ -150,7 +152,7 @@ char *replace_dollar(char *input,  t_info *info)
 			if (input[i] == '\0')
 				break;
 		}
-		if (input[i] == '$' && (state == 0 || state == 2))
+		if (input[i] == '$' && (stateSingle == 0))
 		{
 			j = give_env_variable_pos(input, i, info, 0);
 			if (j != -1)

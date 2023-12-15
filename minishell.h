@@ -119,6 +119,7 @@ typedef struct s_info
 	int		val;
 	int		command_count;
 	int		exit_status;
+	int		exit_code;
 	int 	*pid;
 	t_lexer	lexer_save;
 	int		builtin_command_count;
@@ -184,6 +185,7 @@ void	ft_echo(char **input);
 void	ft_unset(t_info *info, char **args);
 void	ft_cd(t_info *info, char **args);
 void	ft_pwd(t_info *info);
+void	ft_exit(t_info *info, char **input);
 
 
 //builtin utils
