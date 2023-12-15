@@ -31,8 +31,8 @@ int	is_builtin_2(char *command)
 
 	if (ft_strncmp(command, "env", 4) == 0)
 		return (1); */
-	if (ft_strncmp(command, "export", 7) == 0)
-		return (1);
+/* 	if (ft_strncmp(command, "export", 7) == 0)
+		return (1); */
 	if (ft_strncmp(command, "unset", 6) == 0)
 		return (1);
 	if (ft_strncmp(command, "cd", 3) == 0)
@@ -86,7 +86,7 @@ void ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 			ft_builtin(tmp, info);
 		else if (strcmp(tmp->command, "export") == 0 && tmp->cmd_args[1] == NULL)
 			ft_builtin(tmp, info);
-		else if (is_builtin_2(tmp->command))
+		else if (is_builtin_2(tmp->command) || (strcmp(tmp->command, "export") == 0 && tmp->cmd_args[1] != NULL))
 			exit(EXIT_SUCCESS);
 		else if (execve(tmp->cmd_path, tmp->cmd_args, env_conversion_back(info)) == -1)
         {
@@ -102,10 +102,10 @@ void ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
         exit(EXIT_FAILURE);
     }
     else
-    {
-        waitpid(pid, &status, 0);
+    {   
+		waitpid(pid, &status, 0);
 		//printf("command_count:%d\n", info->command_count);
-		if (is_builtin_2(tmp->command) && info->command_count == 1)
+		if (info->command_count == 1 && ((strcmp(tmp->command, "export") == 0 && tmp->cmd_args[1] != NULL) || is_builtin_2(tmp->command)))
 			ft_builtin(tmp, info);
         if (fd_in != 0) close(fd_in);
         if (fd_out != 1) close(fd_out);

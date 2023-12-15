@@ -128,7 +128,7 @@ typedef struct s_info
 typedef struct s_global
 {
 	int	error;
-	int	stop;
+	int	stop_hd;
 	int	in_cmd;
 	int	in_hd;
 }	t_global;
@@ -213,6 +213,10 @@ void	update_info(t_info *info);
 void ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info);
 void free_pars_list(t_pars *head);
 void ft_print_pars(t_pars *pars);
+
+//utils_quotes.c
+char *double_quotes(char *str);
+char *single_quotes(char *str);
 
 
 #endif

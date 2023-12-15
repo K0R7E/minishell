@@ -227,6 +227,20 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 		node->args[i] = NULL;
 		node->cmd_args = ft_add_cmd_args(node->args);
 	}
+	else if ((tmp->type == TokenTypeHeredoc || tmp->type == TokenTypeOutputRedirect
+		|| tmp->type == TokenTypeOutputAppend || tmp->type == TokenTypeInputRedirect))
+	{
+		node->command = NULL;
+		node->cmd_path = NULL;
+		node->args[0] = ft_strdup(tmp1->token);
+		while (is_next_args(tmp1) == 1)
+		{
+			node->args[i++] = ft_strdup(tmp1->next->token);
+			tmp1 = tmp1->next;
+			}
+		node->args[i] = NULL;
+		node->cmd_args = ft_add_cmd_args(node->args);
+	}
 	else
 	{
 		node->command = ft_strdup(tmp->token);
@@ -337,8 +351,9 @@ void ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 		printf("minishell: %s: No such file or directory\n", ".tmp");
 		info->exit_status = 1;
 		return ;
-	}	
-	while (!g_global.stop)
+	}
+	g_global.in_hd = 1;
+	while (!g_global.stop_hd)
 	{
 		line = readline("> ");
 		if (ft_strncmp(line, pars->args[i + 1], ft_strlen(pars->args[i + 1])) == 0)
@@ -346,11 +361,11 @@ void ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 		str = ft_strjoin(line, "\n");
 		write(fd, str, ft_strlen(str));
 		free(line);
-		free(str);
+		free(str);	
 	}
-	if (g_global.stop || !line)
-		return ;
 	close(fd);
+	if (g_global.stop_hd || !line)
+		return ;
 	if (i == count)
 	{
 		pars->fd_in = open("/tmp/temp8726343", O_RDONLY);
@@ -390,9 +405,8 @@ void ft_redir(t_pars *pars, t_info *info)
 			if (ft_strncmp(tmp->args[i], ">>", 2) == 0)
 				ft_redir_output_app(tmp, info, i, ft_check_num(tmp->args, ">>"));
 			else if (ft_strncmp(tmp->args[i], "<<", 2) == 0)
-			{
-				g_global.stop = 0;
-				g_global.in_hd = 1;
+			{	
+				g_global.stop_hd = 0;	
 				ft_redir_heredoc(tmp, info, i, ft_check_num(tmp->args, "<<"));
 				g_global.in_hd = 0;
 			}

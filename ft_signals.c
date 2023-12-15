@@ -1,22 +1,34 @@
+#include "libft/libft.h"
 #include "minishell.h"
 
 t_global g_global;
 
 void sigint_handler(int sig)
 {
-	(void) sig;
-	if (!g_global.in_hd)
-		ft_putstr_fd("\n", STDERR_FILENO);
-	if (g_global.in_cmd)
+    (void)sig;
+    if (!g_global.in_hd)
+    {
+        ft_putstr_fd("\n", STDERR_FILENO);
+    }
+    if (g_global.in_cmd)
+    {
+        rl_replace_line("", 0);
+        rl_redisplay();
+        return;
+    }
+    else if (g_global.in_hd)
+    {
+        g_global.stop_hd = 1; // Set a flag to indicate heredoc termination
+        rl_replace_line("", 0);
+        rl_redisplay();
+        return;
+    }
+	else
 	{
-		g_global.stop = 1;
+		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-		return ;
 	}
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
 }
 
 void sigquit_handler(int sig)
