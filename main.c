@@ -71,7 +71,7 @@ int main(int argc, char **argv, char **envp)
 	env_conversion(info);
 	get_pwd(info);
 	info->exit_status = 0;
-	g_global.stop = 0;
+	g_global.stop_hd = 0;
 	g_global.in_cmd = 0;
 	g_global.in_hd = 0;
 	init_signals();
