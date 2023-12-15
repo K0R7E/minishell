@@ -160,6 +160,29 @@ int ft_can_be_cmd_args(t_lexer *lexer)
 
 }
 
+/* char **check_afterdollar(char **args)
+{
+	int i;
+
+	i = 1;
+	while (args[i])
+	{
+		if (ft_strncmp(args[i], "echo", 4) == 0)
+		{
+			i++;
+			if ((args[i][0] == '"' && args[i][ft_strlen(args[i]) - 1] == '"')
+				|| (args[i][0] == '\'' && args[i][ft_strlen(args[i]) - 1] == '\''))
+			return (args);
+			else if (args[i][0] == '$')
+			{
+				//args[i] = after_dollar(args[i], NULL);
+			}
+		}
+		i++;
+	}
+	return (args);
+} */
+
 char **ft_add_cmd_args(char **args)
 {
 	int i;
@@ -194,6 +217,7 @@ char **ft_add_cmd_args(char **args)
 		}
 	}
 	tmp[j] = NULL;
+	/* tmp = check_afterdollar(tmp); */
 	return (tmp);
 }
 

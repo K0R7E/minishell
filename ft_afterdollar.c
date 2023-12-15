@@ -86,7 +86,6 @@ char *after_dollar(char *str, t_info *info)
 		}
 		else if (str[i] == ';')
 		{
-			//
 			str = ft_strcpy(str, "$");
 		}
 		else if (str[i] == '@')
