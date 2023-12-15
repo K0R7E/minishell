@@ -187,6 +187,8 @@ void	ft_cd(t_info *info, char **args);
 void	ft_pwd(t_info *info);
 void	ft_exit(t_info *info, char **input);
 
+//ft_check_input.c
+int	ft_check_input(t_info *info);
 
 //builtin utils
 int strlcmp_export(char *str1, char *str2, int n);

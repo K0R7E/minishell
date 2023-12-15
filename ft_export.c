@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 18:14:21 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/11 18:59:24 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/15 16:49:49 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,9 +128,9 @@ void	print_export(t_info *info)
 				tmp2 = tmp;
 			tmp = tmp->next;
 		}
-		if (tmp2->value == NULL)
+		if (tmp2->value == NULL && ft_strncmp(tmp2->var, "_", 2) != 0)
 			printf("declare -x %s\n", tmp2->var);
-		else
+		else if (ft_strncmp(tmp2->var, "_", 2) != 0)
 			printf("declare -x %s=\"%s\"\n", tmp2->var, tmp2->value);
 		j++;
 		tmp2->printed = 1;

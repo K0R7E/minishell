@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 18:52:19 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/15 15:20:11 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/15 18:06:21 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,23 +129,30 @@ void	handle_redirect(t_info *info, t_parsing *list, t_lexer_pos *pos)
 
 void	handle_prompt(t_info *info, t_parsing *list, t_lexer_pos *pos)
 {
-	int state;
 	int start;
 
-	state = 0;
+	int stateDouble = 0;
+	int stateSingle = 0;
 	start = pos->i;
 	//while ((!ft_strchr2(" \t<>|", info->input[pos->i]) && state == 0) || info->input[pos->i] != '\n')
 	while (info->input[pos->i] != '\0')
 	{
-		if (info->input[pos->i] == '\'' || info->input[pos->i] == '\"')
+		if (info->input[pos->i] == '\'' &&  stateDouble == 0)
 		{
-			if (state == 0)
-				state = 1;
-			else if (state == 1)
-				state = 0;
+			if (stateSingle == 0)
+				stateSingle = 1;
+			else if (stateSingle == 1)
+				stateSingle = 0;
+		}
+		if (info->input[pos->i] == '\"' &&  stateSingle == 0)
+		{
+			if (stateDouble == 0)
+				stateDouble = 1;
+			else if (stateDouble == 1)
+				stateDouble = 0;
 		}
 		pos->i++;
-		if (state == 0 && ft_strchr2(" \t<>|", info->input[pos->i]))
+		if (stateSingle == 0 && stateDouble == 0 && ft_strchr2(" \t<>|", info->input[pos->i]))
 			break ;
 	}
 	ft_new_prompt(list, info, pos, start, 1);
@@ -229,7 +236,8 @@ void	ft_lexer(t_info *info, t_parsing *list) //input str; env var
 	printf("hd_quote %d\n", tmp.hd_quote);
 	printf("command: %d\n", tmp.command);
 	printf("type: %d\n", tmp.type);
-	printf("token: %s\n", tmp.token);*/
+	printf("token: %s\n", tmp.token);
+	*/
 }
 
 	

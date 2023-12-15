@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:35:56 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/15 11:18:48 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/15 16:27:13 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,4 +118,5 @@ void	ft_builtin(t_pars *pars, t_info *info)
 		ft_pwd(info);
 	if (ft_strncmp2(pars->command,  "exit", 3) == 0)
 		ft_exit(info, pars->cmd_args);
+	
 }
