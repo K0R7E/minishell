@@ -60,20 +60,23 @@ char *after_dollar(char *str, t_info *info)
 		i++;
 		if ((str[i] == '\'' && str[ft_strlen(str) - 1] == '\'') || (str[i] == '\"' && str[ft_strlen(str) - 1] == '\"'))
 			return (str);
-		
 		else if(str[i] == '/' || str[i] == '.' || str[i] == '=' || str[i] == '%' || str[i] == ',')
 			return (str);
 		else if (str[i] == ':')
 		{
 			//$: >> In Bash, the dollar sign ($) followed by a colon (:) has a specific meaning when used in parameter expansion. It is used for providing default values for variables that may not be set.
+			return (str);
 		}
 		else if (str[i] == '+')
 		{
 			//used in parameter expansion to check if a variable is set (has a value) and, if so, return an empty string. It's often used in conditional statements to check for the existence of a variable.
+			return (str);
 		}
 		else if (str[i] == '_')
 		{
 			//represents the last argument of the last command that was executed.
+			free(str);
+			str[0] = '\0';
 		}
 		else if (str[i] == '\\')
 		{
@@ -97,6 +100,8 @@ char *after_dollar(char *str, t_info *info)
 		else if (str[i] == '#')
 		{
 			//this giv back the number of arguments
+			str = ft_replace(str, '#', 0);
+			return (str);
 		}
 		else if (str[i] == '0')
 		{
@@ -121,18 +126,42 @@ char *after_dollar(char *str, t_info *info)
 		else if (str[i] == '!')
 		{
 			//represents the process ID (PID) of the last background command that was executed.
+			if (!str[i + 1])
+			{
+				free(str);
+				str[0] = '\0';
+				return (str);
+			}
+			else 
+			{
+				str = ft_strjoin(str, ": event not found");
+				return (str);
+			}
 		}
 		else if (str[i] == '$')
 		{
 			//represents the process ID (PID) of the current shell
+			free(str);
+			str = "123456789";
+			str[9] = '\0';
+			return (str);
 		}
 		else if (str[i] == '?')
 		{
 			//represents the exit status of the last executed command.
+
 		}
 		else if (str[i] == '*')
 		{
 			//represents all the positional parameters (arguments) passed to a script or function as a single string.
+			if (!str[i + 1])
+			{
+				free(str);
+				str[0] = '\0';
+				return (str);
+			}
+			else 
+				return (str);
 		}
 
 	}
@@ -142,9 +171,12 @@ char *after_dollar(char *str, t_info *info)
 int main()
 {
 	char *str;
-
-	str = readline(">");
-	str = after_dollar(str, NULL);
-	printf("str: %s\n", str);
+	while (1)
+	{
+		str = readline(">");
+		add_history(str);
+		str = after_dollar(str, NULL);
+		printf("str: %s\n", str);
+	}
 	return (0);
 }
