@@ -50,10 +50,43 @@ void free_lexer_list(t_lexer *head)
 	}
 }
 
-void ft_free_all(t_pars *pars, t_info *info)
+void ft_free_env(t_env *env)
 {
-	if (pars)
+	t_env *current;
+	t_env *next;
+
+	current = env;
+	while (current != NULL)
+	{
+		next = current->next;
+		free(current->var);
+		free(current->value);
+		free(current);
+		current = next;
+	}
+}
+
+void free_input(t_info *info)
+{
+	ft_free_env(info->env_list);
+	free(info->old_pwd);
+	free(info->pwd);
+	free(info->path);
+	free(info->home);
+}
+
+
+
+void ft_free_all(t_pars *pars, t_info *info, int flag)
+{
+	t_lexer *tmp;
+
+	tmp = &info->lexer;
+	if (info && flag == 2)
+		free_input(info);
+	if (pars != NULL)
 		free_pars_list(pars);
- 	if (info->lexer != NULL)
-		free_lexer_list(info->lexer);
+ 	if (tmp != NULL)
+		free_lexer_list(tmp);
+
 }
