@@ -17,7 +17,7 @@ void sigint_handler(int sig)
     }
     else if (g_global.in_hd)
     {
-        g_global.stop_hd = 1; // Set a flag to indicate heredoc termination
+        g_global.stop_hd = 1;
         rl_replace_line("", 0);
         rl_redisplay();
         return;

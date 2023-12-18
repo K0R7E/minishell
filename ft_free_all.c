@@ -5,7 +5,7 @@ void ft_free_1 (char **array)
 	int i;
 
 	i = 0;
-	if (array == NULL)
+	if (array == NULL || *array == NULL)
 		return ;
 	while (array[i])
 	{
@@ -68,14 +68,13 @@ void ft_free_env(t_env *env)
 
 void free_input(t_info *info)
 {
+	ft_free_1(info->env);
 	ft_free_env(info->env_list);
 	free(info->old_pwd);
 	free(info->pwd);
 	free(info->path);
 	free(info->home);
 }
-
-
 
 void ft_free_all(t_pars *pars, t_info *info, int flag)
 {
@@ -84,8 +83,29 @@ void ft_free_all(t_pars *pars, t_info *info, int flag)
 	tmp = &info->lexer;
 	if (info && flag == 2)
 		free_input(info);
-	if (pars != NULL)
+	if (pars)
 		free_pars_list(pars);
- 	if (tmp != NULL)
+	if (info && tmp)
 		free_lexer_list(tmp);
+}
+
+void ft_give_new_value(t_pars *pars, t_info *info)
+{
+	if (info->input != NULL)
+	{
+		free(info->input);
+		info->input = NULL;
+	}
+	if (pars != NULL)
+	{
+		free_pars_list(pars);
+		pars = malloc(sizeof(t_pars));
+		if (pars == NULL)
+		{
+			free(info);
+			exit(1);
+		}
+	}
+	info->command_count = 1;
+	info->builtin_command_count = 0;
 }

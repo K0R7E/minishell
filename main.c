@@ -52,6 +52,20 @@ int ft_listsize(t_pars *pars)
 	return (i);
 }
 
+void ft_init(t_pars *pars, t_info *info, char **envp)
+{
+	info->env = ft_arrycpy(envp);
+	env_conversion(info, pars, envp);
+	get_pwd(info);
+	info->exit_status = 0;
+	g_global.stop_hd = 0;
+	g_global.in_cmd = 0;
+	g_global.in_hd = 0;
+	init_signals();
+	info->command_count = 1;
+	info->builtin_command_count = 0;
+}
+
 
 int main(int argc, char **argv, char **envp)
 {
@@ -69,46 +83,28 @@ int main(int argc, char **argv, char **envp)
 	pars = malloc(sizeof(t_pars));
 	if (!pars)
 	{
-		ft_free_all(pars, info, 2);
+		free(info);
 		return (1);
 	}
-	//info->env = ft_arrycpy(envp);
-	env_conversion(info, pars, envp);
-	get_pwd(info);
-	info->exit_status = 0;
-	g_global.stop_hd = 0;
-	g_global.in_cmd = 0;
-	g_global.in_hd = 0;
-	init_signals();
+	ft_init(pars, info, envp);
 	printf("\033[2J\033[1;1H");
  	while (1)
 	{
 		pars = NULL;
-		info->command_count = 1;
-		info->builtin_command_count = 0;
 		ft_get_input(info);
 		if (ft_check_input(info) == 1)
 			continue ;
 		if (!info->input)
 			continue ;
 		ft_lexer(info, pars);
-
 		ft_parsing(&pars, &info->lexer, info);
 		info->command_count = ft_listsize(pars);
 		ft_executor(pars, info);
-		free(info->input);
-		info->input = NULL;
-		ft_free_all(pars, info, 1);
+		ft_give_new_value(pars, info);
 	}
 	ft_free_all(pars, info, 2);
+	free(info);
+	free(pars);
 	return (0);
 }
-
-/*
-
-echo "hello" > file1 | echo -n "hello" | cat < file1 | cat -e > file2 | cat file2 | ls -l | wc -l
-
-/bin/ls /bin/ -l
-
-*/
 

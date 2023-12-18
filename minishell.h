@@ -110,7 +110,7 @@ typedef struct s_env
 }	t_env;
 typedef struct s_info
 {
-	//char	**env;
+	char	**env;
 	t_env	*env_list;
 	char	*input;
 	char	*path;
@@ -226,6 +226,7 @@ void ft_free_all(t_pars *pars, t_info *info, int flag);
 
 
 int	ft_strncmp_12(const char *s1, const char *s2, size_t n);
+void ft_give_new_value(t_pars *pars, t_info *info);
 
 
 #endif

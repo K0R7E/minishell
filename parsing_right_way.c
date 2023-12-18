@@ -1,7 +1,4 @@
 #include "minishell.h"
-#include <stdio.h>
-
-
 
 int ft_check_word_type(t_pars *pars, t_lexer *tokens, t_info *info)
 {
@@ -29,12 +26,6 @@ char *get_path_new(t_pars *pars, t_lexer *tokens, char *token, t_info *info)
 /* 	if (ft_check_word_type(pars, tokens, info) == 1)
 		return (NULL); */
     allpath = ft_split(info->path, ':');
-	if (allpath == NULL)
-	{
-		ft_putstr_fd("minishell: malloc error\n", 2);
-		ft_free_all(pars, info, 2);
-		exit(1);
-	}
     s_cmd = ft_split(token, ' ');
     while (allpath[++i])
     {
@@ -43,10 +34,14 @@ char *get_path_new(t_pars *pars, t_lexer *tokens, char *token, t_info *info)
         free(path_part);
         if (access(exec, F_OK | X_OK) == 0)
         {
+			ft_free_1(allpath);
+			ft_free_1(s_cmd);
             return (exec);
         }
         free(exec);
     }
+	ft_free_1(allpath);
+	ft_free_1(s_cmd);
     return (token);
 }
 
@@ -137,6 +132,7 @@ char **ft_add_cmd_args(char **args)
 
 	i = 0;
 	j = 0;
+	tmp = NULL;
 	while(args[i])
 		i++;
 	tmp = malloc(sizeof(char *) * (i + 1));
@@ -176,6 +172,7 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 
 	i = 1;
 	tmp1 = tmp;
+	node = NULL;
 	node = malloc(sizeof(t_pars));
 	if (node == NULL)
 	{
@@ -183,11 +180,13 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 		ft_free_all(pars, info, 2);
 		exit(1);
 	}
-	node->args = malloc(sizeof(char *) * (ft_lstsize(tmp) + 1));
-	if (node->args == NULL)
+	node->args = NULL;
+	node->args = malloc(sizeof(char *) * (ft_lstsize(tmp) + 2));
+	if (!node->args)
 	{
 		ft_putstr_fd("minishell: malloc error\n", 2);
 		ft_free_all(pars, info, 2);
+		free(node->args);
 		exit(1);
 	}
 	if ((tmp->type == TokenTypeHeredoc || tmp->type == TokenTypeOutputRedirect
@@ -201,11 +200,11 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 		node->command = ft_strdup(tmp->token);
 		node->cmd_path = get_path_new(pars, tmp, tmp->token, info);
 		node->args[0] = ft_strdup(tmp1->token);
-		while (is_next_args(tmp1) == 1)
+		while (is_next_args(tmp1) == 1 && tmp->token != NULL)
 		{
 			node->args[i++] = ft_strdup(tmp1->next->token);
 			tmp1 = tmp1->next;
-			}
+		}
 		node->args[i] = NULL;
 		node->cmd_args = ft_add_cmd_args(node->args);
 	}
@@ -214,11 +213,11 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 		node->command = ft_strdup(tmp->token);
 		node->cmd_path = get_path_new(pars, tmp, tmp->token, info);
 		node->args[0] = ft_strdup(tmp->token);
-		while (is_next_args(tmp) == 1)
+		while (is_next_args(tmp) == 1 && tmp->token != NULL)
 		{
 			node->args[i++] = ft_strdup(tmp->next->token);
 			tmp = tmp->next;
-			}
+		}
 		node->args[i] = NULL;
 		node->cmd_args = ft_add_cmd_args(node->args);
 	}
@@ -234,10 +233,11 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 void add_pars_node(t_pars *pars, t_pars **head, t_lexer *tmp, t_info *info)
 {
 	t_pars *new_node = malloc(sizeof(t_pars));
-	if (new_node == NULL)
+	if (!new_node)
 	{
 		ft_putstr_fd("minishell: malloc error\n", 2);
 		ft_free_all(pars, info, 2);
+		free(new_node);
 		exit(1);
 	}
 	t_pars *last_node = *head;
@@ -249,6 +249,7 @@ void add_pars_node(t_pars *pars, t_pars **head, t_lexer *tmp, t_info *info)
 	if (*head == NULL)
 	{
 		*head = new_node;
+		free(last_node);
 		return;
 	}
 	while (last_node->next != NULL)
@@ -260,15 +261,28 @@ void add_pars_node(t_pars *pars, t_pars **head, t_lexer *tmp, t_info *info)
 
 }
 
-char *convert_to_cmd(char *str, t_info *info)
+char *convert_to_cmd(const char *str, t_info *info, t_pars *pars)
 {
-	(void)info;
-	if (ft_strncmp(str, "/usr/bin/", 9) == 0)
-		return (str = ft_substr(str, 9, ft_strlen(str) - 9));
-	else if (ft_strncmp(str, "/bin/", 5) == 0)
-		return (str = ft_substr(str, 5, ft_strlen(str) - 5));
-	else 
-		return (str);
+    (void)info;
+    char *result = NULL;
+
+    if (ft_strncmp(str, "/usr/bin/", 9) == 0)
+        result = ft_substr(str, 9, ft_strlen(str) - 9);
+    else if (ft_strncmp(str, "/bin/", 5) == 0)
+        result = ft_substr(str, 5, ft_strlen(str) - 5);
+    else
+	{
+        result = ft_strdup(str);
+	}
+
+	if (!result)
+	{
+		ft_putstr_fd("minishell: malloc error\n", 2);
+		free(result);
+		ft_free_all(pars, info, 2);
+		exit(1);
+	}
+    return (result);
 }
 
 void ft_redir_input(t_pars *pars, t_info *info, int i, int count)
@@ -317,6 +331,7 @@ void ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 	int fd;
 	char *line;
 	char *str;
+
 	(void)info;
 	(void)count;
 	fd = open("/tmp/temp8726343", O_WRONLY | O_CREAT | O_TRUNC, 0777);
@@ -369,7 +384,6 @@ void ft_redir(t_pars *pars, t_info *info)
 	int i;	
 
 	tmp = pars;
-	i = 0;
 	while (tmp)
 	{
 		i = 0;
@@ -397,14 +411,13 @@ void ft_redir(t_pars *pars, t_info *info)
 void ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info)
 {
 	t_lexer *tmp;
-	/* t_pars *pars = NULL; */
-	
 
 	info->val = 0;
 	tmp = tokens;
+
 	while (tmp)
 	{
-		tmp->token = convert_to_cmd(tmp->token, info);
+		tmp->token = convert_to_cmd(tmp->token, info, (t_pars *) pars);
 		add_pars_node(*pars, pars, tmp, info);
 		while (tmp->next && tmp->type != TokenTypePipe)
 			tmp = tmp->next;
@@ -412,9 +425,3 @@ void ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info)
 	}
 	ft_redir(*pars, info);
 }
-
-/* 
-
-echo "hello" > file1 > file2 < inflie1 < inflie2 | ls -l > file1 > file2
-
-*/
