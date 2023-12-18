@@ -1,3 +1,4 @@
+#include "libft/libft.h"
 #include "minishell.h"
 
 int	is_builtin_1(char *command)
@@ -31,8 +32,8 @@ int	is_builtin_2(char *command)
 
 	if (ft_strncmp(command, "env", 4) == 0)
 		return (1); */
-	if (ft_strncmp(command, "export", 7) == 0)
-		return (1);
+	/*if (ft_strncmp(command, "export", 7) == 0)
+		return (1);*/
 	if (ft_strncmp(command, "unset", 6) == 0)
 		return (1);
 	if (ft_strncmp(command, "cd", 3) == 0)
@@ -105,7 +106,8 @@ void ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
     {
         waitpid(pid, &status, 0);
 		//printf("command_count:%d\n", info->command_count);
-		if (is_builtin_2(tmp->command) && info->command_count == 1)
+		if ((is_builtin_2(tmp->command) || ft_strncmp(tmp->command, "export",
+			 7 && tmp->cmd_args[1] != NULL)) && info->command_count == 1)
 			ft_builtin(tmp, info);
         if (fd_in != 0) close(fd_in);
         if (fd_out != 1) close(fd_out);

@@ -72,7 +72,7 @@ int main(int argc, char **argv, char **envp)
 		ft_free_all(pars, info, 2);
 		return (1);
 	}
-	//info->env = ft_arrycpy(envp);
+	info->env = ft_arrycpy(envp);
 	env_conversion(info, pars, envp);
 	get_pwd(info);
 	info->exit_status = 0;
@@ -98,7 +98,7 @@ int main(int argc, char **argv, char **envp)
 		ft_executor(pars, info);
 		free(info->input);
 		info->input = NULL;
-		ft_free_all(pars, info, 1);
+		//ft_free_all(pars, info, 1);
 	}
 	ft_free_all(pars, info, 2);
 	return (0);

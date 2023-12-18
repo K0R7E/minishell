@@ -110,7 +110,7 @@ typedef struct s_env
 }	t_env;
 typedef struct s_info
 {
-	//char	**env;
+	char	**env;
 	t_env	*env_list;
 	char	*input;
 	char	*path;

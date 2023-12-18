@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 18:52:19 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/18 16:01:52 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/18 17:45:21 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,11 @@ void	ft_new_prompt(t_info *info, t_lexer_pos *pos, int start, int type, t_pars *
 	t_lexer *new;
 	t_lexer *tmp;
 
-	(void)pars;
 	//tmp = malloc(sizeof(t_lexer));
 	new = malloc(sizeof(t_lexer));
 	if (new == NULL)
 	{
+		free(pos);
 		ft_error_message(pars, info);
 	}
 	new->command = pos->command_number;
@@ -79,6 +79,7 @@ void	ft_new_prompt(t_info *info, t_lexer_pos *pos, int start, int type, t_pars *
 	new->token = ft_strldup(info->input + start, pos->i - start);
 	if (new->token == NULL)
 	{
+		free(pos);
 		free(new);
 		ft_error_message(pars, info);
 	}
@@ -209,14 +210,16 @@ void	copy_lexer_list(t_info *info)
 
 void	ft_lexer(t_info *info, t_pars *pars) //input str; env var
 {
-	t_lexer_pos *pos = malloc(sizeof(t_lexer_pos));
+	t_lexer_pos *pos;
 	
+	pos = malloc(sizeof(t_lexer_pos));
+	if (pos == NULL)
+		ft_error_message(pars, info);
 	info->lexer.command = 0;
 	pos->i = 0;
 	pos->command_number = 1;
 	pos->hedoc = 0;
 	info->input = replace_dollar(info->input, info);
-	//printf("input: %s\n", info->input);
 	while (info->input[pos->i] != '\0')
 	{
 		if (info->input[pos->i] == ' ' || info->input[pos->i] == '\t')
@@ -229,7 +232,6 @@ void	ft_lexer(t_info *info, t_pars *pars) //input str; env var
 		else
 			handle_prompt(info, pos, pars);
 	}
-	//copy_lexer_list(info);
 	//print lexer list
 	/*
 	t_lexer tmp = list->lexer;
