@@ -1,48 +1,45 @@
 #include "minishell.h"
 
-void ft_sigint(int signum)
+t_global g_global;
+
+void sigint_handler(int sig)
 {
-    (void)signum;
-    printf("\n");
-	rl_on_new_line();
-    rl_redisplay();
+    (void)sig;
+    if (!g_global.in_hd)
+    {
+        ft_putstr_fd("\n", STDERR_FILENO);
+    }
+    if (g_global.in_cmd)
+    {
+        rl_replace_line("", 0);
+        rl_redisplay();
+        return;
+    }
+    else if (g_global.in_hd)
+    {
+        g_global.stop_hd = 1; // Set a flag to indicate heredoc termination
+        rl_replace_line("", 0);
+        rl_redisplay();
+        return;
+    }
+	else
+	{
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }
 
-void ft_sigquit(int signum)
+void sigquit_handler(int sig)
 {
-    if (signum == SIGQUIT)
-	{
-        printf("\nSIGQUIT received. Cleaning up...\n");
-        exit(EXIT_FAILURE);
-    }
+	ft_putstr_fd("Quit: ", STDERR_FILENO);
+	ft_putnbr_fd(sig, STDERR_FILENO);
+	ft_putchar_fd('\n', STDERR_FILENO);
 }
 
-void ft_signals(void)
+void init_signals(void)
 {
-    struct sigaction sa;
-
-    sa.sa_handler = ft_sigint;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = 0;
-
-    if (sigaction(SIGINT, &sa, NULL) == -1)
-	{
-        perror("Error setting up SIGINT handler");
-        exit(EXIT_FAILURE);
-    }
-
-    sa.sa_handler = SIG_IGN;
-    if (sigaction(SIGQUIT, &sa, NULL) == -1)
-	{
-        perror("Error setting up SIGQUIT handler for CTRL+4");
-        exit(EXIT_FAILURE);
-    }
-
-    sa.sa_handler = ft_sigquit;
-    if (sigaction(SIGQUIT, &sa, NULL) == -1)
-	{
-        perror("Error setting up SIGQUIT handler for CTRL+\\");
-        exit(EXIT_FAILURE);
-    }
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, sigquit_handler);
 }
 

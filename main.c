@@ -71,7 +71,10 @@ int main(int argc, char **argv, char **envp)
 	env_conversion(info);
 	get_pwd(info);
 	info->exit_status = 0;
-	//ft_print_minishell_gui();
+	g_global.stop_hd = 0;
+	g_global.in_cmd = 0;
+	g_global.in_hd = 0;
+	init_signals();
 	printf("\033[2J\033[1;1H");
 	pars = malloc(sizeof(t_pars));
  	while (1)
@@ -94,6 +97,7 @@ int main(int argc, char **argv, char **envp)
 		free(info->input);
 		info->input = NULL;
 	}
+	ft_free_all(pars, info);
 	return (0);
 }
 
