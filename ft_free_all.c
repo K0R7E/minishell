@@ -5,6 +5,8 @@ void ft_free_1 (char **array)
 	int i;
 
 	i = 0;
+	if (array == NULL)
+		return ;
 	while (array[i])
 	{
 		free(array[i]);
@@ -17,7 +19,6 @@ void free_pars_list(t_pars *head)
 {
 	t_pars *current;
 	t_pars *next;
-	int i;
 
 	current = head;
 	while (current != NULL)
@@ -25,26 +26,8 @@ void free_pars_list(t_pars *head)
 		next = current->next;
 		free(current->cmd_path);
 		free(current->command);
-		if (current->cmd_args != NULL)
-		{
-			i = 0; // Reset i to 0
-			while (current->cmd_args[i])
-			{
-				free(current->cmd_args[i]);
-				i++;
-			}
-		}
-		free(current->cmd_args);
-		if (current->args != NULL)
-		{
-			i = 0; // Reset i to 0
-			while (current->args[i])
-			{
-				free(current->args[i]);
-				i++;
-			}
-			free(current->args);
-		}
+		ft_free_1(current->cmd_args);
+		ft_free_1(current->args);
 		free(current->in_file);
 		free(current->out_file);
 		free(current);
@@ -52,11 +35,25 @@ void free_pars_list(t_pars *head)
 	}
 }
 
+void free_lexer_list(t_lexer *head)
+{
+	t_lexer *current;
+	t_lexer *next;
+
+	current = head;
+	while (current != NULL)
+	{
+		next = current->next;
+		free(current->token);
+		free(current);
+		current = next;
+	}
+}
+
 void ft_free_all(t_pars *pars, t_info *info)
 {
-	if (pars != NULL)
+	if (pars)
 		free_pars_list(pars);
-	(void)info;
-/* 	if (info->lexer != NULL)
-		free_lexer_list(info->lexer); */
+ 	if (info->lexer != NULL)
+		free_lexer_list(info->lexer);
 }
