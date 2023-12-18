@@ -29,6 +29,12 @@ char *get_path_new(t_pars *pars, t_lexer *tokens, char *token, t_info *info)
 /* 	if (ft_check_word_type(pars, tokens, info) == 1)
 		return (NULL); */
     allpath = ft_split(info->path, ':');
+	if (allpath == NULL)
+	{
+		ft_putstr_fd("minishell: malloc error\n", 2);
+		ft_free_all(pars, info, 2);
+		exit(1);
+	}
     s_cmd = ft_split(token, ' ');
     while (allpath[++i])
     {
@@ -173,13 +179,15 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 	node = malloc(sizeof(t_pars));
 	if (node == NULL)
 	{
-		ft_free_all(pars, info);
+		ft_putstr_fd("minishell: malloc error\n", 2);
+		ft_free_all(pars, info, 2);
 		exit(1);
 	}
 	node->args = malloc(sizeof(char *) * (ft_lstsize(tmp) + 1));
 	if (node->args == NULL)
 	{
-		ft_free_all(pars, info);
+		ft_putstr_fd("minishell: malloc error\n", 2);
+		ft_free_all(pars, info, 2);
 		exit(1);
 	}
 	if ((tmp->type == TokenTypeHeredoc || tmp->type == TokenTypeOutputRedirect
@@ -228,14 +236,15 @@ void add_pars_node(t_pars *pars, t_pars **head, t_lexer *tmp, t_info *info)
 	t_pars *new_node = malloc(sizeof(t_pars));
 	if (new_node == NULL)
 	{
-		ft_free_all(pars, info);
+		ft_putstr_fd("minishell: malloc error\n", 2);
+		ft_free_all(pars, info, 2);
 		exit(1);
 	}
 	t_pars *last_node = *head;
 
 	new_node = node_for_word(pars, tmp, info);
 	new_node->next = NULL;
-	new_node->prev = NULL;
+	//new_node->prev = NULL;
 
 	if (*head == NULL)
 	{
@@ -247,7 +256,7 @@ void add_pars_node(t_pars *pars, t_pars **head, t_lexer *tmp, t_info *info)
 		last_node = last_node->next;
 	}
 	last_node->next = new_node;
-	new_node->prev = last_node;
+	//new_node->prev = last_node;
 
 }
 

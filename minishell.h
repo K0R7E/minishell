@@ -71,13 +71,13 @@ typedef struct s_pars
 	char			*command;
 	char			**args;
 	char			**cmd_args;
-	t_lexer			*lexer;
+	//t_lexer			*lexer;
 	char			*in_file;
 	char			*out_file;
 	int				fd_in;
 	int				fd_out;
 	struct s_pars	*next;
-	struct s_pars	*prev;
+	//struct s_pars	*prev;
 }	t_pars;
 
 /*
@@ -110,7 +110,7 @@ typedef struct s_env
 }	t_env;
 typedef struct s_info
 {
-	char	**env;
+	//char	**env;
 	t_env	*env_list;
 	char	*input;
 	char	*path;
@@ -121,7 +121,7 @@ typedef struct s_info
 	int		command_count;
 	int		exit_status;
 	int		exit_code;
-	int 	*pid;	
+	//int 	*pid;	
 	t_lexer	lexer;
 	int		builtin_command_count;
 }	t_info;
@@ -222,7 +222,7 @@ void ft_print_pars(t_pars *pars);
 
 //ft_free_all.c
 void ft_free_1 (char **array);
-void ft_free_all(t_pars *pars, t_info *info);
+void ft_free_all(t_pars *pars, t_info *info, int flag);
 
 
 int	ft_strncmp_12(const char *s1, const char *s2, size_t n);

@@ -58,12 +58,18 @@ int main(int argc, char **argv, char **envp)
 	t_info *info;
 	t_pars *pars;
 
-	info = malloc(sizeof(t_info));
-
-
 	if (argc != 1 || argv[1])
 	{
 		printf("Please do not add parameters\n");
+		return (1);
+	}
+	info = malloc(sizeof(t_info));
+	if (!info)
+		return (1);
+	pars = malloc(sizeof(t_pars));
+	if (!pars)
+	{
+		ft_free_all(pars, info, 2);
 		return (1);
 	}
 	//info->env = ft_arrycpy(envp);
@@ -75,7 +81,6 @@ int main(int argc, char **argv, char **envp)
 	g_global.in_hd = 0;
 	init_signals();
 	printf("\033[2J\033[1;1H");
-	pars = malloc(sizeof(t_pars));
  	while (1)
 	{
 		pars = NULL;
@@ -90,14 +95,12 @@ int main(int argc, char **argv, char **envp)
 
 		ft_parsing(&pars, &info->lexer, info);
 		info->command_count = ft_listsize(pars);
-		//ft_print_pars(pars);
 		ft_executor(pars, info);
-		//ft_command_execute(pars, ft_listsize(pars), info);
-		//free_pars_list(pars);
 		free(info->input);
 		info->input = NULL;
+		ft_free_all(pars, info, 1);
 	}
-	ft_free_all(pars, info);
+	ft_free_all(pars, info, 2);
 	return (0);
 }
 
