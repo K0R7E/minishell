@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 18:52:19 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/15 18:06:21 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/18 14:19:23 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,29 @@ int	ft_strchr2(char *s, int c)
 }
 
 
-void	ft_new_prompt(t_parsing *list, t_info *info, t_lexer_pos *pos, int start, int type)
+void	ft_new_prompt(t_info *info, t_lexer_pos *pos, int start, int type, t_pars *pars)
 {
 	t_lexer *new;
 	t_lexer *tmp;
 
+	(void)pars;
 	//tmp = malloc(sizeof(t_lexer));
 	new = malloc(sizeof(t_lexer));
+	if (new == NULL)
+	{
+		printf("Error: malloc\n");
+		//free function
+		exit(1);
+	}
 	new->command = pos->command_number;
 	new->type = type;
 	new->token = ft_strldup(info->input + start, pos->i - start);
+	if (new->token == NULL)
+	{
+		perror("Error: malloc\n");
+		//free function
+		exit(1);
+	}
 	if (pos->hedoc == 1)
 	{
 		pos->hedoc = 0;
@@ -83,20 +96,20 @@ void	ft_new_prompt(t_parsing *list, t_info *info, t_lexer_pos *pos, int start, i
 	else
 		new->hd_quote = 0;
 	new->next = NULL;
-	if (list->lexer.command == 0)
+	if (info->lexer.command == 0)
 	{
-		list->lexer = *new;
+		info->lexer = *new;
 	}
 	else
 	{
-		tmp = &list->lexer;
+		tmp = &info->lexer;
 		while (tmp->next != NULL)
 			tmp = tmp->next;
 		tmp->next = new;
 	}
 }
 
-void	handle_redirect(t_info *info, t_parsing *list, t_lexer_pos *pos)
+void	handle_redirect(t_info *info, t_lexer_pos *pos, t_pars *pars)
 {
 	pos->i++;
 	if (info->input[pos->i -1] == '>')
@@ -104,30 +117,30 @@ void	handle_redirect(t_info *info, t_parsing *list, t_lexer_pos *pos)
 		if (info->input[pos->i] == '>')
 		{
 			pos->i++;
-			ft_new_prompt(list, info, pos, pos->i -2, 4);
+			ft_new_prompt(info, pos, pos->i -2, 4, pars);
 		}
 		else
-			ft_new_prompt(list, info, pos, pos->i -1, 2);
+			ft_new_prompt(info, pos, pos->i -1, 2, pars);
 	}
 	else if (info->input[pos->i -1] == '<')
 	{
 		if (info->input[pos->i] == '<')
 		{
 			pos->i++;
-			ft_new_prompt(list, info, pos, pos->i -2, 5);
+			ft_new_prompt(info, pos, pos->i -2, 5, pars);
 			pos->hedoc = 1;
 		}
 		else
-			ft_new_prompt(list, info, pos, pos->i -1, 3);
+			ft_new_prompt(info, pos, pos->i -1, 3, pars);
 	}
 	else if (info->input[pos->i -1] == '|')
 	{
 		pos->command_number++;
-		ft_new_prompt(list, info, pos, pos->i -1, 6);
+		ft_new_prompt(info, pos, pos->i -1, 6, pars);
 	}
 }
 
-void	handle_prompt(t_info *info, t_parsing *list, t_lexer_pos *pos)
+void	handle_prompt(t_info *info, t_lexer_pos *pos, t_pars *pars)
 {
 	int start;
 
@@ -155,24 +168,25 @@ void	handle_prompt(t_info *info, t_parsing *list, t_lexer_pos *pos)
 		if (stateSingle == 0 && stateDouble == 0 && ft_strchr2(" \t<>|", info->input[pos->i]))
 			break ;
 	}
-	ft_new_prompt(list, info, pos, start, 1);
+	ft_new_prompt(info, pos, start, 1, pars);
 }
 
-void	copy_lexer_list(t_parsing *list, t_info *info)
+/*
+void	copy_lexer_list(t_info *info)
 {
 	t_lexer *new;
 	t_lexer *tmp;
 	t_lexer tmp2;
 	
 	new = malloc(sizeof(t_lexer));
-	new->command = list->lexer.command;
-	new->type = list->lexer.type;
-	new->token = ft_strdup(list->lexer.token);
-	new->hd_quote = list->lexer.hd_quote;
+	new->command = info->lexer.command;
+	new->type = info->lexer.type;
+	new->token = ft_strdup(info->lexer.token);
+	new->hd_quote = info->lexer.hd_quote;
 	new->next = NULL;
 	info->lexer_save = *new;
 	tmp = &info->lexer_save;
-	tmp2 = list->lexer;
+	tmp2 = info->lexer;
 	while (tmp2.next != NULL)
 	{
 		tmp2 = *tmp2.next;
@@ -184,7 +198,6 @@ void	copy_lexer_list(t_parsing *list, t_info *info)
 		tmp = tmp->next;
 	}
 	//print list
-	/*
 	t_lexer tmp3 = info->lexer_save;
 	printf("\n");
 	while (tmp3.next != NULL)
@@ -195,14 +208,13 @@ void	copy_lexer_list(t_parsing *list, t_info *info)
 	}
 	printf("type: %d\n", tmp3.type);
 	printf("token: %s\n", tmp3.token);
-	*/
-}
+}*/
 
-void	ft_lexer(t_info *info, t_parsing *list) //input str; env var
+void	ft_lexer(t_info *info, t_pars *pars) //input str; env var
 {
 	t_lexer_pos *pos = malloc(sizeof(t_lexer_pos));
 	
-	list->lexer.command = 0;
+	info->lexer.command = 0;
 	pos->i = 0;
 	pos->command_number = 1;
 	pos->hedoc = 0;
@@ -216,11 +228,11 @@ void	ft_lexer(t_info *info, t_parsing *list) //input str; env var
 			continue ;
 		}
 		if (ft_strchr2("><|", info->input[pos->i]))
-			handle_redirect(info ,list, pos);
+			handle_redirect(info, pos, pars);
 		else
-			handle_prompt(info ,list, pos);
+			handle_prompt(info, pos, pars);
 	}
-	copy_lexer_list(list, info);
+	//copy_lexer_list(info);
 	//print lexer list
 	/*
 	t_lexer tmp = list->lexer;
