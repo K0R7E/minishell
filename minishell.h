@@ -127,6 +127,20 @@ typedef struct s_info
 	int		builtin_command_count;
 }	t_info;
 
+typedef struct s_global
+{
+	int	error;
+	int	stop_hd;
+	int	in_cmd;
+	int	in_hd;
+}	t_global;
+
+extern t_global	g_global;
+
+void	sigint_handler(int sig);
+void	sigquit_handler(int sig);
+void	init_signals(void);
+
 void ft_executor_pars(t_pars *pars, t_info *info);
 void ft_executor(t_pars *pars, t_info *info);
 int ft_listsize(t_pars *pars);
@@ -205,6 +219,13 @@ void	update_info(t_info *info);
 void ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info);
 void free_pars_list(t_pars *head);
 void ft_print_pars(t_pars *pars);
+
+//ft_free_all.c
+void ft_free_1 (char **array);
+void ft_free_all(t_pars *pars, t_info *info);
+
+
+int	ft_strncmp_12(const char *s1, const char *s2, size_t n);
 
 
 #endif

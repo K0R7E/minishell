@@ -1,44 +1,7 @@
 #include "minishell.h"
 #include <stdio.h>
 
-void free_pars_list(t_pars *head)
-{
-	t_pars *current;
-	t_pars *next;
-	int i;
 
-	current = head;
-	while (current != NULL)
-	{
-		next = current->next;
-		free(current->cmd_path);
-		free(current->command);
-		if (current->cmd_args != NULL)
-		{
-			i = 0; // Reset i to 0
-			while (current->cmd_args[i])
-			{
-				free(current->cmd_args[i]);
-				i++;
-			}
-		}
-		free(current->cmd_args);
-		if (current->args != NULL)
-		{
-			i = 0; // Reset i to 0
-			while (current->args[i])
-			{
-				free(current->args[i]);
-				i++;
-			}
-			free(current->args);
-		}
-		free(current->in_file);
-		free(current->out_file);
-		free(current);
-		current = next;
-	}
-}
 
 int ft_check_word_type(t_pars *pars, t_lexer *tokens, t_info *info)
 {
@@ -169,11 +132,13 @@ char **ft_add_cmd_args(char **args)
 	i = 0;
 	j = 0;
 	while(args[i])
-	{
-		//printf("args[%d]: %s\n", i, args[i]);
 		i++;
-	}
 	tmp = malloc(sizeof(char *) * (i + 1));
+	if (tmp == NULL)
+	{
+		ft_free_1(args);
+		exit(1);
+	}
 	i = 0;
 	while (args[i])
 	{
@@ -206,8 +171,17 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 	i = 1;
 	tmp1 = tmp;
 	node = malloc(sizeof(t_pars));
-	//printf("size to malloc:%d\n", ft_lstsize(tmp));
+	if (node == NULL)
+	{
+		ft_free_all(pars, info);
+		exit(1);
+	}
 	node->args = malloc(sizeof(char *) * (ft_lstsize(tmp) + 1));
+	if (node->args == NULL)
+	{
+		ft_free_all(pars, info);
+		exit(1);
+	}
 	if ((tmp->type == TokenTypeHeredoc || tmp->type == TokenTypeOutputRedirect
 		|| tmp->type == TokenTypeOutputAppend || tmp->type == TokenTypeInputRedirect)
 		&& tmp->next && tmp->next->next)
@@ -252,6 +226,11 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 void add_pars_node(t_pars *pars, t_pars **head, t_lexer *tmp, t_info *info)
 {
 	t_pars *new_node = malloc(sizeof(t_pars));
+	if (new_node == NULL)
+	{
+		ft_free_all(pars, info);
+		exit(1);
+	}
 	t_pars *last_node = *head;
 
 	new_node = node_for_word(pars, tmp, info);
@@ -338,17 +317,20 @@ void ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 		info->exit_status = 1;
 		return ;
 	}
-	while (1)
+	g_global.in_hd = 1;
+	while (!g_global.stop_hd)
 	{
 		line = readline("> ");
-		if (ft_strncmp(line, pars->args[i + 1], ft_strlen(pars->args[i + 1])) == 0)
+		if (ft_strncmp_12(line, pars->args[i + 1], ft_strlen(pars->args[i + 1])) == 0)
 			break ;
 		str = ft_strjoin(line, "\n");
 		write(fd, str, ft_strlen(str));
 		free(line);
-		free(str);
+		free(str);	
 	}
 	close(fd);
+	if (g_global.stop_hd || !line)
+		return ;
 	if (i == count)
 	{
 		pars->fd_in = open("/tmp/temp8726343", O_RDONLY);
@@ -388,7 +370,11 @@ void ft_redir(t_pars *pars, t_info *info)
 			if (ft_strncmp(tmp->args[i], ">>", 2) == 0)
 				ft_redir_output_app(tmp, info, i, ft_check_num(tmp->args, ">>"));
 			else if (ft_strncmp(tmp->args[i], "<<", 2) == 0)
+			{	
+				g_global.stop_hd = 0;	
 				ft_redir_heredoc(tmp, info, i, ft_check_num(tmp->args, "<<"));
+				g_global.in_hd = 0;
+			}
 			else if (ft_strncmp(tmp->args[i], "<", 1) == 0)
 				ft_redir_input(tmp, info, i, ft_check_num(tmp->args, "<"));
 			else if (ft_strncmp(tmp->args[i], ">", 1)	== 0)	
