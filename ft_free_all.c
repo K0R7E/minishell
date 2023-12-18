@@ -88,5 +88,4 @@ void ft_free_all(t_pars *pars, t_info *info, int flag)
 		free_pars_list(pars);
  	if (tmp != NULL)
 		free_lexer_list(tmp);
-
 }

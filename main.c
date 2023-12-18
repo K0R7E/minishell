@@ -63,7 +63,6 @@ int main(int argc, char **argv, char **envp)
 		printf("Please do not add parameters\n");
 		return (1);
 	}
-
 	info = malloc(sizeof(t_info));
 	if (!info)
 		return (1);
@@ -74,7 +73,7 @@ int main(int argc, char **argv, char **envp)
 		return (1);
 	}
 	//info->env = ft_arrycpy(envp);
-	env_conversion(info);
+	env_conversion(info, pars, envp);
 	get_pwd(info);
 	info->exit_status = 0;
 	g_global.stop_hd = 0;

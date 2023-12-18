@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 14:34:23 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/13 14:52:13 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/18 16:01:49 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,20 +61,33 @@ void	ft_lstadd_back(t_env *stack, t_env *newx)
 	*/
 }
 
-void	env_conversion(t_info *info)
+void	env_conversion(t_info *info, t_pars *pars, char **envp)
 {
 	t_env	*tmp;
 	int		i;
 
 	info->env_list = NULL;
 	i = 0;
-	while (info->env[i])
+	while (envp[i])
 	{
 		tmp = malloc(sizeof(t_env));
+		if (tmp == NULL)
+			ft_error_message(pars, info);
 		tmp->next = NULL;
 		tmp->printed = 0;
-		tmp->var = ft_strldup(info->env[i], find_equals_sign(info->env[i]));
-		tmp->value = ft_strdup(info->env[i] + find_equals_sign(info->env[i]) + 1);
+		tmp->var = ft_strldup(envp[i], find_equals_sign(envp[i]));
+		if (tmp->var == NULL)
+		{
+			free(tmp);
+			ft_error_message(pars, info);
+		}
+		tmp->value = ft_strdup(envp[i] + find_equals_sign(envp[i]) + 1);
+		if (tmp->var == NULL)
+		{
+			free(tmp->var);
+			free(tmp);
+			ft_error_message(pars, info);
+		}
 		if (info->env_list == NULL)
 			info->env_list = tmp;
 		else
@@ -115,6 +128,10 @@ char **env_conversion_back(t_info *info)
 	i = 0;
 	tmp = info->env_list;
 	res = malloc((ft_lstsize2(tmp) + 1) * sizeof(char *));
+	if (res == NULL)
+	{
+		ft_error_message(NULL, info);
+	}
 	while (tmp)
 	{
 		res[i] = ft_strjoin(tmp->var, "=");
