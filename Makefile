@@ -15,7 +15,7 @@ SRCS            =	main.c \
 					ft_unset.c builtins_utils.c ft_cd.c gui.c \
 					utils.c parsing_right_way.c\
 					simple_command.c ft_pwd.c \
-					ft_executor.c
+					ft_executor.c ft_exit.c 
 
 
 

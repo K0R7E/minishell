@@ -20,7 +20,6 @@ void ft_get_input(t_info *info)
 		return ;
 	}
 	add_history(info->input);
-
 }
 
 void test_lexer_print(t_parsing *pars)
@@ -81,6 +80,8 @@ int main(int argc, char **argv, char **envp)
 		info->command_count = 1;
 		info->builtin_command_count = 0;
 		ft_get_input(info);
+		if (ft_check_input(info) == 1)
+			continue ;
 		if (!info->input)
 			continue ;
 		ft_lexer(info, parsing);

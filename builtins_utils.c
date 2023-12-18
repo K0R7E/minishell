@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 12:31:30 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/14 17:07:54 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/15 11:11:11 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int strlcmp_export(char *str1, char *str2, int n)
 			return (-1);
 		i++;
 	}
-	if (str2[i] == '\0' && str1[i] == '=')
+	if (str2[i] == '\0' && (str1[i] == '=' || str1[i] == '\0'))
 		return (0);
 	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:35:56 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/14 14:18:49 by akortvel         ###   ########.fr       */
+/*   Updated: 2023/12/15 16:27:13 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,4 +116,7 @@ void	ft_builtin(t_pars *pars, t_info *info)
 		ft_cd(info, pars->cmd_args);
 	if (ft_strncmp2(pars->command,  "pwd", 3) == 0)
 		ft_pwd(info);
+	if (ft_strncmp2(pars->command,  "exit", 3) == 0)
+		ft_exit(info, pars->cmd_args);
+	
 }
