@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 18:52:19 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/18 14:19:23 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/18 16:01:52 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,18 +72,15 @@ void	ft_new_prompt(t_info *info, t_lexer_pos *pos, int start, int type, t_pars *
 	new = malloc(sizeof(t_lexer));
 	if (new == NULL)
 	{
-		printf("Error: malloc\n");
-		//free function
-		exit(1);
+		ft_error_message(pars, info);
 	}
 	new->command = pos->command_number;
 	new->type = type;
 	new->token = ft_strldup(info->input + start, pos->i - start);
 	if (new->token == NULL)
 	{
-		perror("Error: malloc\n");
-		//free function
-		exit(1);
+		free(new);
+		ft_error_message(pars, info);
 	}
 	if (pos->hedoc == 1)
 	{

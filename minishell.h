@@ -123,7 +123,6 @@ typedef struct s_info
 	int		exit_code;
 	int 	*pid;	
 	t_lexer	lexer;
-	t_lexer	lexer_save;
 	int		builtin_command_count;
 }	t_info;
 
@@ -189,9 +188,10 @@ void ft_print_minishell_gui(void);
 
 //utils.c
 void	ft_close(int fd);
+void	ft_error_message(t_pars *pars, t_info *info);
 
 // env conversion
-void	env_conversion(t_info *info);
+void	env_conversion(t_info *info, t_pars *pars, char **envp);
 char **env_conversion_back(t_info *info);
 
 //builtin

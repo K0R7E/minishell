@@ -52,8 +52,11 @@ void free_lexer_list(t_lexer *head)
 
 void ft_free_all(t_pars *pars, t_info *info)
 {
+	t_lexer *lexer;
+
+	lexer = &info->lexer;
 	if (pars)
 		free_pars_list(pars);
- 	if (info->lexer != NULL)
-		free_lexer_list(info->lexer);
+ 	if (lexer)
+		free_lexer_list(lexer);
 }
