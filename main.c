@@ -22,6 +22,7 @@ void ft_get_input(t_info *info)
 	add_history(info->input);
 }
 
+/*
 void test_lexer_print(t_parsing *pars)
 {
 	t_lexer *tmp;
@@ -34,7 +35,7 @@ void test_lexer_print(t_parsing *pars)
 		tmp = tmp->next;
 		i++;
 	}
-}
+}*/
 
 int ft_listsize(t_pars *pars)
 {
@@ -55,11 +56,9 @@ int ft_listsize(t_pars *pars)
 int main(int argc, char **argv, char **envp)
 {
 	t_info *info;
-	t_parsing *parsing;
 	t_pars *pars;
 
 	info = malloc(sizeof(t_info));
-	parsing = malloc(sizeof(t_parsing));
 
 
 	if (argc != 1 || argv[1])
@@ -87,8 +86,9 @@ int main(int argc, char **argv, char **envp)
 			continue ;
 		if (!info->input)
 			continue ;
-		ft_lexer(info, parsing);
-		ft_parsing(&pars, &parsing->lexer, info);
+		ft_lexer(info, pars);
+
+		ft_parsing(&pars, &info->lexer, info);
 		info->command_count = ft_listsize(pars);
 		//ft_print_pars(pars);
 		ft_executor(pars, info);

@@ -80,6 +80,7 @@ typedef struct s_pars
 	struct s_pars	*prev;
 }	t_pars;
 
+/*
 typedef struct s_parsing
 {
 	char	**cmd_path;
@@ -99,7 +100,7 @@ typedef struct s_parsing
 	int		fd_pipe[2];
 	char 	*check_cmd[7];
 }	t_parsing;
-
+*/
 typedef struct s_env
 {	
 	int 			printed;
@@ -120,7 +121,8 @@ typedef struct s_info
 	int		command_count;
 	int		exit_status;
 	int		exit_code;
-	int 	*pid;
+	int 	*pid;	
+	t_lexer	lexer;
 	t_lexer	lexer_save;
 	int		builtin_command_count;
 }	t_info;
@@ -153,15 +155,16 @@ char	**ft_arrycpy(char **envp);
 void 	get_pwd(t_info *info);
 
 // parsing.c
+/*
 void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info);
-void free_parsing(t_parsing *pars);
+void free_parsing(t_parsing *pars);*/
 //void print_tokens(t_lexer *tokens);
 
 //input check
 int	ft_check_input(t_info *info);
 
 // lexer.c
-void	ft_lexer(t_info *info, t_parsing *list);
+void	ft_lexer(t_info *info, t_pars *pars);
 char *ft_strldup(char *s, size_t len);
 int	ft_strchr2(char *s, int c);
 

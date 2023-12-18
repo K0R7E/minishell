@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:35:56 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/15 16:27:13 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/18 13:50:14 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int find_arguments_length(t_lexer tmp)
 	return (i);
 }
 
+/*
 char **find_arguments(t_parsing *pars, int command_count, t_info *info)
 {
 	t_lexer tmp;
@@ -56,7 +57,7 @@ char **find_arguments(t_parsing *pars, int command_count, t_info *info)
 	
 	
 	tmp = info->lexer_save;
-	/*
+
 	t_lexer tmp3 = info->lexer_save;
 	printf("\n");
 	while (tmp3.next != NULL)
@@ -67,7 +68,7 @@ char **find_arguments(t_parsing *pars, int command_count, t_info *info)
 	}
 	printf("type: %d\n", tmp3.type);
 	printf("token: %s\n", tmp3.token);
-	*/
+	
 	i = 0;
 	while (i < command_count)
 	{
@@ -91,16 +92,16 @@ char **find_arguments(t_parsing *pars, int command_count, t_info *info)
 	}
 	input[i] = NULL;
 	//print input
-	/*
+	
 	i = 0;
 	while (input[i] != NULL)
 	{
 		printf("input[%d]:%s\n", i, input[i]);
 		i++;
 	}
-	*/
+
 	return (input);
-}
+}*/
 
 void	ft_builtin(t_pars *pars, t_info *info)
 {

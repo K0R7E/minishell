@@ -18,7 +18,6 @@ SRCS            =	main.c \
 					ft_executor.c ft_exit.c ft_free_all.c
 
 
-
 OBJ_DIR				=	obj
 OBJS				=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 
