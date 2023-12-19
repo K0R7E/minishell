@@ -100,6 +100,6 @@ void	ft_exit(t_info *info, char **input)
 	else
 	{
 		//free(input);
-		exit(0); //value: last exit code;
+		exit(info->exit_code); //value: last exit code;
 	}
 }

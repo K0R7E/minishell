@@ -81,6 +81,7 @@ int main(int argc, char **argv, char **envp)
 	g_global.stop_hd = 0;
 	g_global.in_cmd = 0;
 	g_global.in_hd = 0;
+	info->exit_code = 0;
 	init_signals();
 	printf("\033[2J\033[1;1H");
  	while (1)

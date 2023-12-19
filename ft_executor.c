@@ -1,5 +1,6 @@
 #include "libft/libft.h"
 #include "minishell.h"
+#include <stdlib.h>
 
 int	is_builtin_1(char *command)
 {
@@ -135,6 +136,11 @@ void ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 		}
         if (fd_in != 0) close(fd_in);
         if (fd_out != 1) close(fd_out);
+		if (WIFSIGNALED(status))
+			info->exit_code = 128 + WTERMSIG(status);
+		else
+			info->exit_code = (WEXITSTATUS(status));
+		//printf("exit code: %d\n", info->exit_code);
     }
 }
 
