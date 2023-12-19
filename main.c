@@ -20,6 +20,7 @@ void ft_get_input(t_info *info)
 		return ;
 	}
 	add_history(info->input);
+	return ;
 }
 
 /*
@@ -72,6 +73,7 @@ int main(int argc, char **argv, char **envp)
 		ft_free_all(pars, info, 2);
 		return (1);
 	}
+	info->pars_ptr = &pars;
 	info->env = ft_arrycpy(envp);
 	env_conversion(info, pars, envp);
 	get_pwd(info);
@@ -87,14 +89,14 @@ int main(int argc, char **argv, char **envp)
 		info->command_count = 1;
 		info->builtin_command_count = 0;
 		ft_get_input(info);
-		if (ft_check_input(info) == 1)
-			continue ;
 		if (!info->input)
 			continue ;
+		if (ft_check_input(info) == 1)
+			continue ;
 		ft_lexer(info, pars);
-
 		ft_parsing(&pars, &info->lexer, info);
 		info->command_count = ft_listsize(pars);
+		update_info(info);
 		ft_executor(pars, info);
 		free(info->input);
 		info->input = NULL;

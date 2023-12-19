@@ -1,3 +1,4 @@
+#include "libft/libft.h"
 #include "minishell.h"
 
 int	get_value_exit(long long int n)
@@ -5,20 +6,20 @@ int	get_value_exit(long long int n)
 	long long int i;
 
 	i = 0;
-	printf("n: %lld\n", n);
+	//printf("n: %lld\n", n);
 	if (n < 0)
 	{
 		i = (n * -1) / 256;
-		printf("i: %lld\n", i);
+		//printf("i: %lld\n", i);
 		n = n + (256 * (i + 1));
 	}
 	if (n > 255)
 	{
 		i = n / 256;
-		printf("i: %lld\n", i);
+		//printf("i: %lld\n", i);
 		n = n - (256 * i);
 	}
-	printf("n: %lld\n", n);
+	//printf("n: %lld\n", n);
 	return (n);
 }
 
@@ -78,9 +79,7 @@ void	ft_exit(t_info *info, char **input)
 		{
 			if (input[2] != NULL)
 			{
-				printf("minishell: exit: too many arguments\n");
-				//free(input);
-				exit(1);
+				ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 			}
 			else
 			{
@@ -90,12 +89,17 @@ void	ft_exit(t_info *info, char **input)
 		}
 		else
 		{
-			printf("minishell: exit: %s: numeric argument required\n", input[1]);
+			//printf("minishell: exit: %s: numeric argument required\n", input[1]);
+			ft_putstr_fd("minishell: exit: ", 2);
+			ft_putstr_fd(input[1], 2);
+			ft_putstr_fd(": numeric argument required\n", 2);
 			//free(input);
 			exit(2);
 		}
 	}
-
-	printf("exit\n");
-	exit(0);
+	else
+	{
+		//free(input);
+		exit(0); //value: last exit code;
+	}
 }

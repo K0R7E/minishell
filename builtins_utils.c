@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 12:31:30 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/15 11:11:11 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/19 15:49:06 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ int strlcmp_export(char *str1, char *str2, int n)
 	if (str2[i] == '\0' && (str1[i] == '=' || str1[i] == '\0'))
 		return (0);
 	return (1);
+}
+
+void add_element2()
+{
+
+	
 }
 
 void add_element(t_info *info, char *arg)
@@ -98,10 +104,18 @@ void	update_info(t_info *info)
 		tmp = tmp->next;
 	}
 	if (unset[0] == '0')
-		info->home = ft_strdup("");
+	{
+		free(info->home);
+		//info->home = ft_strdup("");
+		info->home = NULL;
+	}
 	/*
 	if (unset[1] == '0')
-		info->old_pwd = ft_strdup("");
+	{
+		free(info->old_pwd);
+		//info->old_pwd = ft_strdup("");
+		info->old_pwd = NULL;
+	}
 	if (unset[2] == '0')
 		info->pwd = ft_strdup("");*/
 }

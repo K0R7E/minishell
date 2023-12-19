@@ -14,6 +14,6 @@
 
 void	ft_pwd(t_info *info)
 {
-	update_info(info);
+	//update_info(info);
 	printf("%s\n", info->pwd);
 }

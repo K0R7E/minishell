@@ -124,6 +124,7 @@ typedef struct s_info
 	//int 	*pid;	
 	t_lexer	lexer;
 	int		builtin_command_count;
+	t_pars	**pars_ptr;
 }	t_info;
 
 typedef struct s_global

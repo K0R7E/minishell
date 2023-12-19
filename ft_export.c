@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 18:14:21 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/15 16:49:49 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/19 16:00:41 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,15 +189,8 @@ void	ft_export(t_info *info, char **args)
 			add_element(info, args[i++]);
 	}
 	i = 1;
-	/*
-	while (args[i] != NULL)
-	{
-		free(args[i]);
-		i++;
-	}
-	free(args);
-	*/
 }
+
 /*
 		ft_export(info, NULL);
 		ft_export(info, "a=abc");
