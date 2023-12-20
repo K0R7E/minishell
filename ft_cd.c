@@ -96,25 +96,65 @@ char	*convert_path_back(char *arg, t_info *info)
 	return (path);
 }
 
-
-void	ft_cd(t_info *info, char **args)
+int	ft_cd_arg(t_info *info, char **args)
 {
 	char *tmp;
+	int ret;
 
+	ret = 0;
+	if (strncmp(args[1], "..", 3) == 0)
+	{
+		tmp = convert_path_back(info->pwd, info);
+		if (chdir(tmp) == 0)
+			update_pwd(info, tmp);
+		free(tmp);
+	}
+	else
+	{
+		tmp = convert_path(info, args[1]);
+		if (chdir(tmp) == 0)
+			update_pwd(info, tmp);
+		else 
+		{
+			ft_putstr_fd("bash: cd: ", 2);
+			ft_putstr_fd(tmp, 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
+			ret = 1;
+		}
+		free (tmp);
+	}
+	return (ret);
+}
+
+
+int	ft_cd(t_info *info, char **args)
+{
+	int ret;
+
+	ret = 0;
 	if(args[1] == NULL)
 	{
 		if (chdir(info->home) == 0)
 			update_pwd(info, info->home);
 		else 
+		{
 			ft_putstr_fd("bash: cd: HOME not set\n", 2);
+			return (1);
+		}
 	}
 	else if (args[2] != NULL)
 	{
 		ft_putstr_fd("bash: cd: too many arguments\n", 2);
-		return ;
+		return (1);
 	}
 	else
 	{
+		ret = ft_cd_arg(info, args);
+	}
+	return (ret);
+}
+
+
 		/*
 		if (strncmp(args[1], "-", 2) == 0)
 		{
@@ -126,25 +166,3 @@ void	ft_cd(t_info *info, char **args)
 				ft_putstr_fd("bash: cd: OLDPWD not set\n", 2);
 			free(tmp);
 		}*/
-		if (strncmp(args[1], "..", 3) == 0)
-		{
-			tmp = convert_path_back(info->pwd, info);
-			if (chdir(tmp) == 0)
-				update_pwd(info, tmp);
-			free(tmp);
-		}
-		else
-		{
-			tmp = convert_path(info, args[1]);
-			if (chdir(tmp) == 0)
-				update_pwd(info, tmp);
-			else 
-			{
-				ft_putstr_fd("bash: cd: ", 2);
-				ft_putstr_fd(tmp, 2);
-				ft_putstr_fd(": No such file or directory\n", 2);
-			}
-			free (tmp);
-		}
-	}
-}

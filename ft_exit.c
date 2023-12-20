@@ -58,21 +58,20 @@ int	ft_atoi_exit(char *nptr)
 }
 
 
-void	ft_exit(t_info *info, char **input)
+int ft_exit(t_info *info, char **input)
 {
 	int i;
 	int exit_value;
 
-	(void)info;
 	i = 0;
-	printf("exit\n");
+	if (info->command_count == 1)
+		printf("exit\n");
 	if (input[1] == NULL)
 	{
 		//free(input);
-		exit(0);
+		exit(info->exit_code);
 	}
-
-	if (input[1] != NULL)
+	else
 	{
 		exit_value = ft_atoi_exit(input[1]);
 		if (exit_value != 256)
@@ -80,6 +79,7 @@ void	ft_exit(t_info *info, char **input)
 			if (input[2] != NULL)
 			{
 				ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+				return (1);
 			}
 			else
 			{
@@ -89,17 +89,11 @@ void	ft_exit(t_info *info, char **input)
 		}
 		else
 		{
-			//printf("minishell: exit: %s: numeric argument required\n", input[1]);
 			ft_putstr_fd("minishell: exit: ", 2);
 			ft_putstr_fd(input[1], 2);
 			ft_putstr_fd(": numeric argument required\n", 2);
 			//free(input);
 			exit(2);
 		}
-	}
-	else
-	{
-		//free(input);
-		exit(info->exit_code); //value: last exit code;
 	}
 }

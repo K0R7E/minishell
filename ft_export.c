@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 18:14:21 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/19 16:00:41 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/20 15:15:23 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ void add_element(t_info *info, char *arg)
 }
 */
 
-void	ft_export(t_info *info, char **args)
+int ft_export(t_info *info, char **args)
 {
 	int i;
 	
@@ -189,6 +189,7 @@ void	ft_export(t_info *info, char **args)
 			add_element(info, args[i++]);
 	}
 	i = 1;
+	return (0);
 }
 
 /*

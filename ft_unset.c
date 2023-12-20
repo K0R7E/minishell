@@ -59,22 +59,17 @@ void remove_element(t_info *info, char *arg)
 }
 
 
-void	ft_unset(t_info *info, char **args)
+int	ft_unset(t_info *info, char **args)
 {
 	int i;
 	
 	i = 1;
 	if (args[1] == NULL)
-		return ;
+		return (0);
 	else
 	{
 		while (args[i] != NULL)
 			remove_element(info, args[i++]);
 	}
-	while (args[i])
-	{
-		free(args[i]);
-		i++;
-	}
-	free(args);
+	return (0);
 }

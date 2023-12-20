@@ -196,14 +196,14 @@ void	env_conversion(t_info *info, t_pars *pars, char **envp);
 char **env_conversion_back(t_info *info);
 
 //builtin
-void	ft_builtin(t_pars *pars, t_info *info);
-void	ft_export(t_info *info, char **args);
-void	ft_env(t_info *info);
-void	ft_echo(char **input);
-void	ft_unset(t_info *info, char **args);
-void	ft_cd(t_info *info, char **args);
-void	ft_pwd(t_info *info);
-void	ft_exit(t_info *info, char **input);
+int	ft_builtin(t_pars *pars, t_info *info);
+int	ft_export(t_info *info, char **args);
+int	ft_env(t_info *info);
+int	ft_echo(char **input);
+int	ft_unset(t_info *info, char **args);
+int	ft_cd(t_info *info, char **args);
+int	ft_pwd(t_info *info);
+int ft_exit(t_info *info, char **input);
 
 //ft_check_input.c
 int	ft_check_input(t_info *info);
