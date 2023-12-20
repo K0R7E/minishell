@@ -6,10 +6,11 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 13:40:04 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/19 17:08:13 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/20 18:10:16 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft/libft.h"
 #include "minishell.h"
 
 int give_env_variable_pos(char *input, int i, t_info *info, int mode)
@@ -158,6 +159,11 @@ char *replace_dollar(char *input,  t_info *info)
 			{
 				res = ft_strjoin2(res, ft_itoa(info->exit_code));
 				i += 2;
+			}
+			else if (ft_isalpha(input[i +1]) == 0 && input[i +1] != '_')
+			{
+				res = add_char_to_str(res, input[i]);
+				i++;
 			}
 			else
 			{

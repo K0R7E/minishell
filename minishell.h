@@ -165,6 +165,7 @@ int	ft_check_input(t_info *info);
 
 // lexer.c
 void	ft_lexer(t_info *info, t_pars *pars);
+void	remove_quotes_from_parsing_list(t_pars *pars);
 char *ft_strldup(char *s, size_t len);
 int	ft_strchr2(char *s, int c);
 

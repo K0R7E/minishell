@@ -106,7 +106,8 @@ void ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
             dup2(file_fd, STDIN_FILENO);
             close(file_fd);
         }
-		if ((is_builtin_1(tmp->command) || (strcmp(tmp->command, "export") == 0 && tmp->cmd_args[1] == NULL)) || (is_builtin_2(tmp->command) && info->command_count > 1))
+		if ((is_builtin_1(tmp->command) || (ft_strncmp(tmp->command, "export", 7) == 0 
+			&& tmp->cmd_args[1] == NULL)) || (is_builtin_2(tmp->command) && info->command_count > 1))
 		{	
 			ret = ft_builtin(tmp, info);
 			exit(ret);

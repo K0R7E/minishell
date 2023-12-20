@@ -96,6 +96,7 @@ int main(int argc, char **argv, char **envp)
 			continue ;
 		ft_lexer(info, pars);
 		ft_parsing(&pars, &info->lexer, info);
+		remove_quotes_from_parsing_list(pars);
 		info->command_count = ft_listsize(pars);
 		update_info(info);
 		ft_executor(pars, info);

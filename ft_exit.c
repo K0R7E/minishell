@@ -34,9 +34,10 @@ int	ft_atoi_exit(char *nptr)
 	i = 0;
 	minus = 1;
 	result = 0;
-	if (nptr[i] == '-')
+	if (nptr[i] == '-' || nptr[i] == '+')
 	{
-		minus = minus * -1;
+		if (nptr[i] == '-')
+			minus = minus * -1;
 		i++;
 	}
 	if (nptr[i] == '\0')
@@ -68,7 +69,7 @@ int ft_exit(t_info *info, char **input)
 		printf("exit\n");
 	if (input[1] == NULL)
 	{
-		//free(input);
+		//ft_free_all(*info->pars_ptr, info, 1);
 		exit(info->exit_code);
 	}
 	else
@@ -83,7 +84,7 @@ int ft_exit(t_info *info, char **input)
 			}
 			else
 			{
-				//free(input);
+				//ft_free_all(*info->pars_ptr, info, 1);
 				exit(exit_value);
 			}
 		}
@@ -92,7 +93,7 @@ int ft_exit(t_info *info, char **input)
 			ft_putstr_fd("minishell: exit: ", 2);
 			ft_putstr_fd(input[1], 2);
 			ft_putstr_fd(": numeric argument required\n", 2);
-			//free(input);
+			//ft_free_all(*info->pars_ptr, info, 1);
 			exit(2);
 		}
 	}
