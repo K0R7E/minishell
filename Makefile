@@ -35,7 +35,7 @@ $(LIBFT):
 
 $(NAME): 		    $(LIBFT) $(OBJ_DIR) $(OBJS)
 						cp	$(LIBFT) $(NAME)
-				        $(CC) $(CFLAGS) $(FLAGS) $(OBJS) -o $(NAME) -L$(LIBFT_PATH) -lft
+				        $(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L$(LIBFT_PATH) -lft -lreadline
 
 $(OBJ_DIR):		
 					mkdir -p $(OBJ_DIR)
