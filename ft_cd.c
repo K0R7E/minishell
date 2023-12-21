@@ -34,7 +34,7 @@ int	chdir_input(char *path)
 {
 	if (chdir(path) == -1)
 	{
-		ft_putstr_fd("Minishell: cd: ", 2);
+		ft_putstr_fd("minishell: cd: ", 2);
 		ft_putstr_fd(path, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
 		return (-1);
@@ -116,7 +116,7 @@ int	ft_cd_arg(t_info *info, char **args)
 			update_pwd(info, tmp);
 		else 
 		{
-			ft_putstr_fd("bash: cd: ", 2);
+			ft_putstr_fd("minishell: cd: ", 2);
 			ft_putstr_fd(tmp, 2);
 			ft_putstr_fd(": No such file or directory\n", 2);
 			ret = 1;
@@ -138,13 +138,13 @@ int	ft_cd(t_info *info, char **args)
 			update_pwd(info, info->home);
 		else 
 		{
-			ft_putstr_fd("bash: cd: HOME not set\n", 2);
+			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 			return (1);
 		}
 	}
 	else if (args[2] != NULL)
 	{
-		ft_putstr_fd("bash: cd: too many arguments\n", 2);
+		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
 		return (1);
 	}
 	else
@@ -153,16 +153,3 @@ int	ft_cd(t_info *info, char **args)
 	}
 	return (ret);
 }
-
-
-		/*
-		if (strncmp(args[1], "-", 2) == 0)
-		{
-			tmp = strdup(info->old_pwd);
-			printf("%s\n", tmp);
-			if (chdir(tmp) == 0)
-				update_pwd(info, tmp);
-			else
-				ft_putstr_fd("bash: cd: OLDPWD not set\n", 2);
-			free(tmp);
-		}*/
