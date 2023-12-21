@@ -6,45 +6,11 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 18:52:19 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/18 16:01:52 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/19 12:14:23 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "libft/libft.h"
 #include "minishell.h"
-/* #include "lexer.h" */
-
-/*
-int	count_prompts(char *str)
-{
-	int i;
-	int count;
-
-	i = 0;
-	count = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == '\'')
-		{
-			i++;
-			while (str[i] != '\'')
-				i++;
-			count++;
-		}
-		if (str[i] == '\"')
-		{
-			i++;
-			while (str[i] != '\"')
-				i++;
-			count++;
-		}
-		if (str[i] == ' ' || str[i] == '\t')
-			count++;
-		i++;
-	}
-	return (count + 1);
-}
-*/
 
 int	ft_strchr2(char *s, int c)
 {
@@ -67,11 +33,11 @@ void	ft_new_prompt(t_info *info, t_lexer_pos *pos, int start, int type, t_pars *
 	t_lexer *new;
 	t_lexer *tmp;
 
-	(void)pars;
 	//tmp = malloc(sizeof(t_lexer));
 	new = malloc(sizeof(t_lexer));
 	if (new == NULL)
 	{
+		free(pos);
 		ft_error_message(pars, info);
 	}
 	new->command = pos->command_number;
@@ -79,6 +45,7 @@ void	ft_new_prompt(t_info *info, t_lexer_pos *pos, int start, int type, t_pars *
 	new->token = ft_strldup(info->input + start, pos->i - start);
 	if (new->token == NULL)
 	{
+		free(pos);
 		free(new);
 		ft_error_message(pars, info);
 	}
@@ -209,14 +176,16 @@ void	copy_lexer_list(t_info *info)
 
 void	ft_lexer(t_info *info, t_pars *pars) //input str; env var
 {
-	t_lexer_pos *pos = malloc(sizeof(t_lexer_pos));
+	t_lexer_pos *pos;
 	
+	pos = malloc(sizeof(t_lexer_pos));
+	if (pos == NULL)
+		ft_error_message(pars, info);
 	info->lexer.command = 0;
 	pos->i = 0;
 	pos->command_number = 1;
 	pos->hedoc = 0;
 	info->input = replace_dollar(info->input, info);
-	//printf("input: %s\n", info->input);
 	while (info->input[pos->i] != '\0')
 	{
 		if (info->input[pos->i] == ' ' || info->input[pos->i] == '\t')
@@ -229,7 +198,7 @@ void	ft_lexer(t_info *info, t_pars *pars) //input str; env var
 		else
 			handle_prompt(info, pos, pars);
 	}
-	//copy_lexer_list(info);
+	free(pos);
 	//print lexer list
 	/*
 	t_lexer tmp = list->lexer;
@@ -248,89 +217,3 @@ void	ft_lexer(t_info *info, t_pars *pars) //input str; env var
 	printf("token: %s\n", tmp.token);
 	*/
 }
-
-	
-	
-
-	//info->args = (char **)malloc(((count_prompts(info->input)) + 1) * sizeof(char *));
-	//printf("prompts: %d\n", (count_prompts(input->input_str)));
-	/*
-	if (!input->input_str)
-		return ;
-	while (input->input_str[i] != '\0')
-	{
-		if (input->input_str[i] == ' ' || input->input_str[i] == '\t')
-		{
-			i++;
-			continue ;
-		}
-		if (input->input_str[i] == '\'')
-		{
-			length = i;
-			i++;
-			while (input->input_str[i] != '\'')
-			{
-				i++;
-				if(input->input_str[i] == '\0')
-				{
-					printf("Error: unclosed quote\n");
-					break ;
-				}
-			}
-			while (input->input_str[i] != ' ' || input->input_str[i] != '\0' || input->input_str[i] != '\t')
-				i++;
-			i++;
-			info->args[++pos] = ft_strldup(input->input_str + length, i - length); //change to linked list
-		}
-		else if (input->input_str[i] == '\"')
-		{
-			length = i;
-			i++;
-			while (input->input_str[i] != '\"')
-			{
-				i++;
-				if(input->input_str[i] == '\0')
-				{
-					printf("Error: unclosed quote\n");
-					break ;
-				}	
-			}
-			i++;
-			info->args[++pos] = ft_strldup(input->input_str + length, i - length); //change to linked list
-		}
-		else 
-		{
-			length = i;
-			i++;
-			while (input->input_str[i] != '\0')
-			{
-				if (input->input_str[i] == ' ' || input->input_str[i] == '\t')
-					break ;
-				if (input->input_str[i] == '\'' || input->input_str[i] == '\"')
-					break ;
-				i++;
-			}
-			info->args[++pos] = ft_strldup(input->input_str + length, i - length); //change to linked list
-			//info->args[pos++] = ft_strldup(input->input_str + i, j + 1); write own
-			//info->args[j++][i - length] = '\0';
-		}
-		
-	}
-	info->args[++pos]= NULL;
-	*/
-
-
-/*
-void	parser(char* input_str, t_info *info)
-{
-	t_input *input = malloc(sizeof(t_info));
-	
-	input->input_str = replace_dollar(input_str, info);//convert variables from env list
-	ft_lexer(input, info);
-	int i = -1;
-	while (input->args[++i] != 0)
-	{
-		printf("str at pos %d: %s\n", i, input->args[i]);
-	}
-}
-*/

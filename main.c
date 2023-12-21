@@ -20,6 +20,7 @@ void ft_get_input(t_info *info)
 		return ;
 	}
 	add_history(info->input);
+	return ;
 }
 
 /*
@@ -72,13 +73,15 @@ int main(int argc, char **argv, char **envp)
 		ft_free_all(pars, info, 2);
 		return (1);
 	}
-	//info->env = ft_arrycpy(envp);
+	info->pars_ptr = &pars;
+	info->env = ft_arrycpy(envp);
 	env_conversion(info, pars, envp);
 	get_pwd(info);
 	info->exit_status = 0;
 	g_global.stop_hd = 0;
 	g_global.in_cmd = 0;
 	g_global.in_hd = 0;
+	info->exit_code = 0;
 	init_signals();
 	printf("\033[2J\033[1;1H");
  	while (1)
@@ -87,18 +90,19 @@ int main(int argc, char **argv, char **envp)
 		info->command_count = 1;
 		info->builtin_command_count = 0;
 		ft_get_input(info);
-		if (ft_check_input(info) == 1)
-			continue ;
 		if (!info->input)
 			continue ;
+		if (ft_check_input(info) == 1)
+			continue ;
 		ft_lexer(info, pars);
-
 		ft_parsing(&pars, &info->lexer, info);
+		remove_quotes_from_parsing_list(pars);
 		info->command_count = ft_listsize(pars);
+		update_info(info);
 		ft_executor(pars, info);
-		free(info->input);
+		//free(info->input);
 		info->input = NULL;
-		ft_free_all(pars, info, 1);
+		//ft_free_all(pars, info, 1);
 	}
 	ft_free_all(pars, info, 2);
 	return (0);

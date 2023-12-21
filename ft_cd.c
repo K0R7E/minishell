@@ -34,11 +34,15 @@ int	chdir_input(char *path)
 {
 	if (chdir(path) == -1)
 	{
-		printf("bash: cd: %s: No such file or directory\n", path);
+		ft_putstr_fd("Minishell: cd: ", 2);
+		ft_putstr_fd(path, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 		return (-1);
 	}
 	return (0);
 }
+
+
 
 void	update_pwd(t_info *info, char *path)
 {
@@ -49,123 +53,116 @@ void	update_pwd(t_info *info, char *path)
 	info->old_pwd = ft_strdup(info->pwd);
 	free(info->pwd);
 	info->pwd = ft_strdup(path);
+	//printf("old pwd: %s\n", info->old_pwd);
 }
+
 
 char	*convert_path(t_info *info, char *arg)
 {
 	char *path;
-
 	if (arg[0] == '/')
 	{
-		path = ft_strjoin(info->pwd, arg);
-		return (path);
-	}
-	else if (arg[0] == '.' && arg[1] == '/')
-	{
-		path = ft_strjoin(info->pwd, "/");
-		path = ft_strjoin3(path, arg + 2);
-		return (path);
-	}
-	else if (arg[0] == '.' && arg[1] == '.' && arg[2] == '/')
-	{
-		path = ft_strjoin(info->pwd, "/");
-		path = ft_strjoin3(path, arg + 3);
-		return (path);
+		path = ft_strdup(arg);
+		if (path == NULL)
+			ft_error_message(*info->pars_ptr, info);
 	}
 	else
 	{
-		path = ft_strjoin(info->pwd, "/");
+		path = ft_strjoin(info->pwd, "/");;
+		if (path == NULL)
+			ft_error_message(*info->pars_ptr, info);
 		path = ft_strjoin3(path, arg);
-		return (path);
+		if (path == NULL)
+			ft_error_message(*info->pars_ptr, info);
 	}
+	if (path[ft_strlen(path) - 1] == '/')
+		path[ft_strlen(path) - 1] = '\0';
+	//printf("path: %s\n", path);
+	return (path);
 }
 
-/*
-void	update_info(t_info *info)
+char	*convert_path_back(char *arg, t_info *info)
 {
-	t_env *tmp;
-	char *unset;
-	
-	free(info->home);
-	free(info->pwd);
-	free(info->old_pwd);
-	tmp = info->env_list;
-	unset = strdup("000");
-	while (tmp)
-	{
-		if (ft_strncmp(tmp->var, "HOME", 4) == 0)
-		{
-			unset[0] = '1';
-			info->home = ft_strdup(tmp->value);
-		}
-		if (ft_strncmp(tmp->var, "OLDPWD", 6) == 0)
-		{
-			unset[1] = '1';
-			info->old_pwd = ft_strdup(tmp->value);
-		}
-		if (ft_strncmp(tmp->var, "PWD", 3) == 0)
-		{
-			unset[2] = '1';
-			info->pwd = ft_strdup(tmp->value);
-		}
-		tmp = tmp->next;
-	}
-	if (unset[0] == '0')
-		info->home = ft_strdup("");
-	if (unset[1] == '0')
-		info->old_pwd = ft_strdup("");
-	if (unset[2] == '0')
-		info->pwd = ft_strdup("");
-}*/
+	char *path;
+	int i;
 
-void	ft_cd(t_info *info, char **args)
+	i = ft_strlen(arg);
+	while (arg[i] != '/')
+		i--;
+	path = ft_strldup(arg, i);
+	if (path == NULL)
+		ft_error_message(*info->pars_ptr, info);
+	//printf("path: %s\n", path);
+	return (path);
+}
+
+int	ft_cd_arg(t_info *info, char **args)
 {
 	char *tmp;
-	//int i;
-	update_info(info);
-	//print args 
-/* 	int i = 0; */
-	if(args[1] == NULL || ft_strncmp(args[1], "~", 1) == 0)
+	int ret;
+
+	ret = 0;
+	if (strncmp(args[1], "..", 3) == 0)
+	{
+		tmp = convert_path_back(info->pwd, info);
+		if (chdir(tmp) == 0)
+			update_pwd(info, tmp);
+		free(tmp);
+	}
+	else
+	{
+		tmp = convert_path(info, args[1]);
+		if (chdir(tmp) == 0)
+			update_pwd(info, tmp);
+		else 
+		{
+			ft_putstr_fd("bash: cd: ", 2);
+			ft_putstr_fd(tmp, 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
+			ret = 1;
+		}
+		free (tmp);
+	}
+	return (ret);
+}
+
+
+int	ft_cd(t_info *info, char **args)
+{
+	int ret;
+
+	ret = 0;
+	if(args[1] == NULL)
 	{
 		if (chdir(info->home) == 0)
-		{
 			update_pwd(info, info->home);
-		}
 		else 
-			printf("bash: cd: %s: No such file or directory\n", info->home);//error message, shouldn't be redirected
+		{
+			ft_putstr_fd("bash: cd: HOME not set\n", 2);
+			return (1);
+		}
 	}
 	else if (args[2] != NULL)
 	{
-		printf("bash: cd: too many arguments\n");//error message, shouldn't be redirected
-		return ;
+		ft_putstr_fd("bash: cd: too many arguments\n", 2);
+		return (1);
 	}
 	else
 	{
-		if (strncmp(args[1], "-", 1) == 0 || strncmp(args[1], "..", 2) == 0)
-		{
-			if (chdir(info->old_pwd) == 0)
-			{
-				tmp = ft_strdup(info->old_pwd);
-				update_pwd(info, ft_strdup(tmp));
-				free(tmp);
-			}
-		}
-		else
-		{
-			tmp = convert_path(info, args[1]);
-			if (chdir_input(tmp) == 0)
-				update_pwd(info, tmp);
-			free (tmp);
-		}
+		ret = ft_cd_arg(info, args);
 	}
-	/*
-	i = 1;
-	while (args[i] != NULL)
-	{
-		free(args[i]);
-		i++;
-	}
-	free(args);*/
-	//printf ("old_pwd:%s\n", info->old_pwd);
-	//printf ("pwd:%s\n", info->pwd);
+	return (ret);
 }
+
+
+		/*
+		if (strncmp(args[1], "-", 2) == 0)
+		{
+			tmp = strdup(info->old_pwd);
+			printf("%s\n", tmp);
+			if (chdir(tmp) == 0)
+				update_pwd(info, tmp);
+			else
+				ft_putstr_fd("bash: cd: OLDPWD not set\n", 2);
+			free(tmp);
+		}*/

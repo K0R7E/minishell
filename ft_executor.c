@@ -1,4 +1,6 @@
+#include "libft/libft.h"
 #include "minishell.h"
+#include <stdlib.h>
 
 int	is_builtin_1(char *command)
 {
@@ -42,10 +44,32 @@ int	is_builtin_2(char *command)
 	return (0);
 }
 
+int	is_builtin_3(char *command)
+{
+/* 	if (ft_strncmp(command, "echo", 5) == 0)
+		return (1);
+
+	if (ft_strncmp(command, "pwd", 4) == 0)
+		return (1);
+
+	if (ft_strncmp(command, "env", 4) == 0)
+		return (1); */
+	/*if (ft_strncmp(command, "export", 7) == 0)
+		return (1);*/
+	if (ft_strncmp(command, "unset", 6) == 0)
+		return (1);
+	if (ft_strncmp(command, "cd", 3) == 0)
+		return (1);
+	if (ft_strncmp(command, "exit", 5) == 0)
+		return (1);
+	return (0);
+}
+
 void ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 {
     pid_t pid;
     int status;
+	int ret;
 
     pid = fork();
     if (pid == 0)
@@ -82,19 +106,23 @@ void ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
             dup2(file_fd, STDIN_FILENO);
             close(file_fd);
         }
-		if (is_builtin_1(tmp->command))
-			ft_builtin(tmp, info);
-		else if (strcmp(tmp->command, "export") == 0 && tmp->cmd_args[1] == NULL)
-			ft_builtin(tmp, info);
+		if ((is_builtin_1(tmp->command) || (ft_strncmp(tmp->command, "export", 7) == 0 
+			&& tmp->cmd_args[1] == NULL)) || (is_builtin_2(tmp->command) && info->command_count > 1))
+		{	
+			ret = ft_builtin(tmp, info);
+			exit(ret);
+		}
 		else if (is_builtin_2(tmp->command))
+		{
 			exit(EXIT_SUCCESS);
+		}
 		else if (execve(tmp->cmd_path, tmp->cmd_args, env_conversion_back(info)) == -1)
         {
             ft_putstr_fd("Error: command not found: ", STDERR_FILENO);
             ft_putendl_fd(tmp->command, STDERR_FILENO);
-            exit(EXIT_FAILURE);
+            exit(127);
         }
-        exit(EXIT_SUCCESS);
+        //exit(EXIT_SUCCESS);
     }
     else if (pid < 0)
     {
@@ -105,10 +133,22 @@ void ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
     {
         waitpid(pid, &status, 0);
 		//printf("command_count:%d\n", info->command_count);
-		if (is_builtin_2(tmp->command) && info->command_count == 1)
-			ft_builtin(tmp, info);
+		if ((is_builtin_2(tmp->command) && info->command_count == 1))
+		{
+			if (ft_strncmp(tmp->command, "export", 7) != 0 || 
+				(ft_strncmp(tmp->command, "export", 7) == 0 && tmp->cmd_args[1] != NULL))
+			{	
+				info->exit_code = ft_builtin(tmp, info); 
+			}
+		}
+		
+		else
+			info->exit_code = (WEXITSTATUS(status));
+		if (WIFSIGNALED(status))
+			info->exit_code = 128 + WTERMSIG(status);
         if (fd_in != 0) close(fd_in);
         if (fd_out != 1) close(fd_out);
+		//printf("exit code: %d\n", info->exit_code);
     }
 }
 

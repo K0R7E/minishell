@@ -1,3 +1,4 @@
+#include "libft/libft.h"
 #include "minishell.h"
 
 int	get_value_exit(long long int n)
@@ -5,20 +6,20 @@ int	get_value_exit(long long int n)
 	long long int i;
 
 	i = 0;
-	printf("n: %lld\n", n);
+	//printf("n: %lld\n", n);
 	if (n < 0)
 	{
 		i = (n * -1) / 256;
-		printf("i: %lld\n", i);
+		//printf("i: %lld\n", i);
 		n = n + (256 * (i + 1));
 	}
 	if (n > 255)
 	{
 		i = n / 256;
-		printf("i: %lld\n", i);
+		//printf("i: %lld\n", i);
 		n = n - (256 * i);
 	}
-	printf("n: %lld\n", n);
+	//printf("n: %lld\n", n);
 	return (n);
 }
 
@@ -33,9 +34,10 @@ int	ft_atoi_exit(char *nptr)
 	i = 0;
 	minus = 1;
 	result = 0;
-	if (nptr[i] == '-')
+	if (nptr[i] == '-' || nptr[i] == '+')
 	{
-		minus = minus * -1;
+		if (nptr[i] == '-')
+			minus = minus * -1;
 		i++;
 	}
 	if (nptr[i] == '\0')
@@ -57,45 +59,42 @@ int	ft_atoi_exit(char *nptr)
 }
 
 
-void	ft_exit(t_info *info, char **input)
+int ft_exit(t_info *info, char **input)
 {
 	int i;
 	int exit_value;
 
-	(void)info;
 	i = 0;
-	printf("exit\n");
+	if (info->command_count == 1)
+		printf("exit\n");
 	if (input[1] == NULL)
 	{
-		//free(input);
-		exit(0);
+		//ft_free_all(*info->pars_ptr, info, 1);
+		exit(info->exit_code);
 	}
-
-	if (input[1] != NULL)
+	else
 	{
 		exit_value = ft_atoi_exit(input[1]);
 		if (exit_value != 256)
 		{
 			if (input[2] != NULL)
 			{
-				printf("minishell: exit: too many arguments\n");
-				//free(input);
-				exit(1);
+				ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+				return (1);
 			}
 			else
 			{
-				//free(input);
+				//ft_free_all(*info->pars_ptr, info, 1);
 				exit(exit_value);
 			}
 		}
 		else
 		{
-			printf("minishell: exit: %s: numeric argument required\n", input[1]);
-			//free(input);
+			ft_putstr_fd("minishell: exit: ", 2);
+			ft_putstr_fd(input[1], 2);
+			ft_putstr_fd(": numeric argument required\n", 2);
+			//ft_free_all(*info->pars_ptr, info, 1);
 			exit(2);
 		}
 	}
-
-	printf("exit\n");
-	exit(0);
 }

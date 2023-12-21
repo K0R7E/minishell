@@ -110,7 +110,7 @@ typedef struct s_env
 }	t_env;
 typedef struct s_info
 {
-	//char	**env;
+	char	**env;
 	t_env	*env_list;
 	char	*input;
 	char	*path;
@@ -124,6 +124,7 @@ typedef struct s_info
 	//int 	*pid;	
 	t_lexer	lexer;
 	int		builtin_command_count;
+	t_pars	**pars_ptr;
 }	t_info;
 
 typedef struct s_global
@@ -164,6 +165,7 @@ int	ft_check_input(t_info *info);
 
 // lexer.c
 void	ft_lexer(t_info *info, t_pars *pars);
+void	remove_quotes_from_parsing_list(t_pars *pars);
 char *ft_strldup(char *s, size_t len);
 int	ft_strchr2(char *s, int c);
 
@@ -195,14 +197,14 @@ void	env_conversion(t_info *info, t_pars *pars, char **envp);
 char **env_conversion_back(t_info *info);
 
 //builtin
-void	ft_builtin(t_pars *pars, t_info *info);
-void	ft_export(t_info *info, char **args);
-void	ft_env(t_info *info);
-void	ft_echo(char **input);
-void	ft_unset(t_info *info, char **args);
-void	ft_cd(t_info *info, char **args);
-void	ft_pwd(t_info *info);
-void	ft_exit(t_info *info, char **input);
+int	ft_builtin(t_pars *pars, t_info *info);
+int	ft_export(t_info *info, char **args);
+int	ft_env(t_info *info);
+int	ft_echo(char **input);
+int	ft_unset(t_info *info, char **args);
+int	ft_cd(t_info *info, char **args);
+int	ft_pwd(t_info *info);
+int ft_exit(t_info *info, char **input);
 
 //ft_check_input.c
 int	ft_check_input(t_info *info);

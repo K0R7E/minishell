@@ -6,10 +6,11 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 18:14:21 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/15 16:49:49 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/21 11:16:42 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft/libft.h"
 #include "minishell.h"
 
 int		ft_strcmp(char *str1, char *str2)
@@ -176,28 +177,53 @@ void add_element(t_info *info, char *arg)
 }
 */
 
-void	ft_export(t_info *info, char **args)
+int		is_valid_env(char *env)
+{
+	int		i;
+
+	i = 0;
+	if (ft_isdigit(env[i]) == 1)
+		return (1);
+	if (env[i] == '=')
+		return (1);
+	while (env[i] && env[i] != '=' && env[i] != '\0')
+	{
+		if (ft_isalnum(env[i]) == 0 && env[i] != '_')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int ft_export(t_info *info, char **args)
 {
 	int i;
+	int ret;
 	
+	ret = 0;
 	i = 1;
 	if (args[1] == NULL)
 		print_export(info);
 	else
 	{
 		while (args[i] != NULL)
-			add_element(info, args[i++]);
+		{
+			if (is_valid_env(args[i]) == 0)
+				add_element(info, args[i++]);
+			else
+			{
+				ft_putstr_fd("minishell: export: `", 2);
+				ft_putstr_fd(args[i], 2);
+				ft_putstr_fd("': not a valid identifier\n", 2);
+				ret = 1;
+				i++;
+			}
+		}
 	}
 	i = 1;
-	/*
-	while (args[i] != NULL)
-	{
-		free(args[i]);
-		i++;
-	}
-	free(args);
-	*/
+	return (ret);
 }
+
 /*
 		ft_export(info, NULL);
 		ft_export(info, "a=abc");

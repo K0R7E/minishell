@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:35:56 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/18 13:50:14 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/20 13:57:54 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,21 +103,24 @@ char **find_arguments(t_parsing *pars, int command_count, t_info *info)
 	return (input);
 }*/
 
-void	ft_builtin(t_pars *pars, t_info *info)
+int	ft_builtin(t_pars *pars, t_info *info)
 {
+	int exit_code;
+
+	exit_code = 0;
 	if (ft_strncmp2(pars->command,  "echo", 4) == 0)
-		ft_echo(pars->cmd_args);
+		exit_code = ft_echo(pars->cmd_args);
 	if (ft_strncmp2(pars->command,  "export", 6) == 0)
-		ft_export(info, pars->cmd_args);
+		exit_code = ft_export(info, pars->cmd_args);
 	if (ft_strncmp2(pars->command,  "unset", 5) == 0)
-		ft_unset(info, pars->cmd_args);
+		exit_code = ft_unset(info, pars->cmd_args);
 	if (ft_strncmp2(pars->command,  "env", 3) == 0)
-		ft_env(info);
+		exit_code = ft_env(info);
 	if (ft_strncmp2(pars->command,  "cd", 2) == 0)
-		ft_cd(info, pars->cmd_args);
+		exit_code = ft_cd(info, pars->cmd_args);
 	if (ft_strncmp2(pars->command,  "pwd", 3) == 0)
-		ft_pwd(info);
+		exit_code = ft_pwd(info);
 	if (ft_strncmp2(pars->command,  "exit", 3) == 0)
-		ft_exit(info, pars->cmd_args);
-	
+		exit_code = ft_exit(info, pars->cmd_args);
+	return (exit_code);
 }

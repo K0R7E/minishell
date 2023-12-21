@@ -6,10 +6,11 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 13:40:04 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/15 15:07:37 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/21 11:23:03 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft/libft.h"
 #include "minishell.h"
 
 int give_env_variable_pos(char *input, int i, t_info *info, int mode)
@@ -22,7 +23,7 @@ int give_env_variable_pos(char *input, int i, t_info *info, int mode)
 	pos = 0;
 	while (input[i + ++j] != '\0')
 	{
-		if (input[i + j] == ' ' || input[i + j] == '\'' || input[i + j] == '\t' || input[i + j] == '\"' )
+		if (ft_isalnum(input[i + j]) == 0 && input[i + j] != '_') // update, what is allowed
 			break;
 	}
 	if (mode == 1)
@@ -154,14 +155,27 @@ char *replace_dollar(char *input,  t_info *info)
 		}
 		if (input[i] == '$' && (stateSingle == 0))
 		{
-			j = give_env_variable_pos(input, i, info, 0);
-			if (j != -1)
+			if (input[i +1] == '?')
 			{
-				//printf("res before iteration %d: %s\n", i, res);
-				res = ft_strjoin2(res, copy_env_value(j, info));
-				//printf("res after iteration %d: %s\n", i, res);
+				res = ft_strjoin2(res, ft_itoa(info->exit_code));
+				i += 2;
 			}
-			i += (give_env_variable_pos(input, i, info, 1));
+			else if (ft_isalpha(input[i +1]) == 0 && input[i +1] != '_')
+			{
+				res = add_char_to_str(res, input[i]);
+				i++;
+			}
+			else
+			{
+				j = give_env_variable_pos(input, i, info, 0);
+				if (j != -1)
+				{
+					//printf("res before iteration %d: %s\n", i, res);
+					res = ft_strjoin2(res, copy_env_value(j, info));
+					//printf("res after iteration %d: %s\n", i, res);
+				}
+				i += (give_env_variable_pos(input, i, info, 1));
+			}
 		}
 		else
 		{
@@ -174,5 +188,6 @@ char *replace_dollar(char *input,  t_info *info)
 	free (input);
 	if (res == NULL)
 		return (strdup("\0"));
+	//printf("res: %s\n", res);
 	return(res);
 }
