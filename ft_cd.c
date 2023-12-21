@@ -34,7 +34,7 @@ int	chdir_input(char *path)
 {
 	if (chdir(path) == -1)
 	{
-		ft_putstr_fd("bash: cd: ", 2);
+		ft_putstr_fd("Minishell: cd: ", 2);
 		ft_putstr_fd(path, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
 		return (-1);

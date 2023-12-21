@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 13:40:04 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/20 18:10:16 by fstark           ###   ########.fr       */
+/*   Updated: 2023/12/21 11:23:03 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int give_env_variable_pos(char *input, int i, t_info *info, int mode)
 	pos = 0;
 	while (input[i + ++j] != '\0')
 	{
-		if (input[i + j] == ' ' || input[i + j] == '\'' || input[i + j] == '\t' || input[i + j] == '\"' )
+		if (ft_isalnum(input[i + j]) == 0 && input[i + j] != '_') // update, what is allowed
 			break;
 	}
 	if (mode == 1)
@@ -188,5 +188,6 @@ char *replace_dollar(char *input,  t_info *info)
 	free (input);
 	if (res == NULL)
 		return (strdup("\0"));
+	//printf("res: %s\n", res);
 	return(res);
 }

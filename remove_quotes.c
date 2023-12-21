@@ -114,8 +114,14 @@ void	remove_quotes_from_parsing_list(t_pars *pars)
 		{
 			tmp_token = remove_quotes(tmp->cmd_args[i]);
 			free(tmp->cmd_args[i]);
-			tmp->cmd_args[i] = tmp_token;
+			tmp->cmd_args[i] = strdup(tmp_token);
+			free(tmp_token);
+			tmp_token = remove_quotes(tmp->command);
+			free(tmp->command);
+			tmp->command = strdup(tmp_token);
+			free(tmp_token);
 			i++;
+
 		}
 		tmp = tmp->next;
 	}
