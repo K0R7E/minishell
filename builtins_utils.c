@@ -30,6 +30,19 @@ int strlcmp_export(char *str1, char *str2, int n)
 	return (1);
 }
 
+void	add_element2(t_env *tmp, char *arg, int i)
+{
+	tmp->next = malloc(sizeof(t_env));
+	tmp = tmp->next;
+	tmp->next = NULL;
+	tmp->printed = 0;
+	tmp->var = ft_strldup(arg, i);
+	if (arg[i] == '=')
+		tmp->value = ft_strdup(arg + i + 1);
+	else
+		tmp->value = NULL;
+}
+
 void add_element(t_info *info, char *arg)
 {
 	t_env	*tmp;
@@ -39,15 +52,13 @@ void add_element(t_info *info, char *arg)
 	tmp = info->env_list;
 	while (arg[i] != '=' && arg[i] != '\0')
 		i++;
-	//if (arg[i] == '\0')
-		//return ;
 	while (strlcmp_export(arg, tmp->var, i) != 0 && tmp->next != NULL)
 		tmp = tmp->next;
 	//printf("compare: %s with %s for the first %d digits \n output: %d\n",arg, tmp->var, i -1, strlcmp_export(arg, tmp->var, i));
 	if (strlcmp_export(arg, tmp->var, i) != 0)
 	{
-		//printf("%d\n", strlcmp_export(arg, tmp->var, i -1));
-		
+		add_element2(tmp, arg, i);
+		/*
 		tmp->next = malloc(sizeof(t_env));
 		tmp = tmp->next;
 		tmp->next = NULL;
@@ -56,7 +67,7 @@ void add_element(t_info *info, char *arg)
 		if (arg[i] == '=')
 			tmp->value = ft_strdup(arg + i + 1);
 		else
-			tmp->value = NULL;
+			tmp->value = NULL;*/
 	}
 	else
 	{

@@ -58,7 +58,54 @@ int	ft_atoi_exit(char *nptr)
 	return ((get_value_exit((long long int)result * minus)));
 }
 
+int ft_exit2(char **input, int exit_value, t_info *info)
+{
+	(void)info;
+	if (exit_value != 256)
+	{
+		if (input[2] != NULL)
+		{
+			ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+			return (1);
+		}
+		else
+		{
+			//ft_free_all(*info->pars_ptr, info, 1);
+			exit(exit_value);
+		}
+	}
+	else
+	{
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(input[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+		//ft_free_all(*info->pars_ptr, info, 1);
+		exit(2);
+	}
 
+}
+
+int ft_exit(t_info *info, char **input)
+{
+	int i;
+	int exit_value;
+
+	i = 0;
+	if (info->command_count == 1)
+		printf("exit\n");
+	if (input[1] == NULL)
+	{
+		//ft_free_all(*info->pars_ptr, info, 1);
+		exit(info->exit_code);
+	}
+	else
+	{
+		exit_value = ft_atoi_exit(input[1]);
+		return (ft_exit2(input, exit_value, info));
+	}
+}
+
+/*
 int ft_exit(t_info *info, char **input)
 {
 	int i;
@@ -97,4 +144,4 @@ int ft_exit(t_info *info, char **input)
 			exit(2);
 		}
 	}
-}
+}*/

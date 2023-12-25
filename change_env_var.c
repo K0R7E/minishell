@@ -31,18 +31,13 @@ int give_env_variable_pos(char *input, int i, t_info *info, int mode)
 	tmp = info->env_list;
 	while (tmp != NULL)
 	{
-		//printf("comparing %s with %s\n", tmp->var, input + (i + 1));
 		if (ft_strncmp(tmp->var, input + (i + 1), j - 1) == 0 && tmp->var[j] == '\0')
-		{
-			//printf("found env variable: %s\n", info->env[pos]);
 			return(pos);
-		}
 		if (tmp->next == NULL)
 			break;
 		tmp = tmp->next;
 		pos++;
 	}
-	//printf("env variable not found\n");
 	return(-1);
 }
 
@@ -131,19 +126,9 @@ char *replace_dollar(char *input,  t_info *info)
 	while (input[i] != '\0')
 	{
 		if (input[i] == '\'' &&  stateDouble == 0)
-		{
-			if (stateSingle == 0)
-				stateSingle = 1;
-			else if (stateSingle == 1)
-				stateSingle = 0;
-		}
+			stateSingle = update_quote_state(stateSingle, stateDouble, input[i]);
 		if (input[i] == '\"' &&  stateSingle == 0)
-		{
-			if (stateDouble == 0)
-				stateDouble = 2;
-			else if (stateDouble == 2)
-				stateDouble = 0;
-		}
+			stateDouble = update_quote_state(stateSingle, stateDouble, input[i]);
 		if (input[i] == '<' && input[i + 1] == '<' && stateSingle == 0 && stateDouble == 0)
 		{
 			res = add_char_to_str(res, input[i++]);

@@ -52,32 +52,22 @@ char *remove_quotes(char *str)
 	in_dbl = 0;
 	in_sgl = 0;
 	new_str = malloc(sizeof(char) * find_new_length(str) + 1);
+	if (new_str == NULL)
+		return (NULL);
 	while (str[i] != '\0')
 	{
 		if (str[i] == '\"' && in_sgl == 0)
 		{
-			if (in_dbl == 0)
-				in_dbl = 1;
-			else
-				in_dbl = 0;
-			i++;
+			in_dbl = update_quote_state(in_dbl, in_sgl, str[i++]);
 			continue ;
 		}
 		else if (str[i] == '\'' && in_dbl == 0)
 		{
-			if (in_sgl == 0)
-				in_sgl = 1;
-			else
-				in_sgl = 0;
-			i++;
+			in_sgl = update_quote_state(in_dbl, in_sgl, str[i++]);
 			continue ;
 		}
 		else
-		{
-			new_str[j] = str[i];
-			i++;
-			j++;
-		}
+			new_str[j++] = str[i++];
 	}
 	new_str[j] = '\0';
 	return (new_str);
@@ -100,30 +90,36 @@ void	remove_quotes_from_lexer_list(t_lexer *lexer)
 }
 */
 
-void	remove_quotes_from_parsing_list(t_pars *pars)
+void	remove_quotes_from_parsing_list(t_pars *pars, t_info *info)
 {
 	t_pars *tmp;
 	char *tmp_token;
 	int i;
 
-	i = 0;
 	tmp = pars;
 	while (tmp != NULL)
 	{
+		tmp_token = remove_quotes(tmp->command);
+		if (tmp_token == NULL)
+			ft_error_message(*info->pars_ptr, info);
+		//free(tmp->command); something is wrong here
+		tmp->command = strdup(tmp_token);
+		if (tmp->command == NULL)
+			ft_error_message(*info->pars_ptr, info);
+		free(tmp_token);
+		i = 0;
 		while (tmp->cmd_args[i] != NULL)
 		{
 			tmp_token = remove_quotes(tmp->cmd_args[i]);
+			if (tmp_token == NULL)
+				ft_error_message(*info->pars_ptr, info);
 			free(tmp->cmd_args[i]);
 			tmp->cmd_args[i] = strdup(tmp_token);
-			free(tmp_token);
-			tmp_token = remove_quotes(tmp->command);
-			free(tmp->command);
-			tmp->command = strdup(tmp_token);
+			if (tmp->cmd_args[i] == NULL)
+				ft_error_message(*info->pars_ptr, info);
 			free(tmp_token);
 			i++;
-
 		}
 		tmp = tmp->next;
 	}
-
 }

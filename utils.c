@@ -24,3 +24,35 @@ void	ft_close(int fd)
 	if (fd > 0)
 		close(fd);
 }
+
+void ft_free_array(char **arr)
+{
+	int i;
+
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
+
+int update_quote_state(int stateSingle, int stateDouble, char c)
+{
+	if (c == '\'' && stateDouble == 0)
+	{
+		if (stateSingle == 0)
+			return (1);
+		else
+			return (0);
+	}
+	if (c == '\"' && stateSingle == 0)
+	{
+		if (stateDouble == 0)
+			return (2);
+		else
+			return (0);
+	}
+	return (0);
+}

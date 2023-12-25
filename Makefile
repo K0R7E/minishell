@@ -1,7 +1,7 @@
 
 NAME			=	minishell
 
-CC				=	cc
+CC				=	clang
 RM				=	rm -rf
 CFLAGS			=	-Wall -Wextra -Werror -g
 FLAGS			=	-lreadline 

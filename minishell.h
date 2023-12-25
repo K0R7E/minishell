@@ -150,6 +150,7 @@ void ft_get_input(t_info *info);
 
 // ft_cpyarray.c
 char	**ft_arrycpy(char **envp);
+void ft_free_array(char **arr);
 
 // ft_getpwd.c
 void 	get_pwd(t_info *info);
@@ -165,7 +166,7 @@ int	ft_check_input(t_info *info);
 
 // lexer.c
 void	ft_lexer(t_info *info, t_pars *pars);
-void	remove_quotes_from_parsing_list(t_pars *pars);
+void	remove_quotes_from_parsing_list(t_pars *pars, t_info *info);
 char *ft_strldup(char *s, size_t len);
 int	ft_strchr2(char *s, int c);
 
@@ -191,6 +192,7 @@ void ft_print_minishell_gui(void);
 //utils.c
 void	ft_close(int fd);
 void	ft_error_message(t_pars *pars, t_info *info);
+int	update_quote_state(int stateSingle, int stateDouble, char c);
 
 // env conversion
 void	env_conversion(t_info *info, t_pars *pars, char **envp);

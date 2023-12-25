@@ -35,58 +35,6 @@ int		ft_strcmp(char *str1, char *str2)
 
 //compare the first n digits of two strings
 
-/*
-int	ft_arrylen(char **arr)
-{
-	int i;void	ft_export(t_info *info, char *arg);
-
-	i = 0;
-	while (arr[i])
-		i++;
-	return (i);
-}
-*/
-/*
-void	print_export(t_info *info)
-{
-	//Sort array alphabetically
-	int i;
-	int j;
-	int length;
-	char **tmp;
-	char *temp;
-
-	i = 0;
-	j = 0;
-	length = ft_arrylen(info->env);
-	tmp = ft_arrycpy(info->env);
-	while (i < length - 1)
-	{
-		j = 0;
-		while ( i + j < length)
-		{
-			if (ft_strcmp(tmp[i], tmp[i + j]) > 0)
-			{
-				temp = tmp[i];
-				tmp[i] = tmp[i + j];
-				tmp[i + j] = temp;
-			}
-			j++;
-		}
-		i++;
-	}
-	
-	i = 0;
-	while (tmp[i])
-	{
-		if (ft_strcmp(tmp[i], "_=") != 2)
-			printf("declare -x %s\n", tmp[i]);
-		i++;
-	}
-	free_array(tmp);
-}
-*/
-
 int list_size(t_env *head)
 {
 	int i;
@@ -102,6 +50,55 @@ int list_size(t_env *head)
 	return (i);
 }
 
+void	print_export2(t_info *info)
+{
+	t_env *tmp;
+	t_env *tmp2;
+	
+	tmp = info->env_list;
+	tmp2 = info->env_list;
+	while (tmp2->printed == 1)
+		tmp2 = tmp2->next;
+	while (tmp)
+	{
+		if (tmp->printed == 1)
+		{
+			tmp = tmp->next;
+			continue;
+		}
+		else if (ft_strcmp(tmp->var, tmp2->var) < 0)
+			tmp2 = tmp;
+		tmp = tmp->next;
+	}
+	if (tmp2->value == NULL && ft_strncmp(tmp2->var, "_", 2) != 0)
+		printf("declare -x %s\n", tmp2->var);
+	else if (ft_strncmp(tmp2->var, "_", 2) != 0)
+		printf("declare -x %s=\"%s\"\n", tmp2->var, tmp2->value);
+	tmp2->printed = 1;
+}
+
+void	print_export(t_info *info)
+{
+	t_env *tmp2;
+	int i;
+	int j;
+
+	i = list_size(info->env_list);
+	j = 0;
+	while (j < i)
+	{
+		print_export2(info);
+		j++;
+	}
+	tmp2 = info->env_list;
+	while (tmp2)
+	{
+		tmp2->printed = 0;
+		tmp2 = tmp2->next;
+	}
+}
+
+/*
 void	print_export(t_info *info)
 {
 	t_env *tmp;
@@ -110,7 +107,6 @@ void	print_export(t_info *info)
 	int j;
 
 	i = list_size(info->env_list);
-	//printf("i = %d\n", i);
 	j = 0;
 	while (j < i)
 	{
@@ -142,7 +138,7 @@ void	print_export(t_info *info)
 		tmp2->printed = 0;
 		tmp2 = tmp2->next;
 	}
-}
+}*/
 
 /*
 void add_element(t_info *info, char *arg)
