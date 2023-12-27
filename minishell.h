@@ -218,7 +218,7 @@ void	update_info(t_info *info);
 
 
 //parsing_right_way.c
-void ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info);
+int ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info);
 void free_pars_list(t_pars *head);
 void ft_print_pars(t_pars *pars);
 

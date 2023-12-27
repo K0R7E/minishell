@@ -312,7 +312,7 @@ void ft_redir_output_app(t_pars *pars, t_info *info, int i, int count)
 	}
 }
 
-void ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
+int ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 {
 	int fd;
 	char *line;
@@ -324,7 +324,7 @@ void ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 	{
 		printf("minishell: %s: No such file or directory\n", ".tmp");
 		info->exit_status = 1;
-		return ;
+		return (1);
 	}
 	g_global.in_hd = 1;
 	while (!g_global.stop_hd)
@@ -339,12 +339,13 @@ void ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 	}
 	close(fd);
 	if (g_global.stop_hd || !line)
-		return ;
+		return (1);
 	if (i == count)
 	{
 		pars->fd_in = open("/tmp/temp8726343", O_RDONLY);
 		pars->in_file = ft_strdup("/tmp/temp8726343");
 	}
+	return (0);
 }
 
 int ft_check_num(char **str, char *c)
@@ -363,7 +364,7 @@ int ft_check_num(char **str, char *c)
 	return (count);
 }
 
-void ft_redir(t_pars *pars, t_info *info)
+int ft_redir(t_pars *pars, t_info *info)
 {
 	t_pars *tmp;
 	int i;	
@@ -375,15 +376,15 @@ void ft_redir(t_pars *pars, t_info *info)
 		i = 0;
 		while (tmp->args[i])
 		{
-
-			if (ft_strncmp(tmp->args[i], ">>", 2) == 0)
-				ft_redir_output_app(tmp, info, i, ft_check_num(tmp->args, ">>"));
-			else if (ft_strncmp(tmp->args[i], "<<", 2) == 0)
+			if (ft_strncmp(tmp->args[i], "<<", 2) == 0)
 			{	
 				g_global.stop_hd = 0;	
-				ft_redir_heredoc(tmp, info, i, ft_check_num(tmp->args, "<<"));
+				if (ft_redir_heredoc(tmp, info, i, ft_check_num(tmp->args, "<<")) == 1)
+					return (1);
 				g_global.in_hd = 0;
 			}
+			else if (ft_strncmp(tmp->args[i], ">>", 2) == 0)
+				ft_redir_output_app(tmp, info, i, ft_check_num(tmp->args, ">>"));
 			else if (ft_strncmp(tmp->args[i], "<", 1) == 0)
 				ft_redir_input(tmp, info, i, ft_check_num(tmp->args, "<"));
 			else if (ft_strncmp(tmp->args[i], ">", 1)	== 0)	
@@ -392,9 +393,10 @@ void ft_redir(t_pars *pars, t_info *info)
 		}	
 		tmp = tmp->next;
 	}
+	return (0);
 }
 
-void ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info)
+int ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info)
 {
 	t_lexer *tmp;
 	/* t_pars *pars = NULL; */
@@ -410,7 +412,9 @@ void ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info)
 			tmp = tmp->next;
 		tmp = tmp->next;
 	}
-	ft_redir(*pars, info);
+	if (ft_redir(*pars, info) == 1)
+		return (1);
+	return (0);
 }
 
 /* 
