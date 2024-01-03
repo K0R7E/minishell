@@ -10,10 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
 #include "minishell.h"
 
-int ft_strncmp3(char *s1, char *s2, int n)
+int	ft_strncmp3(char *s1, char *s2, int n)
 {
 	int	i;
 
@@ -34,7 +33,7 @@ int ft_strncmp3(char *s1, char *s2, int n)
 
 int	ft_echo(char **input)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	if (ft_strncmp3(input[1], "-n", 2) == 0 && input[1][2] == '\0')
@@ -48,7 +47,7 @@ int	ft_echo(char **input)
 	}
 	if (ft_strncmp3(input[1], "-n", 2) == 0 && input[1][2] == '\0')
 		return (0);
-	else 
+	else
 		printf("\n");
 	return (0);
 }

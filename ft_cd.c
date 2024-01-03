@@ -1,4 +1,3 @@
-#include "libft/libft.h"
 #include "minishell.h"
 
 char	*ft_strjoin3(char const *s1, char const *s2)
@@ -42,24 +41,18 @@ int	chdir_input(char *path)
 	return (0);
 }
 
-
-
 void	update_pwd(t_info *info, char *path)
 {
-	//char *tmp;
-
-	//tmp = info->old_pwd;
 	free(info->old_pwd);
 	info->old_pwd = ft_strdup(info->pwd);
 	free(info->pwd);
 	info->pwd = ft_strdup(path);
-	//printf("old pwd: %s\n", info->old_pwd);
 }
-
 
 char	*convert_path(t_info *info, char *arg)
 {
-	char *path;
+	char	*path;
+
 	if (arg[0] == '/')
 	{
 		path = ft_strdup(arg);
@@ -68,7 +61,7 @@ char	*convert_path(t_info *info, char *arg)
 	}
 	else
 	{
-		path = ft_strjoin(info->pwd, "/");;
+		path = ft_strjoin(info->pwd, "/");
 		if (path == NULL)
 			ft_error_message(*info->pars_ptr, info);
 		path = ft_strjoin3(path, arg);
@@ -77,14 +70,13 @@ char	*convert_path(t_info *info, char *arg)
 	}
 	if (path[ft_strlen(path) - 1] == '/')
 		path[ft_strlen(path) - 1] = '\0';
-	//printf("path: %s\n", path);
 	return (path);
 }
 
 char	*convert_path_back(char *arg, t_info *info)
 {
-	char *path;
-	int i;
+	char	*path;
+	int		i;
 
 	i = ft_strlen(arg);
 	while (arg[i] != '/')
@@ -92,14 +84,13 @@ char	*convert_path_back(char *arg, t_info *info)
 	path = ft_strldup(arg, i);
 	if (path == NULL)
 		ft_error_message(*info->pars_ptr, info);
-	//printf("path: %s\n", path);
 	return (path);
 }
 
 int	ft_cd_arg(t_info *info, char **args)
 {
-	char *tmp;
-	int ret;
+	char	*tmp;
+	int		ret;
 
 	ret = 0;
 	if (strncmp(args[1], "..", 3) == 0)

@@ -1,25 +1,20 @@
-#include "libft/libft.h"
 #include "minishell.h"
 
 int	get_value_exit(long long int n)
 {
-	long long int i;
+	long long int	i;
 
 	i = 0;
-	//printf("n: %lld\n", n);
 	if (n < 0)
 	{
 		i = (n * -1) / 256;
-		//printf("i: %lld\n", i);
 		n = n + (256 * (i + 1));
 	}
 	if (n > 255)
 	{
 		i = n / 256;
-		//printf("i: %lld\n", i);
 		n = n - (256 * i);
 	}
-	//printf("n: %lld\n", n);
 	return (n);
 }
 
@@ -28,7 +23,7 @@ int	ft_atoi_exit(char *nptr)
 	int				i;
 	int				minus;
 	long long int	result;
-	int flag;
+	int				flag;
 
 	flag = 0;
 	i = 0;
@@ -58,7 +53,7 @@ int	ft_atoi_exit(char *nptr)
 	return ((get_value_exit((long long int)result * minus)));
 }
 
-int ft_exit2(char **input, int exit_value, t_info *info)
+int	ft_exit2(char **input, int exit_value, t_info *info)
 {
 	(void)info;
 	if (exit_value != 256)
@@ -82,13 +77,12 @@ int ft_exit2(char **input, int exit_value, t_info *info)
 		//ft_free_all(*info->pars_ptr, info, 1);
 		exit(2);
 	}
-
 }
 
-int ft_exit(t_info *info, char **input)
+int	ft_exit(t_info *info, char **input)
 {
-	int i;
-	int exit_value;
+	int	i;
+	int	exit_value;
 
 	i = 0;
 	if (info->command_count == 1)

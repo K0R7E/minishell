@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-int strlcmp_unset(char *str1, char *str2, int n)
+int	strlcmp_unset(char *str1, char *str2, int n)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str1[i] && str2[i] && i < n)
@@ -33,11 +33,11 @@ void	remove_element2(t_info *info, int j, t_env *tmp)
 	free(tmp->value);
 }
 
-void remove_element(t_info *info, char *arg)
+void	remove_element(t_info *info, char *arg)
 {
 	t_env	*tmp;
-	int i;
-	int j;
+	int		i;
+	int		j;
 
 	i = 0;
 	j = 0;
@@ -56,11 +56,10 @@ void remove_element(t_info *info, char *arg)
 	remove_element2(info, j, tmp);
 }
 
-
 int	ft_unset(t_info *info, char **args)
 {
-	int i;
-	
+	int	i;
+
 	i = 1;
 	if (args[1] == NULL)
 		return (0);
