@@ -8,9 +8,9 @@
 			"type": "lldb",
 			"request": "launch",
 			"name": "Debug",
-			"program": "/workspaces/minishell/./minishell",
+			"program": "/nfs/homes/fstark/My_Files/github/minishell/cleanup/./minishell",
 			"args": [],
-			"cwd": "/workspaces/minishell"
+			"cwd": "/nfs/homes/fstark/My_Files/github/minishell/cleanup"
 		}
 	]
 }

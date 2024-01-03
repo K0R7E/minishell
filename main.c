@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include <readline/readline.h>
 
 void ft_get_input(t_info *info)
 {
@@ -94,7 +93,7 @@ int main(int argc, char **argv, char **envp)
 			continue ;
 		if (ft_check_input(info) == 1)
 			continue ;
-		ft_lexer(info, pars);
+		ft_lexer(info);
 		ft_parsing(&pars, &info->lexer, info);
 		remove_quotes_from_parsing_list(pars, info);
 		info->command_count = ft_listsize(pars);

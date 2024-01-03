@@ -38,21 +38,10 @@ void ft_free_array(char **arr)
 	free(arr);
 }
 
-int update_quote_state(int stateSingle, int stateDouble, char c)
+int update_quote_state(int i)
 {
-	if (c == '\'' && stateDouble == 0)
-	{
-		if (stateSingle == 0)
-			return (1);
-		else
-			return (0);
-	}
-	if (c == '\"' && stateSingle == 0)
-	{
-		if (stateDouble == 0)
-			return (2);
-		else
-			return (0);
-	}
-	return (0);
+	if (i == 0)
+		return (1);
+	else
+		return (0);
 }

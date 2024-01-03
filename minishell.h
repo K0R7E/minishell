@@ -64,6 +64,13 @@ typedef struct s_lexer_pos
 	int hedoc;
 }	t_lexer_pos;
 
+typedef struct quote_state
+{
+	int state_s;
+	int state_d;
+}	t_quote_state;
+
+
 //linked pars
 typedef struct s_pars
 {
@@ -161,14 +168,19 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info);
 void free_parsing(t_parsing *pars);*/
 //void print_tokens(t_lexer *tokens);
 
-//input check
+//input check.c
 int	ft_check_input(t_info *info);
 
+//input check_utils.c
+int	check_if_allowed(int newer, int last, t_info *info, int i);
+int	ft_find_last_redirect(t_info *info, int i);
+int	ft_handle_redirect_length(t_info *info, int i);
+
 // lexer.c
-void	ft_lexer(t_info *info, t_pars *pars);
+void	ft_lexer(t_info *info);
 void	remove_quotes_from_parsing_list(t_pars *pars, t_info *info);
 char *ft_strldup(char *s, size_t len);
-int	ft_strchr2(char *s, int c);
+int	ft_strchr_lexer(char *s, int c);
 
 // $ variable conversion
 char *replace_dollar(char *input,  t_info *info);
@@ -192,7 +204,7 @@ void ft_print_minishell_gui(void);
 //utils.c
 void	ft_close(int fd);
 void	ft_error_message(t_pars *pars, t_info *info);
-int	update_quote_state(int stateSingle, int stateDouble, char c);
+int update_quote_state(int i);
 
 // env conversion
 void	env_conversion(t_info *info, t_pars *pars, char **envp);

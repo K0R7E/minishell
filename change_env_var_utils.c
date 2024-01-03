@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 11:18:52 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/05 11:19:04 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/03 16:08:34 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,31 +39,34 @@ char	*add_char_to_str(char *str, char c)
 	return (new);
 }
 
-char *ft_strjoin2(char *str, char *add)
-{	
+char	*ft_strjoin2(char *str, char *add)
+{
+	char	*total;
+	int		i;
+	int		j;
+
 	if (add == NULL)
 		return (NULL);
 	if (str == NULL)
 	{
 		str = malloc(1 * sizeof(char));
-		if (str	== NULL)
-			return(NULL);
+		if (str == NULL)
+			return (NULL);
 		str[0] = '\0';
 	}
-	char *total; 
 	total = malloc((ft_strlen(str) + ft_strlen(add) + 1) * sizeof(char));
 	if (total == NULL)
 	{
 		free(str);
-		return(NULL);
+		return (NULL);
 	}
-	int i = 0;
+	i = 0;
 	while (str[i] != '\0')
 	{
 		total[i] = str[i];
 		i++;
 	}
-	int j = 0;
+	j = 0;
 	while (add[j] != '\0')
     {
 		total[i + j] = add[j];

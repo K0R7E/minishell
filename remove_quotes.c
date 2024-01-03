@@ -39,31 +39,32 @@ int	find_new_length(char *str)
 }
 
 
-char *remove_quotes(char *str)
+char	*remove_quotes(char *str)
 {
-	int i;
-	int j;
-	int in_dbl;
-	int in_sgl;
-	char *new_str;
+	int				i;
+	int				j;
+	t_quote_state	qs;
+	char			*new_str;
 
+	qs.state_d = 0;
+	qs.state_s = 0;
 	i = 0;
 	j = 0;
-	in_dbl = 0;
-	in_sgl = 0;
 	new_str = malloc(sizeof(char) * find_new_length(str) + 1);
 	if (new_str == NULL)
 		return (NULL);
 	while (str[i] != '\0')
 	{
-		if (str[i] == '\"' && in_sgl == 0)
+		if (str[i] == '\"' && qs.state_s == 0)
 		{
-			in_dbl = update_quote_state(in_dbl, in_sgl, str[i++]);
+			qs.state_d = update_quote_state(qs.state_d);
+			i++;
 			continue ;
 		}
-		else if (str[i] == '\'' && in_dbl == 0)
+		else if (str[i] == '\'' && qs.state_d == 0)
 		{
-			in_sgl = update_quote_state(in_dbl, in_sgl, str[i++]);
+			qs.state_s = update_quote_state(qs.state_s);
+			i++;
 			continue ;
 		}
 		else

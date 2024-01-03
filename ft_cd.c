@@ -129,7 +129,14 @@ int	ft_cd(t_info *info, char **args)
 			update_pwd(info, info->home);
 		else 
 		{
-			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+			if (info->home == NULL)
+				ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+			else
+			{
+				ft_putstr_fd("minishell: cd: ", 2);
+				ft_putstr_fd(info->home, 2);
+				ft_putstr_fd(": No such file or directory\n", 2);
+			}
 			return (1);
 		}
 	}
