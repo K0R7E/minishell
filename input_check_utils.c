@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:25:10 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/03 14:58:07 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/03 17:42:31 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	ft_handle_redirect_length(t_info *info, int i)
 		i++;
 	else if (info->input[i] == '<' && info->input[i + 1] == '<')
 		i++;
-	//i++;
 	return (i);
 }
 
@@ -49,10 +48,9 @@ int	check_if_allowed(int newer, int last, t_info *info, int i)
 	if (last == 3)
 	{
 		if (newer != 1 && newer != 2)
-		{
 			ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
+		if (newer != 1 && newer != 2)
 			return (1);
-		}
 	}
 	if (last == 2)
 	{

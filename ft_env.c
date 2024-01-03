@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 17:16:44 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/20 14:09:13 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/03 18:12:16 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void add_element(t_info *info, char *arg)
 		return ;
 	while (strlcmp_export(arg, tmp->var, i) != 0 && tmp->next != NULL)
 		tmp = tmp->next;
-	//printf("compare: %s with %s for the first %d digits \n output: %d\n",arg, tmp->var, i -1, strlcmp_export(arg, tmp->var, i));
+	//printf("compare: %s with %s for the first %d digits \n output: 
+	//%d\n",arg, tmp->var, i -1, strlcmp_export(arg, tmp->var, i));
 	if (strlcmp_export(arg, tmp->var, i) != 0)
 	{
 		printf("%d\n", strlcmp_export(arg, tmp->var, i -1));
@@ -48,9 +49,7 @@ void add_element(t_info *info, char *arg)
 int	ft_env(t_info *info)
 {
 	t_env	*tmp;
-/* 	int i;
-	i = 1; */
-	
+
 	tmp = info->env_list;
 	while (tmp)
 	{
@@ -59,6 +58,4 @@ int	ft_env(t_info *info)
 		tmp = tmp->next;
 	}
 	return (0);
-	/* i = 1; */
 }
-

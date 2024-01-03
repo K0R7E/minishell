@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 18:14:21 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/21 11:16:42 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/03 18:11:08 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ void	print_export(t_info *info)
 	}
 }
 
+/*
 int	is_valid_env(char *env)
 {
 	int		i;
@@ -111,7 +112,7 @@ int	is_valid_env(char *env)
 		i++;
 	}
 	return (0);
-}
+}*/
 
 int	ft_export(t_info *info, char **args)
 {

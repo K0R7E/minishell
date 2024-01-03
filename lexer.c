@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 18:52:19 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/03 16:03:56 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/03 16:51:16 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	handle_prompt(t_info *info, t_lexer_pos *pos)
 	ft_new_prompt(info, pos, start, 1);
 }
 
-void	ft_lexer(t_info *info) //input str; env var
+void	ft_lexer(t_info *info)
 {
 	t_lexer_pos	*pos;
 

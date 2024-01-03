@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/03 17:44:51 by fstark            #+#    #+#             */
+/*   Updated: 2024/01/03 18:01:46 by fstark           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	get_value_exit(long long int n)
@@ -18,14 +30,22 @@ int	get_value_exit(long long int n)
 	return (n);
 }
 
+int	compare_max_long(char *nptr, int i, int minus, long long int result)
+{
+	if ((result > 922337203685477580 && nptr[i] != '\0')
+		|| (result >= 922337203685477580 && ((nptr[i] > '7' && minus == 1)
+				|| (nptr[i] > '8' && minus == -1)))
+		|| (result > 1000000000000000000 && nptr[i] != '\0'))
+		return (1);
+	return (0);
+}
+
 int	ft_atoi_exit(char *nptr)
 {
 	int				i;
 	int				minus;
 	long long int	result;
-	int				flag;
 
-	flag = 0;
 	i = 0;
 	minus = 1;
 	result = 0;
@@ -39,16 +59,11 @@ int	ft_atoi_exit(char *nptr)
 		return (256);
 	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
-		if ((result > 922337203685477580 && nptr[i] != '\0') || (result >= 922337203685477580 && ((nptr[i] > '7' && minus == 1) || (nptr[i] > '8' && minus == -1))) || (result > 1000000000000000000 && nptr[i] != '\0'))
-		{
-			flag = 1;
-			break ;
-		}
+		if (compare_max_long(nptr, i, minus, result) == 1)
+			return (256);
 		result = result * 10 + (nptr[i++] - '0');
 	}
 	if (nptr[i] != '\0')
-		return (256);
-	if (flag == 1)
 		return (256);
 	return ((get_value_exit((long long int)result * minus)));
 }

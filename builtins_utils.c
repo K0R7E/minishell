@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 12:31:30 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/03 15:48:55 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/03 18:09:36 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,24 @@ void	update_info(t_info *info)
 		free(info->home);
 		info->home = NULL;
 	}
+}
+
+int	is_valid_env(char *env)
+{
+	int		i;
+
+	i = 0;
+	if (ft_isdigit(env[i]) == 1)
+		return (1);
+	if (env[i] == '=')
+		return (1);
+	while (env[i] && env[i] != '=' && env[i] != '\0')
+	{
+		if (ft_isalnum(env[i]) == 0 && env[i] != '_')
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 /*

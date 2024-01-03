@@ -1,49 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cpyarry.c                                       :+:      :+:    :+:   */
+/*   builtins_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/03 18:43:10 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/03 18:45:53 by fstark           ###   ########.fr       */
+/*   Created: 2024/01/03 18:35:32 by fstark            #+#    #+#             */
+/*   Updated: 2024/01/03 18:39:49 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	*ft_free(char **res)
+void	update_pwd(t_info *info, char *path)
 {
-	while (res)
-	{
-		free (res);
-		res++;
-	}
-	free (res);
-	return (NULL);
-}
-
-char	**ft_arrycpy(char **envp)
-{
-	char	**tmp;
-	size_t	i;
-
-	i = 0;
-	while (envp[i] != NULL)
-		i++;
-	tmp = ft_calloc(sizeof(char *), i + 1);
-	if (!tmp)
-		return (NULL);
-	i = 0;
-	while (envp[i] != NULL)
-	{
-		tmp[i] = ft_strdup(envp[i]);
-		if (tmp[i] == NULL)
-		{
-			ft_free(tmp);
-			return (tmp);
-		}
-		i++;
-	}
-	return (tmp);
+	free(info->old_pwd);
+	info->old_pwd = ft_strdup(info->pwd);
+	free(info->pwd);
+	info->pwd = ft_strdup(path);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_cd.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/03 18:13:04 by fstark            #+#    #+#             */
+/*   Updated: 2024/01/03 18:39:05 by fstark           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*ft_strjoin3(char const *s1, char const *s2)
@@ -29,6 +41,7 @@ char	*ft_strjoin3(char const *s1, char const *s2)
 	return (join);
 }
 
+/*
 int	chdir_input(char *path)
 {
 	if (chdir(path) == -1)
@@ -39,15 +52,16 @@ int	chdir_input(char *path)
 		return (-1);
 	}
 	return (0);
-}
+}*/
 
+/*
 void	update_pwd(t_info *info, char *path)
 {
 	free(info->old_pwd);
 	info->old_pwd = ft_strdup(info->pwd);
 	free(info->pwd);
 	info->pwd = ft_strdup(path);
-}
+}*/
 
 char	*convert_path(t_info *info, char *arg)
 {
@@ -105,11 +119,10 @@ int	ft_cd_arg(t_info *info, char **args)
 		tmp = convert_path(info, args[1]);
 		if (chdir(tmp) == 0)
 			update_pwd(info, tmp);
-		else 
+		else
 		{
-			ft_putstr_fd("minishell: cd: ", 2);
-			ft_putstr_fd(tmp, 2);
-			ft_putstr_fd(": No such file or directory\n", 2);
+			ft_3("minishell: cd: ", tmp,
+				": No such file or directory\n");
 			ret = 1;
 		}
 		free (tmp);
@@ -117,37 +130,30 @@ int	ft_cd_arg(t_info *info, char **args)
 	return (ret);
 }
 
-
 int	ft_cd(t_info *info, char **args)
 {
-	int ret;
+	int	ret;
 
 	ret = 0;
-	if(args[1] == NULL)
+	if (args[1] == NULL)
 	{
 		if (chdir(info->home) == 0)
 			update_pwd(info, info->home);
-		else 
+		else
 		{
 			if (info->home == NULL)
 				ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 			else
-			{
-				ft_putstr_fd("minishell: cd: ", 2);
-				ft_putstr_fd(info->home, 2);
-				ft_putstr_fd(": No such file or directory\n", 2);
-			}
+				ft_3("minishell: cd: ", info->home,
+					": No such file or directory\n");
 			return (1);
 		}
 	}
 	else if (args[2] != NULL)
-	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+	else if (args[2] != NULL)
 		return (1);
-	}
 	else
-	{
 		ret = ft_cd_arg(info, args);
-	}
 	return (ret);
 }

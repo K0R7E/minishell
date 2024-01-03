@@ -205,6 +205,7 @@ void ft_print_minishell_gui(void);
 void	ft_close(int fd);
 void	ft_error_message(t_pars *pars, t_info *info);
 int update_quote_state(int i);
+void	ft_3(char *first, char *second, char *third);
 
 // env conversion
 void	env_conversion(t_info *info, t_pars *pars, char **envp);
@@ -228,8 +229,8 @@ int strlcmp_export(char *str1, char *str2, int n);
 void add_element(t_info *info, char *arg);
 char *get_path(char *token, t_info *info);
 void	update_info(t_info *info);
-
-
+int	is_valid_env(char *env);
+void	update_pwd(t_info *info, char *path);
 
 //parsing_right_way.c
 void ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info);

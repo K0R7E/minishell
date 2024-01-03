@@ -6,13 +6,13 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:35:56 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/20 13:57:54 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/03 18:41:19 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int ft_strncmp2(char *s1, char *s2, int n)
+int	ft_strncmp2(char *s1, char *s2, int n)
 {
 	int	i;
 
@@ -31,7 +31,8 @@ int ft_strncmp2(char *s1, char *s2, int n)
 	return ((unsigned char)(s1[i]) - (unsigned char)(s2[i]));
 }
 
-int find_arguments_length(t_lexer tmp)
+/*
+int	find_arguments_length(t_lexer tmp)
 {
 	t_lexer tmp2;
 	int i;
@@ -46,11 +47,11 @@ int find_arguments_length(t_lexer tmp)
 		tmp2 = *tmp2.next;
 	}
 	return (i);
-}
+}*/
 
 int	ft_builtin(t_pars *pars, t_info *info)
 {
-	int exit_code;
+	int	exit_code;
 
 	exit_code = 0;
 	if (ft_strncmp2(pars->command, "echo", 4) == 0)
