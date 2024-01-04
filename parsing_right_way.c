@@ -333,6 +333,7 @@ void ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 		if (ft_strncmp_12(line, pars->args[i + 1], ft_strlen(pars->args[i + 1])) == 0)
 			break ;
 		str = ft_strjoin(line, "\n");
+		str = replace_dollar_hedoc(str, info);
 		write(fd, str, ft_strlen(str));
 		free(line);
 		free(str);	

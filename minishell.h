@@ -186,6 +186,7 @@ int	ft_strchr_lexer(char *s, int c);
 char *replace_dollar(char *input,  t_info *info);
 char	*add_char_to_str(char *str, char c);
 char *ft_strjoin2(char *str, char *add);
+char *replace_dollar_hedoc(char *input,  t_info *info);
 
 // ft_heredoc.c
 

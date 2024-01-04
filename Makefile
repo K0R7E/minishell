@@ -18,6 +18,7 @@ SRCS            =	main.c \
 					ft_executor.c ft_exit.c ft_free_all.c \
 					ft_error_message.c remove_quotes.c input_check_utils.c \
 					env_conversion_back.c builtins_utils2.c\
+					change_env_var_hedoc.c \
 
 
 OBJ_DIR				=	obj

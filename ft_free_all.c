@@ -44,6 +44,7 @@ void free_lexer_list(t_lexer *head)
 	while (current != NULL)
 	{
 		next = current->next;
+		printf("token: %s\n", current->token);
 		free(current->token);
 		free(current);
 		current = next;
