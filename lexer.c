@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 18:52:19 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/04 12:24:32 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/04 15:12:32 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ void	ft_new_prompt_add(t_info *info, t_lexer *new, int type, int command_num)
 
 	new->command = command_num;
 	new->type = type;
-	if (info->lexer.command == 0)
+	if (info->lexer == NULL)
 	{
-		info->lexer = *new;
+		info->lexer = new;
 	}
 	else
 	{
-		tmp = &info->lexer;
+		tmp = info->lexer;
 		while (tmp->next != NULL)
 			tmp = tmp->next;
 		tmp->next = new;
@@ -116,7 +116,6 @@ void	ft_lexer(t_info *info)
 	pos = malloc(sizeof(t_lexer_pos));
 	if (pos == NULL)
 		ft_error_message(*info->pars_ptr, info);
-	info->lexer.command = 0;
 	pos->i = 0;
 	pos->command_number = 1;
 	pos->hedoc = 0;

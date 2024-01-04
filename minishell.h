@@ -129,7 +129,7 @@ typedef struct s_info
 	int		exit_status;
 	int		exit_code;
 	//int 	*pid;	
-	t_lexer	lexer;
+	t_lexer	*lexer;
 	int		builtin_command_count;
 	t_pars	**pars_ptr;
 }	t_info;

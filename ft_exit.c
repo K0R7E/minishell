@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 17:44:51 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/04 12:25:57 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/04 14:53:20 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	ft_exit2(char **input, int exit_value, t_info *info)
 		}
 		else
 		{
-			//ft_free_all(*info->pars_ptr, info, 1);//test
+			ft_free_all(*info->pars_ptr, info, 2);//test
 			exit(exit_value);
 		}
 	}
@@ -89,7 +89,7 @@ int	ft_exit2(char **input, int exit_value, t_info *info)
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(input[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
-		//ft_free_all(*info->pars_ptr, info, 1);//test
+		ft_free_all(*info->pars_ptr, info, 2);//test
 		exit(2);
 	}
 }
@@ -104,7 +104,7 @@ int	ft_exit(t_info *info, char **input)
 		printf("exit\n");
 	if (input[1] == NULL)
 	{
-		//ft_free_all(*info->pars_ptr, info, 1);//test
+		ft_free_all(*info->pars_ptr, info, 2);//test
 		exit(info->exit_code);
 	}
 	else
