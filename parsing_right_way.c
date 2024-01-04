@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include <stdio.h>
 
 int	ft_check_word_type(t_pars *pars, t_lexer *tokens, t_info *info)
 {
