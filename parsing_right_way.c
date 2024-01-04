@@ -13,7 +13,7 @@ int	ft_check_word_type(t_pars *pars, t_lexer *tokens, t_info *info)
 	return (0);
 }
 
-char	*get_path_new(t_pars *pars, t_lexer *tokens, char *token, t_info *info)
+char	*get_path_new(t_pars *pars, char *token, t_info *info)
 {
 	int		i;
 	char	*exec;
@@ -21,8 +21,6 @@ char	*get_path_new(t_pars *pars, t_lexer *tokens, char *token, t_info *info)
 	char	*path_part;
 	char	**s_cmd;
 
-	(void)tokens;
-	(void)pars;
 	i = -1;
 	allpath = ft_split(info->path, ':');
 	if (allpath == NULL)
@@ -51,7 +49,7 @@ int	is_next_args(t_lexer *tokens)
 	return (0);
 }
 
-/*void	ft_print_pars(t_pars *pars)
+void	ft_print_pars(t_pars *pars)
 {
 	int i = 0;
 	int j = 0;
@@ -93,7 +91,7 @@ int	is_next_args(t_lexer *tokens)
 		pars = pars->next;
 		i++;
 	}
-}*/
+}
 
 int	ft_lstsize(t_lexer *tokens)
 {
@@ -168,8 +166,10 @@ t_pars	*node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 	t_pars	*node;
 	t_lexer	*tmp1;
 	int		i;
+	int		j;
 
 	i = 1;
+	j = 0;
 	tmp1 = tmp;
 	node = malloc(sizeof(t_pars));
 	if (node == NULL)
@@ -188,14 +188,35 @@ t_pars	*node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 	if ((tmp->type == TokenTypeHeredoc || tmp->type == TokenTypeOutputRedirect
 			|| tmp->type == TokenTypeOutputAppend
 			|| tmp->type == TokenTypeInputRedirect)
-		&& tmp->next && tmp->next->next)
+		&& tmp->next)
 	{
-		if (tmp->next)
-			tmp = tmp->next;
-		if (tmp->next)
-			tmp = tmp->next;
-		node->command = ft_strdup(tmp->token);
-		node->cmd_path = get_path_new(pars, tmp, tmp->token, info);
+		while (tmp->type != TokenTypePipe)
+		{
+			if (tmp->next && tmp->next->next)
+			{
+				tmp = tmp->next;
+				tmp = tmp->next;
+				j = 1;
+			}
+			else
+			{
+				node->command = NULL;
+				node->cmd_path = NULL;
+				break ;
+			}
+			if (j == 1 && tmp->type == TokenTypeWord)
+			{
+				node->command = ft_strdup(tmp->token);
+				node->cmd_path = get_path_new(pars, tmp->token, info);
+				break ;
+			}
+			else if (tmp->next == NULL || tmp->type == TokenTypePipe)
+			{
+				node->command = NULL;
+				node->cmd_path = NULL;
+				break ;	
+			}
+		}
 		node->args[0] = ft_strdup(tmp1->token);
 		while (is_next_args(tmp1) == 1)
 		{
@@ -208,7 +229,7 @@ t_pars	*node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 	else
 	{
 		node->command = ft_strdup(tmp->token);
-		node->cmd_path = get_path_new(pars, tmp, tmp->token, info);
+		node->cmd_path = get_path_new(pars, tmp->token, info);
 		node->args[0] = ft_strdup(tmp->token);
 		while (is_next_args(tmp) == 1)
 		{
@@ -228,6 +249,7 @@ t_pars	*node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 void	add_pars_node(t_pars *pars, t_pars **head, t_lexer *tmp, t_info *info)
 {
 	t_pars	*new_node;
+	t_pars	*last_node;
 
 	new_node = malloc(sizeof(t_pars));
 	if (new_node == NULL)
@@ -236,7 +258,7 @@ void	add_pars_node(t_pars *pars, t_pars **head, t_lexer *tmp, t_info *info)
 		ft_free_all(pars, info, 2);
 		exit(1);
 	}
-	t_pars *last_node = *head;
+	last_node = *head;
 	new_node = node_for_word(pars, tmp, info);
 	new_node->next = NULL;
 	if (*head == NULL)
@@ -304,9 +326,9 @@ int	ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 	int		fd;
 	char	*line;
 	char	*str;
+	char 	*hd_delimiter;
 
 	(void)info;
-	(void)count;
 	fd = open("/tmp/temp8726343", O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (fd == -1)
 	{
@@ -315,18 +337,23 @@ int	ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 		return (1);
 	}
 	g_global.in_hd = 1;
+	hd_delimiter = ft_strdup(pars->args[i + 1]);
+	if (info->hd_quote == 1)
+		hd_delimiter = remove_quotes(hd_delimiter);
 	while (!g_global.stop_hd)
 	{
 		line = readline("> ");
-		if (ft_strncmp_12(line, pars->args[i + 1],
-			ft_strlen(pars->args[i + 1])) == 0)
+		if (ft_strncmp_12(line, hd_delimiter, ft_strlen(pars->args[i + 1])) == 0)
 			break ;
 		str = ft_strjoin(line, "\n");
+		if (info->hd_quote == 0)
+			str = replace_dollar(str, info);
 		write(fd, str, ft_strlen(str));
 		free(line);
 		free(str);
 	}
 	close(fd);
+	g_global.in_hd = 0;
 	if (g_global.stop_hd || !line)
 		return (1);
 	if (i == count)
@@ -368,10 +395,13 @@ int	ft_redir(t_pars *pars, t_info *info)
 			if (ft_strncmp(tmp->args[i], "<<", 2) == 0)
 			{
 				g_global.stop_hd = 0;
+				info->hd_quote = 0;
+
+				if ((ft_strncmp(tmp->args[i + 1], "\"", 1) == 0) || (ft_strncmp(tmp->args[i + 1], "\'", 1) == 0))
+					info->hd_quote = 1;				
 				if (ft_redir_heredoc(tmp, info, i,
 						ft_check_num(tmp->args, "<<")) == 1)
 					return (1);
-				g_global.in_hd = 0;
 			}
 			else if (ft_strncmp(tmp->args[i], ">>", 2) == 0)
 				ft_redir_output_app(tmp, info, i,
