@@ -8,7 +8,7 @@ void sigint_handler(int sig)
     if (!g_global.in_hd)
     {
         ft_putstr_fd("\n", STDERR_FILENO);
-    }
+    } 
     if (g_global.in_cmd)
     {
         rl_replace_line("", 0);

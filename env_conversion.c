@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 14:34:23 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/18 16:01:49 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/03 17:35:12 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 int	find_equals_sign(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -52,15 +52,52 @@ void	ft_lstadd_back(t_env *stack, t_env *newx)
 		n->next = newx;
 		newx->next = NULL;
 	}
-	/*
-	else
-	{
-		*stack = newx;
-		(*stack)->next = NULL;
-	}
-	*/
 }
 
+void	env_conversion2(t_info *info, t_pars *pars, char **envp, int i)
+{
+	t_env	*tmp;
+
+	tmp = malloc(sizeof(t_env));
+	if (tmp == NULL)
+		ft_error_message(pars, info);
+	tmp->next = NULL;
+	tmp->printed = 0;
+	tmp->var = ft_strldup(envp[i], find_equals_sign(envp[i]));
+	if (tmp->var == NULL)
+	{
+		free(tmp);
+		ft_error_message(pars, info);
+	}
+	tmp->value = ft_strdup(envp[i] + find_equals_sign(envp[i]) + 1);
+	if (tmp->var == NULL)
+	{
+		free(tmp->var);
+		free(tmp);
+		ft_error_message(pars, info);
+	}
+	if (info->env_list == NULL)
+		info->env_list = tmp;
+	else
+		ft_lstadd_back(info->env_list, tmp);
+}
+
+void	env_conversion(t_info *info, t_pars *pars, char **envp)
+{
+	t_env	*tmp;
+	int		i;
+
+	info->env_list = NULL;
+	i = 0;
+	tmp = NULL;
+	while (envp[i])
+	{
+		env_conversion2(info, pars, envp, i);
+		i++;
+	}
+}
+
+/*
 void	env_conversion(t_info *info, t_pars *pars, char **envp)
 {
 	t_env	*tmp;
@@ -94,6 +131,8 @@ void	env_conversion(t_info *info, t_pars *pars, char **envp)
 			ft_lstadd_back(info->env_list, tmp);
 		i++;
 	}
+}*/
+
 	//print the info->env_list list
 	/*
 	tmp = info->env_list;
@@ -104,11 +143,11 @@ void	env_conversion(t_info *info, t_pars *pars, char **envp)
 		tmp = tmp->next;
 	}
 	*/
-}
 
+/*
 int	ft_lstsize2(t_env *lst)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (lst)
@@ -119,7 +158,7 @@ int	ft_lstsize2(t_env *lst)
 	return (i);
 }
 
-char **env_conversion_back(t_info *info)
+char	**env_conversion_back(t_info *info)
 {
 	t_env	*tmp;
 	int		i;
@@ -141,4 +180,4 @@ char **env_conversion_back(t_info *info)
 	}
 	res[i] = NULL;
 	return (res);
-}
+}*/

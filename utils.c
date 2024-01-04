@@ -1,3 +1,4 @@
+#include "libft/libft.h"
 #include "minishell.h"
 
 int	ft_strncmp_12(const char *s1, const char *s2, size_t n)
@@ -24,3 +25,32 @@ void	ft_close(int fd)
 	if (fd > 0)
 		close(fd);
 }
+
+void	ft_free_array(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
+
+int	update_quote_state(int i)
+{
+	if (i == 0)
+		return (1);
+	else
+		return (0);
+}
+
+void	ft_3(char *first, char *second, char *third)
+{
+	ft_putstr_fd(first, 2);
+	ft_putstr_fd(second, 2);
+	ft_putstr_fd(third, 2);
+}
+

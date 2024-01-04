@@ -64,6 +64,13 @@ typedef struct s_lexer_pos
 	int hedoc;
 }	t_lexer_pos;
 
+typedef struct quote_state
+{
+	int state_s;
+	int state_d;
+}	t_quote_state;
+
+
 //linked pars
 typedef struct s_pars
 {
@@ -123,7 +130,7 @@ typedef struct s_info
 	int		exit_status;
 	int		exit_code;
 	//int 	*pid;	
-	t_lexer	lexer;
+	t_lexer	*lexer;
 	int		builtin_command_count;
 	t_pars	**pars_ptr;
 }	t_info;
@@ -151,6 +158,7 @@ void ft_get_input(t_info *info);
 
 // ft_cpyarray.c
 char	**ft_arrycpy(char **envp);
+void ft_free_array(char **arr);
 
 // ft_getpwd.c
 void 	get_pwd(t_info *info);
@@ -161,19 +169,25 @@ void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info);
 void free_parsing(t_parsing *pars);*/
 //void print_tokens(t_lexer *tokens);
 
-//input check
+//input check.c
 int	ft_check_input(t_info *info);
 
+//input check_utils.c
+int	check_if_allowed(int newer, int last, t_info *info, int i);
+int	ft_find_last_redirect(t_info *info, int i);
+int	ft_handle_redirect_length(t_info *info, int i);
+
 // lexer.c
-void	ft_lexer(t_info *info, t_pars *pars);
-void	remove_quotes_from_parsing_list(t_pars *pars);
+void	ft_lexer(t_info *info);
+void	remove_quotes_from_parsing_list(t_pars *pars, t_info *info);
 char *ft_strldup(char *s, size_t len);
-int	ft_strchr2(char *s, int c);
+int	ft_strchr_lexer(char *s, int c);
 
 // $ variable conversion
 char *replace_dollar(char *input,  t_info *info);
 char	*add_char_to_str(char *str, char c);
 char *ft_strjoin2(char *str, char *add);
+char *replace_dollar_hedoc(char *input,  t_info *info);
 
 // remove quotes
 char *remove_quotes(char *str);
@@ -193,6 +207,8 @@ void ft_print_minishell_gui(void);
 //utils.c
 void	ft_close(int fd);
 void	ft_error_message(t_pars *pars, t_info *info);
+int update_quote_state(int i);
+void	ft_3(char *first, char *second, char *third);
 
 // env conversion
 void	env_conversion(t_info *info, t_pars *pars, char **envp);
@@ -216,8 +232,8 @@ int strlcmp_export(char *str1, char *str2, int n);
 void add_element(t_info *info, char *arg);
 char *get_path(char *token, t_info *info);
 void	update_info(t_info *info);
-
-
+int	is_valid_env(char *env);
+void	update_pwd(t_info *info, char *path);
 
 //parsing_right_way.c
 int ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info);

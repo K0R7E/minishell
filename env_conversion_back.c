@@ -1,49 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cpyarry.c                                       :+:      :+:    :+:   */
+/*   env_conversion_back.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/03 18:43:10 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/03 18:45:53 by fstark           ###   ########.fr       */
+/*   Created: 2024/01/03 17:32:19 by fstark            #+#    #+#             */
+/*   Updated: 2024/01/03 17:32:41 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	*ft_free(char **res)
+int	ft_lstsize2(t_env *lst)
 {
-	while (res)
+	int	i;
+
+	i = 0;
+	while (lst)
 	{
-		free (res);
-		res++;
+		lst = lst->next;
+		i++;
 	}
-	free (res);
-	return (NULL);
+	return (i);
 }
 
-char	**ft_arrycpy(char **envp)
+char	**env_conversion_back(t_info *info)
 {
-	char	**tmp;
-	size_t	i;
+	t_env	*tmp;
+	int		i;
+	char	**res;
 
 	i = 0;
-	while (envp[i] != NULL)
-		i++;
-	tmp = ft_calloc(sizeof(char *), i + 1);
-	if (!tmp)
-		return (NULL);
-	i = 0;
-	while (envp[i] != NULL)
+	tmp = info->env_list;
+	res = malloc((ft_lstsize2(tmp) + 1) * sizeof(char *));
+	if (res == NULL)
 	{
-		tmp[i] = ft_strdup(envp[i]);
-		if (tmp[i] == NULL)
-		{
-			ft_free(tmp);
-			return (tmp);
-		}
+		ft_error_message(NULL, info);
+	}
+	while (tmp)
+	{
+		res[i] = ft_strjoin(tmp->var, "=");
+		res[i] = ft_strjoin(res[i], tmp->value);
+		tmp = tmp->next;
 		i++;
 	}
-	return (tmp);
+	res[i] = NULL;
+	return (res);
 }

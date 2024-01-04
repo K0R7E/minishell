@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include <readline/readline.h>
 
 void ft_get_input(t_info *info)
 {
@@ -53,6 +52,25 @@ int ft_listsize(t_pars *pars)
 	return (i);
 }
 
+void print_lexer(t_info *info)
+{
+	t_lexer *tmp; 
+	
+	tmp = info->lexer;
+	printf("\n");
+	while (tmp->next != NULL)
+	{
+		printf("hd_quote %d\n", tmp->hd_quote);
+		printf("command: %d\n", tmp->command);
+		printf("type: %d\n", tmp->type);
+		printf("token: %s\n\n", tmp->token);
+		tmp = tmp->next;
+	}
+	printf("hd_quote %d\n", tmp->hd_quote);
+	printf("command: %d\n", tmp->command);
+	printf("type: %d\n", tmp->type);
+	printf("token: %s\n", tmp->token);
+}
 
 int main(int argc, char **argv, char **envp)
 {
@@ -87,6 +105,7 @@ int main(int argc, char **argv, char **envp)
  	while (1)
 	{
 		pars = NULL;
+		info->lexer = NULL;
 		info->command_count = 1;
 		info->builtin_command_count = 0;
 		ft_get_input(info);
@@ -94,17 +113,17 @@ int main(int argc, char **argv, char **envp)
 			continue ;
 		if (ft_check_input(info) == 1)
 			continue ;
-		ft_lexer(info, pars);
+		ft_lexer(info);
 		if (ft_parsing(&pars, &info->lexer, info) == 1)
 			continue;
 /* 		ft_print_pars(pars); */
-		remove_quotes_from_parsing_list(pars);
+		remove_quotes_from_parsing_list(pars, info);
 		info->command_count = ft_listsize(pars);
 		//update_info(info);
 		ft_executor(pars, info);
 		//free(info->input);
 		info->input = NULL;
-		//ft_free_all(pars, info, 1);
+		ft_free_all(pars, info, 1);
 	}
 	ft_free_all(pars, info, 2);
 	return (0);
@@ -115,6 +134,8 @@ int main(int argc, char **argv, char **envp)
 echo "hello" > file1 | echo -n "hello" | cat < file1 | cat -e > file2 | cat file2 | ls -l | wc -l
 
 /bin/ls /bin/ -l
+
+valgrind --suppressions=valgrind_ignore_leaks.txt --trace-children=yes ./minishell
 
 */
 

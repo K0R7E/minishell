@@ -118,13 +118,16 @@ void ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 		{
 			exit(EXIT_SUCCESS);
 		}
-		else if (execve(tmp->cmd_path, tmp->cmd_args, env_conversion_back(info)) == -1)
+        char **env = env_conversion_back(info);
+		if (execve(tmp->cmd_path, tmp->cmd_args, env) == -1)
         {
             ft_putstr_fd("Error: command not found: ", STDERR_FILENO);
             ft_putendl_fd(tmp->command, STDERR_FILENO);
+            ft_free_array(env);
             exit(127);
         }
-        //exit(EXIT_SUCCESS);
+        ft_free_array(env);
+        exit(EXIT_SUCCESS);
     }
     else if (pid < 0)
     {
@@ -143,7 +146,6 @@ void ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 				info->exit_code = ft_builtin(tmp, info); 
 			}
 		}
-		
 		else
 			info->exit_code = (WEXITSTATUS(status));
 		if (WIFSIGNALED(status))
