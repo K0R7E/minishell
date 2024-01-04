@@ -1,64 +1,58 @@
 #include "minishell.h"
 #include <stdio.h>
 
-
-
-int ft_check_word_type(t_pars *pars, t_lexer *tokens, t_info *info)
+int	ft_check_word_type(t_pars *pars, t_lexer *tokens, t_info *info)
 {
 	(void)info;
 	(void)pars;
 	if (strcmp(tokens->token, "pwd") == 0 || strcmp(tokens->token, "echo") == 0
 		|| strcmp(tokens->token, "cd") == 0 || strcmp(tokens->token, "env") == 0
-		|| strcmp(tokens->token, "export") == 0 || strcmp(tokens->token, "unset") == 0
+		|| strcmp(tokens->token, "export") == 0
+		|| strcmp(tokens->token, "unset") == 0
 		|| strcmp(tokens->token, "exit") == 0)
 		return (1);
 	return (0);
 }
 
-char *get_path_new(t_pars *pars, t_lexer *tokens, char *token, t_info *info)
+char	*get_path_new(t_pars *pars, t_lexer *tokens, char *token, t_info *info)
 {
-    int i;
-    char *exec;
-    char **allpath;
-    char *path_part;
-    char **s_cmd;
+	int		i;
+	char	*exec;
+	char	**allpath;
+	char	*path_part;
+	char	**s_cmd;
 
 	(void)tokens;
 	(void)pars;
-    i = -1;
-/* 	if (ft_check_word_type(pars, tokens, info) == 1)
-		return (NULL); */
-    allpath = ft_split(info->path, ':');
+	i = -1;
+	allpath = ft_split(info->path, ':');
 	if (allpath == NULL)
 	{
 		ft_putstr_fd("minishell: malloc error\n", 2);
 		ft_free_all(pars, info, 2);
 		exit(1);
 	}
-    s_cmd = ft_split(token, ' ');
-    while (allpath[++i])
-    {
-        path_part = ft_strjoin(allpath[i], "/");
-        exec = ft_strjoin(path_part, s_cmd[0]);
-        free(path_part);
-        if (access(exec, F_OK | X_OK) == 0)
-        {
-            return (exec);
-        }
-        free(exec);
-    }
-    return (token);
+	s_cmd = ft_split(token, ' ');
+	while (allpath[++i])
+	{
+		path_part = ft_strjoin(allpath[i], "/");
+		exec = ft_strjoin(path_part, s_cmd[0]);
+		free(path_part);
+		if (access(exec, F_OK | X_OK) == 0)
+			return (exec);
+		free(exec);
+	}
+	return (token);
 }
 
-int is_next_args(t_lexer *tokens)
+int	is_next_args(t_lexer *tokens)
 {
-
-	if (tokens->next != NULL && tokens->next->type != TokenTypePipe) 
+	if (tokens->next != NULL && tokens->next->type != TokenTypePipe)
 		return (1);
 	return (0);
 }
 
-void ft_print_pars(t_pars *pars)
+/*void	ft_print_pars(t_pars *pars)
 {
 	int i = 0;
 	int j = 0;
@@ -100,16 +94,15 @@ void ft_print_pars(t_pars *pars)
 		pars = pars->next;
 		i++;
 	}
-}
+}*/
 
-
-int ft_lstsize(t_lexer *tokens)
+int	ft_lstsize(t_lexer *tokens)
 {
-	int count;
+	int	count;
 
 	count = 0;
-
-	while ((tokens->next != NULL) && (tokens != NULL || tokens->type != TokenTypePipe))
+	while ((tokens->next != NULL) && (tokens != NULL
+			|| tokens->type != TokenTypePipe))
 	{
 		count++;
 		tokens = tokens->next;
@@ -117,27 +110,28 @@ int ft_lstsize(t_lexer *tokens)
 	return (count);
 }
 
-int ft_can_be_cmd_args(t_lexer *lexer)
+int	ft_can_be_cmd_args(t_lexer *lexer)
 {
-	t_lexer *tmp;
+	t_lexer	*tmp;
 
 	tmp = lexer;
-	if (tmp->type == TokenTypeInputRedirect || tmp->type == TokenTypeOutputRedirect
-		|| tmp->type == TokenTypeOutputAppend || tmp->type == TokenTypeHeredoc)
+	if (tmp->type == TokenTypeInputRedirect
+		|| tmp->type == TokenTypeOutputRedirect
+		|| tmp->type == TokenTypeOutputAppend
+		|| tmp->type == TokenTypeHeredoc)
 		return (0);
 	return (1);
-
 }
 
-char **ft_add_cmd_args(char **args)
+char	**ft_add_cmd_args(char **args)
 {
-	int i;
-	int j;
-	char **tmp;
+	int		i;
+	int		j;
+	char	**tmp;
 
 	i = 0;
 	j = 0;
-	while(args[i])
+	while (args[i])
 		i++;
 	tmp = malloc(sizeof(char *) * (i + 1));
 	if (tmp == NULL)
@@ -150,8 +144,10 @@ char **ft_add_cmd_args(char **args)
 	{
 		if (args[i] == NULL)
 			break ;
-		if (args[i] && (ft_strncmp(args[i], ">>", 2) == 0 || ft_strncmp(args[i], "<<", 2) == 0
-			|| ft_strncmp(args[i], ">", 1) == 0 || ft_strncmp(args[i], "<", 1) == 0))
+		if (args[i] && (ft_strncmp(args[i], ">>", 2) == 0
+				|| ft_strncmp(args[i], "<<", 2) == 0
+				|| ft_strncmp(args[i], ">", 1) == 0
+				|| ft_strncmp(args[i], "<", 1) == 0))
 		{
 			i += 2;
 			if (args[i] == NULL)
@@ -168,7 +164,7 @@ char **ft_add_cmd_args(char **args)
 	return (tmp);
 }
 
-t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
+t_pars	*node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 {
 	t_pars	*node;
 	t_lexer	*tmp1;
@@ -191,7 +187,8 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 		exit(1);
 	}
 	if ((tmp->type == TokenTypeHeredoc || tmp->type == TokenTypeOutputRedirect
-		|| tmp->type == TokenTypeOutputAppend || tmp->type == TokenTypeInputRedirect)
+			|| tmp->type == TokenTypeOutputAppend
+			|| tmp->type == TokenTypeInputRedirect)
 		&& tmp->next && tmp->next->next)
 	{
 		if (tmp->next)
@@ -205,7 +202,7 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 		{
 			node->args[i++] = ft_strdup(tmp1->next->token);
 			tmp1 = tmp1->next;
-			}
+		}
 		node->args[i] = NULL;
 		node->cmd_args = ft_add_cmd_args(node->args);
 	}
@@ -218,7 +215,7 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 		{
 			node->args[i++] = ft_strdup(tmp->next->token);
 			tmp = tmp->next;
-			}
+		}
 		node->args[i] = NULL;
 		node->cmd_args = ft_add_cmd_args(node->args);
 	}
@@ -226,14 +223,14 @@ t_pars *node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 	node->out_file = NULL;
 	node->fd_in = 0;
 	node->fd_out = 1;
-	return(node);
+	return (node);
 }
 
-
-
-void add_pars_node(t_pars *pars, t_pars **head, t_lexer *tmp, t_info *info)
+void	add_pars_node(t_pars *pars, t_pars **head, t_lexer *tmp, t_info *info)
 {
-	t_pars *new_node = malloc(sizeof(t_pars));
+	t_pars	*new_node;
+
+	new_node = malloc(sizeof(t_pars));
 	if (new_node == NULL)
 	{
 		ft_putstr_fd("minishell: malloc error\n", 2);
@@ -241,42 +238,35 @@ void add_pars_node(t_pars *pars, t_pars **head, t_lexer *tmp, t_info *info)
 		exit(1);
 	}
 	t_pars *last_node = *head;
-
 	new_node = node_for_word(pars, tmp, info);
 	new_node->next = NULL;
-	//new_node->prev = NULL;
-
 	if (*head == NULL)
 	{
 		*head = new_node;
 		return;
 	}
 	while (last_node->next != NULL)
-	{
 		last_node = last_node->next;
-	}
 	last_node->next = new_node;
-	//new_node->prev = last_node;
-
 }
 
-char *convert_to_cmd(char *str, t_info *info)
+char	*convert_to_cmd(char *str, t_info *info)
 {
 	(void)info;
 	if (ft_strncmp(str, "/usr/bin/", 9) == 0)
 		return (str = ft_substr(str, 9, ft_strlen(str) - 9));
 	else if (ft_strncmp(str, "/bin/", 5) == 0)
 		return (str = ft_substr(str, 5, ft_strlen(str) - 5));
-	else 
+	else
 		return (str);
 }
 
-void ft_redir_input(t_pars *pars, t_info *info, int i, int count)
+void	ft_redir_input(t_pars *pars, t_info *info, int i, int count)
 {
-	int fd;
+	int	fd;
+
 	(void)info;
 	fd = open(pars->args[i + 1], O_RDONLY);
-
 	if (i == count)
 	{
 		pars->fd_in = fd;
@@ -284,13 +274,12 @@ void ft_redir_input(t_pars *pars, t_info *info, int i, int count)
 	}
 }
 
-void ft_redir_output(t_pars *pars, t_info *info, int i, int count)
+void	ft_redir_output(t_pars *pars, t_info *info, int i, int count)
 {
-	int fd;
+	int	fd;
+
 	(void)info;
 	fd = open(pars->args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	
-
 	if (i == count)
 	{
 		pars->fd_out = fd;
@@ -298,13 +287,12 @@ void ft_redir_output(t_pars *pars, t_info *info, int i, int count)
 	}
 }
 
-void ft_redir_output_app(t_pars *pars, t_info *info, int i, int count)
+void	ft_redir_output_app(t_pars *pars, t_info *info, int i, int count)
 {
-	int fd;
+	int	fd;
+
 	(void)info;
 	fd = open(pars->args[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0777);
-	
-
 	if (i == count)
 	{
 		pars->fd_out = fd;
@@ -312,11 +300,12 @@ void ft_redir_output_app(t_pars *pars, t_info *info, int i, int count)
 	}
 }
 
-int ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
+int	ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 {
-	int fd;
-	char *line;
-	char *str;
+	int		fd;
+	char	*line;
+	char	*str;
+
 	(void)info;
 	(void)count;
 	fd = open("/tmp/temp8726343", O_WRONLY | O_CREAT | O_TRUNC, 0777);
@@ -330,12 +319,13 @@ int ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 	while (!g_global.stop_hd)
 	{
 		line = readline("> ");
-		if (ft_strncmp_12(line, pars->args[i + 1], ft_strlen(pars->args[i + 1])) == 0)
+		if (ft_strncmp_12(line, pars->args[i + 1],
+			ft_strlen(pars->args[i + 1])) == 0)
 			break ;
 		str = ft_strjoin(line, "\n");
 		write(fd, str, ft_strlen(str));
 		free(line);
-		free(str);	
+		free(str);
 	}
 	close(fd);
 	if (g_global.stop_hd || !line)
@@ -348,10 +338,10 @@ int ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 	return (0);
 }
 
-int ft_check_num(char **str, char *c)
+int	ft_check_num(char **str, char *c)
 {
-	int i;
-	int count;
+	int	i;
+	int	count;
 
 	i = 0;
 	count = 0;
@@ -364,10 +354,10 @@ int ft_check_num(char **str, char *c)
 	return (count);
 }
 
-int ft_redir(t_pars *pars, t_info *info)
+int	ft_redir(t_pars *pars, t_info *info)
 {
-	t_pars *tmp;
-	int i;	
+	t_pars	*tmp;
+	int		i;	
 
 	tmp = pars;
 	i = 0;
@@ -377,30 +367,30 @@ int ft_redir(t_pars *pars, t_info *info)
 		while (tmp->args[i])
 		{
 			if (ft_strncmp(tmp->args[i], "<<", 2) == 0)
-			{	
-				g_global.stop_hd = 0;	
-				if (ft_redir_heredoc(tmp, info, i, ft_check_num(tmp->args, "<<")) == 1)
+			{
+				g_global.stop_hd = 0;
+				if (ft_redir_heredoc(tmp, info, i,
+						ft_check_num(tmp->args, "<<")) == 1)
 					return (1);
 				g_global.in_hd = 0;
 			}
 			else if (ft_strncmp(tmp->args[i], ">>", 2) == 0)
-				ft_redir_output_app(tmp, info, i, ft_check_num(tmp->args, ">>"));
+				ft_redir_output_app(tmp, info, i,
+					ft_check_num(tmp->args, ">>"));
 			else if (ft_strncmp(tmp->args[i], "<", 1) == 0)
 				ft_redir_input(tmp, info, i, ft_check_num(tmp->args, "<"));
-			else if (ft_strncmp(tmp->args[i], ">", 1)	== 0)	
-				ft_redir_output(tmp, info, i,ft_check_num(tmp->args, ">"));
+			else if (ft_strncmp(tmp->args[i], ">", 1) == 0)
+				ft_redir_output(tmp, info, i, ft_check_num(tmp->args, ">"));
 			i++;
-		}	
+		}
 		tmp = tmp->next;
 	}
 	return (0);
 }
 
-int ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info)
+int	ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info)
 {
-	t_lexer *tmp;
-	/* t_pars *pars = NULL; */
-	
+	t_lexer	*tmp;
 
 	info->val = 0;
 	tmp = tokens;
@@ -416,9 +406,3 @@ int ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info)
 		return (1);
 	return (0);
 }
-
-/* 
-
-echo "hello" > file1 > file2 < inflie1 < inflie2 | ls -l > file1 > file2
-
-*/
