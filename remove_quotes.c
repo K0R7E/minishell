@@ -52,7 +52,7 @@ char *remove_quotes(char *str)
 	in_dbl = 0;
 	in_sgl = 0;
 	new_str = malloc(sizeof(char) * find_new_length(str) + 1);
-	while (str[i] != '\0')
+	while (str && str[i] != '\0')
 	{
 		if (str[i] == '\"' && in_sgl == 0)
 		{

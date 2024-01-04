@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 18:52:19 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/19 12:14:23 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/04 13:01:48 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,9 +199,7 @@ void	ft_lexer(t_info *info, t_pars *pars) //input str; env var
 			handle_prompt(info, pos, pars);
 	}
 	free(pos);
-	//print lexer list
-	/*
-	t_lexer tmp = list->lexer;
+/* 	t_lexer tmp = info->lexer;
 	printf("\n");
 	while (tmp.next != NULL)
 	{
@@ -214,6 +212,6 @@ void	ft_lexer(t_info *info, t_pars *pars) //input str; env var
 	printf("hd_quote %d\n", tmp.hd_quote);
 	printf("command: %d\n", tmp.command);
 	printf("type: %d\n", tmp.type);
-	printf("token: %s\n", tmp.token);
-	*/
+	printf("token: %s\n", tmp.token); */
+	
 }

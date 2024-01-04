@@ -117,6 +117,7 @@ typedef struct s_info
 	char	*old_pwd;
 	char	*pwd;
 	char	*home;
+	int		hd_quote;
 	int		val;
 	int		command_count;
 	int		exit_status;
@@ -174,7 +175,8 @@ char *replace_dollar(char *input,  t_info *info);
 char	*add_char_to_str(char *str, char c);
 char *ft_strjoin2(char *str, char *add);
 
-// ft_heredoc.c
+// remove quotes
+char *remove_quotes(char *str);
 
 // ft_simple_command.c
 void ft_command_execute(t_pars *node, int numsimplecommands, t_info *info);
@@ -218,7 +220,7 @@ void	update_info(t_info *info);
 
 
 //parsing_right_way.c
-void ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info);
+int ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info);
 void free_pars_list(t_pars *head);
 void ft_print_pars(t_pars *pars);
 
