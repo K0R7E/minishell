@@ -114,10 +114,12 @@ int main(int argc, char **argv, char **envp)
 		if (ft_check_input(info) == 1)
 			continue ;
 		ft_lexer(info);
-		ft_parsing(&pars, info->lexer, info);
+		if (ft_parsing(&pars, &info->lexer, info) == 1)
+			continue;
+/* 		ft_print_pars(pars); */
 		remove_quotes_from_parsing_list(pars, info);
 		info->command_count = ft_listsize(pars);
-		update_info(info);
+		//update_info(info);
 		ft_executor(pars, info);
 		//free(info->input);
 		info->input = NULL;

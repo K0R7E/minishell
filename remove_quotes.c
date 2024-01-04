@@ -53,7 +53,7 @@ char	*remove_quotes(char *str)
 	new_str = malloc(sizeof(char) * find_new_length(str) + 1);
 	if (new_str == NULL)
 		return (NULL);
-	while (str[i] != '\0')
+	while (str && str[i] != '\0')
 	{
 		if (str[i] == '\"' && qs.state_s == 0)
 		{

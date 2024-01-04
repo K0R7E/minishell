@@ -117,10 +117,8 @@ int	ft_exit(t_info *info, char **input)
 /*
 int ft_exit(t_info *info, char **input)
 {
-	int i;
 	int exit_value;
 
-	i = 0;
 	if (info->command_count == 1)
 		printf("exit\n");
 	if (input[1] == NULL)

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/28 18:52:19 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/04 16:12:39 by fstark           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 void	ft_new_prompt_add(t_info *info, t_lexer *new, int type, int command_num)
@@ -135,9 +123,7 @@ void	ft_lexer(t_info *info)
 	free(pos);
 }
 
-	//print lexer list
-	/*
-	t_lexer tmp = list->lexer;
+  /*t_lexer tmp = info->lexer;
 	printf("\n");
 	while (tmp.next != NULL)
 	{
