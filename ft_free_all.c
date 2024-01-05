@@ -95,8 +95,6 @@ void ft_free_all(t_pars *pars, t_info *info, int flag)
 		free_pars_list(pars);
 	if (info && flag == 2)
 	{
-		free(info->input);
 		free_input(info);
-		free(info);
 	}
 }
