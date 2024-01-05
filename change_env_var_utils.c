@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 11:18:52 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/03 16:08:34 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/05 14:17:00 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,12 @@ char	*add_char_to_str(char *str, char c)
 
 	length = 0;
 	if (str == NULL)
-		str = "\0";
+	{
+		str = malloc(1 * sizeof(char));
+		if (str == NULL)
+			return (NULL);
+		str[0] = '\0';
+	}
 	while (str[length] != '\0')
 		length++;
 	new = malloc ((length + 2) * (sizeof(char)));
@@ -34,8 +39,7 @@ char	*add_char_to_str(char *str, char c)
 		new[length] = c;
 		new[++length] = '\0';
 	}
-	if (str[0] != '\0')
-		free(str);
+	free(str);
 	return (new);
 }
 

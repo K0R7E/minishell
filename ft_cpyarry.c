@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 18:43:10 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/03 18:45:53 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/05 15:56:26 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,15 @@
 
 static void	*ft_free(char **res)
 {
-	while (res)
+	size_t	i;
+
+	i = 0;
+	while (res[i] != NULL)
 	{
-		free (res);
-		res++;
+		free(res[i]);
+		i++;
 	}
-	free (res);
+	free(res);
 	return (NULL);
 }
 
@@ -41,7 +44,7 @@ char	**ft_arrycpy(char **envp)
 		if (tmp[i] == NULL)
 		{
 			ft_free(tmp);
-			return (tmp);
+			return (NULL);
 		}
 		i++;
 	}

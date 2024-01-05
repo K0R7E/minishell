@@ -84,16 +84,18 @@ int main(int argc, char **argv, char **envp)
 	}
 	info = malloc(sizeof(t_info));
 	if (!info)
-		return (1);
-/* 	pars = malloc(sizeof(t_pars));
-	if (!pars)
 	{
-		free(info);
-		free(pars);
+		ft_putstr_fd("minishell: malloc error\n", 1);
 		return (1);
-	} */
+  }
 	info->pars_ptr = &pars;
 	info->env = ft_arrycpy(envp);
+	if (!info->env)
+	{
+		free(info);
+		ft_putstr_fd("minishell: malloc error\n", 1);
+		return (1);
+	}
 	env_conversion(info, pars, envp);
 	get_pwd(info);
 	info->exit_status = 0;
@@ -136,7 +138,7 @@ echo "hello" > file1 | echo -n "hello" | cat < file1 | cat -e > file2 | cat file
 
 /bin/ls /bin/ -l
 
-valgrind --suppressions=valgrind_ignore_leaks.txt --trace-children=yes ./minishell
+valgrind --suppressions=valgrind_ignore_leaks.txt --trace-children=yes --leak-check=full ./minishell
 
 */
 
