@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   change_env_var.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/29 13:40:04 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/05 15:44:35 by fstark           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 int	give_env_variable_pos(char *input, int i, t_info *info, int mode)
@@ -30,7 +18,7 @@ int	give_env_variable_pos(char *input, int i, t_info *info, int mode)
 	tmp = info->env_list;
 	while (tmp != NULL)
 	{
-		if (ft_strncmp(tmp->var, input + (i + 1), j - 1) == 0 && tmp->var[j -1] == '\0')
+		if (ft_strncmp(tmp->var, input + (i + 1), j - 1) == 0 && tmp->var[j - 1] == '\0')
 		{
 			return (pos);
 		}

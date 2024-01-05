@@ -87,7 +87,7 @@ int main(int argc, char **argv, char **envp)
 	{
 		ft_putstr_fd("minishell: malloc error\n", 1);
 		return (1);
-	}
+  }
 	info->pars_ptr = &pars;
 	info->env = ft_arrycpy(envp);
 	if (!info->env)
@@ -119,7 +119,7 @@ int main(int argc, char **argv, char **envp)
 		ft_lexer(info);
 		if (ft_parsing(&pars, info->lexer, info) == 1)
 			continue;
-/* 		ft_print_pars(pars); */
+		//ft_print_pars(pars);
 		remove_quotes_from_parsing_list(pars, info);
 		info->command_count = ft_listsize(pars);
 		update_info(info);

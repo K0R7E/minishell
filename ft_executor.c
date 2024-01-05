@@ -71,7 +71,7 @@ void ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
     int status;
 	int ret;
 
-	if (tmp->command == NULL)
+	if (tmp->command == NULL || tmp->command[0] == '\0')
 		return ;
     pid = fork();
     if (pid == 0)

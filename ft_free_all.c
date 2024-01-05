@@ -83,21 +83,20 @@ void free_input(t_info *info)
 	if(info->input != NULL)
 		free(info->input);
 	free(info);
-	
 }
 
 
 
 void ft_free_all(t_pars *pars, t_info *info, int flag)
 {
-
-	(void)flag;
 	if (info->lexer != NULL)
 		free_lexer_list(info);
 	if (pars != NULL)
-		free_pars_list(pars);	
+		free_pars_list(pars);
 	if (info && flag == 2)
 	{
+		free(info->input);
 		free_input(info);
+		free(info);
 	}
 }
