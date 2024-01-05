@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 14:34:23 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/03 17:35:12 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/05 12:39:53 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	env_conversion2(t_info *info, t_pars *pars, char **envp, int i)
 		ft_error_message(pars, info);
 	}
 	tmp->value = ft_strdup(envp[i] + find_equals_sign(envp[i]) + 1);
-	if (tmp->var == NULL)
+	if (tmp->value == NULL)
 	{
 		free(tmp->var);
 		free(tmp);

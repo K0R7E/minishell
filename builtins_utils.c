@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 12:31:30 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/04 16:40:28 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/05 12:29:29 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,30 @@ int	strlcmp_export(char *str1, char *str2, int n)
 	return (1);
 }
 
-/*
-void	add_element2(t_env *tmp, char *arg, int i)
+void	add_element2(t_env *tmp, char *arg, int i, t_info *info)
 {
 	tmp->next = malloc(sizeof(t_env));
+	if (tmp->next == NULL)
+		ft_error_message(*info->pars_ptr, info);
 	tmp = tmp->next;
 	tmp->next = NULL;
 	tmp->printed = 0;
 	tmp->var = ft_strldup(arg, i);
+	if (tmp->var == NULL)
+	{
+		free(tmp);
+		ft_error_message(*info->pars_ptr, info);
+	}
 	if (arg[i] == '=')
+	{
 		tmp->value = ft_strdup(arg + i + 1);
+		if (tmp->value == NULL)
+		{
+			free(tmp->var);
+			free(tmp);
+			ft_error_message(*info->pars_ptr, info);
+		}
+	}
 	else
 		tmp->value = NULL;
 }
@@ -57,7 +71,7 @@ void	add_element(t_info *info, char *arg)
 		tmp = tmp->next;
 	if (strlcmp_export(arg, tmp->var, i) != 0)
 	{
-		add_element2(tmp, arg, i);
+		add_element2(tmp, arg, i, info);
 	}
 	else
 	{
@@ -65,9 +79,12 @@ void	add_element(t_info *info, char *arg)
 			return ;
 		free(tmp->value);
 		tmp->value = ft_strdup(arg + i + 1);
+		if (tmp->value == NULL)
+			ft_error_message(*info->pars_ptr, info);
 	}
-}*/
+}
 
+/*
 void add_element(t_info *info, char *arg)
 {
 	t_env	*tmp;
@@ -103,7 +120,7 @@ void add_element(t_info *info, char *arg)
 		free(tmp->value);
 		tmp->value = ft_strdup(arg + i + 1);
 	}
-}
+}*/
 
 void	update_info(t_info *info)
 {
@@ -114,18 +131,21 @@ void	update_info(t_info *info)
 	unset = 0;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->var, "HOME", 4) == 0)
+		if (ft_strncmp(tmp->var, "HOME", 4) == 0 && tmp->var[4] == '\0')
 		{
 			unset = 1;
 			if (info->home != NULL)
 				free(info->home);
 			info->home = ft_strdup(tmp->value);
+			if (info->home == NULL)
+				ft_error_message(*info->pars_ptr, info);
 		}
 		tmp = tmp->next;
 	}
 	if (unset == 0)
 	{
-		free(info->home);
+		if (info->home != NULL)
+			free(info->home);
 		info->home = NULL;
 	}
 }

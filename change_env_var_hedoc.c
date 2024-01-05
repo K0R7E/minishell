@@ -31,7 +31,7 @@ int	give_env_variable_pos_hedoc(char *input, int i, t_info *info, int mode)
 	while (tmp != NULL)
 	{
 		if (ft_strncmp(tmp->var, input + (i + 1), j - 1) == 0
-			&& tmp->var[j] == '\0')
+			&& tmp->var[j -1] == '\0')
 			return (pos);
 		if (tmp->next == NULL)
 			break ;

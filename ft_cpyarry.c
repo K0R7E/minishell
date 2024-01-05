@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 18:43:10 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/03 18:45:53 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/05 12:46:44 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	**ft_arrycpy(char **envp)
 		if (tmp[i] == NULL)
 		{
 			ft_free(tmp);
-			return (tmp);
+			return (NULL);
 		}
 		i++;
 	}

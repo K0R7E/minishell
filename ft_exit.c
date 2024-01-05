@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 17:44:51 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/04 14:53:20 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/05 14:12:46 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,9 @@ int	ft_exit(t_info *info, char **input)
 		printf("exit\n");
 	if (input[1] == NULL)
 	{
+		exit_value = info->exit_code;
 		ft_free_all(*info->pars_ptr, info, 2);//test
-		exit(info->exit_code);
+		exit(exit_value);
 	}
 	else
 	{

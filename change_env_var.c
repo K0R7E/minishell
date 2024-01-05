@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 13:40:04 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/04 16:47:47 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/05 14:16:30 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	give_env_variable_pos(char *input, int i, t_info *info, int mode)
 	tmp = info->env_list;
 	while (tmp != NULL)
 	{
-		if (ft_strncmp(tmp->var, input + (i + 1), j - 1) == 0 && tmp->var[j] == '\0')
+		if (ft_strncmp(tmp->var, input + (i + 1), j - 1) == 0 && tmp->var[j -1] == '\0')
 		{
 			return (pos);
 		}
@@ -164,6 +164,7 @@ char	*replace_dollar(char *input, t_info *info)
 		}
 		else
 		{
+			printf("input[i] = %c\n", input[i]);
 			res = add_char_to_str(res, input[i]);
 			i++;
 		}

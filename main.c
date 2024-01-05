@@ -84,11 +84,15 @@ int main(int argc, char **argv, char **envp)
 	}
 	info = malloc(sizeof(t_info));
 	if (!info)
+	{
+		ft_putstr_fd("minishell: malloc error\n", 1);
 		return (1);
+	}
 	pars = malloc(sizeof(t_pars));
 	if (!pars)
 	{
-		ft_free_all(pars, info, 2);
+		ft_putstr_fd("minishell: malloc error\n", 1);
+		free(info);
 		return (1);
 	}
 	info->pars_ptr = &pars;
@@ -119,7 +123,7 @@ int main(int argc, char **argv, char **envp)
 /* 		ft_print_pars(pars); */
 		remove_quotes_from_parsing_list(pars, info);
 		info->command_count = ft_listsize(pars);
-		//update_info(info);
+		update_info(info);
 		ft_executor(pars, info);
 		//free(info->input);
 		info->input = NULL;
@@ -135,7 +139,7 @@ echo "hello" > file1 | echo -n "hello" | cat < file1 | cat -e > file2 | cat file
 
 /bin/ls /bin/ -l
 
-valgrind --suppressions=valgrind_ignore_leaks.txt --trace-children=yes ./minishell
+valgrind --suppressions=valgrind_ignore_leaks.txt --trace-children=yes --leak-check=full ./minishell
 
 */
 

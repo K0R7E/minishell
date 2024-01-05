@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 15:50:26 by fstark            #+#    #+#             */
-/*   Updated: 2023/12/20 14:08:25 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/05 11:26:59 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ int	ft_echo(char **input)
 	int	i;
 
 	i = 1;
-	if (ft_strncmp3(input[1], "-n", 2) == 0 && input[1][2] == '\0')
-		i = 2;
+	while (ft_strncmp3(input[i], "-n", 2) == 0 && input[1][2] == '\0')
+		i++;
 	while (input[i])
 	{
 		printf("%s", input[i]);
