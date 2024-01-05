@@ -109,9 +109,9 @@ typedef struct s_parsing
 }	t_parsing;
 */
 typedef struct s_env
-{	
+{
 	int 			printed;
-	char 			*var;
+	char			*var;
 	char			*value;
 	struct s_env	*next;
 }	t_env;
@@ -247,5 +247,23 @@ void ft_free_all(t_pars *pars, t_info *info, int flag);
 
 int	ft_strncmp_12(const char *s1, const char *s2, size_t n);
 
+// ft_redir.c
+int	ft_redir(t_pars *pars, t_info *info);
+
+//ft_heredoc.c
+int	ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count);
+
+//ft_getpath_forcmd.c
+char	*get_path_new(t_pars *pars, char *token, t_info *info);
+
+//ft_parsing_utils.c
+int	ft_check_word_type(t_pars *pars, t_lexer *tokens, t_info *info);
+int	is_next_args(t_lexer *tokens);
+int	ft_lstsize(t_lexer *tokens);
+char	*convert_to_cmd(char *str, t_info *info);
+
+
+
+void ft_free_node(t_pars *node);
 
 #endif

@@ -11,7 +11,7 @@ int	find_new_length(char *str)
 	j = 0;
 	in_dbl = 0;
 	in_sgl = 0;
-	while (str[i] != '\0')
+	while (str && str[i] != '\0')
 	{
 		if (str[i] == '\"' && in_sgl == 0)
 		{
