@@ -76,20 +76,21 @@ void free_input(t_info *info)
 	free(info->pwd);
 	free(info->path);
 	free(info->home);
-	free(info);
+	//free(info);
 }
 
 
 
 void ft_free_all(t_pars *pars, t_info *info, int flag)
 {
-	if (info && flag == 2)
-	{
-		free_input(info);
-	}
-	(void)flag;
 	if (info->lexer != NULL)
 		free_lexer_list(info);
 	if (pars != NULL)
 		free_pars_list(pars);
+	if (info && flag == 2)
+	{
+		free(info->input);
+		free_input(info);
+		free(info);
+	}
 }

@@ -6,7 +6,7 @@ void sigint_handler(int sig)
 {
     (void)sig;
     if (!g_global.in_hd)
-    {
+	{
         ft_putstr_fd("\n", STDERR_FILENO);
     } 
     if (g_global.in_cmd)
@@ -18,8 +18,10 @@ void sigint_handler(int sig)
     else if (g_global.in_hd)
     {
         g_global.stop_hd = 1; // Set a flag to indicate heredoc termination
+		rl_on_new_line();
         rl_replace_line("", 0);
         rl_redisplay();
+		return ;
     }
 	else
 	{

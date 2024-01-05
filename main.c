@@ -85,12 +85,13 @@ int main(int argc, char **argv, char **envp)
 	info = malloc(sizeof(t_info));
 	if (!info)
 		return (1);
-	pars = malloc(sizeof(t_pars));
+/* 	pars = malloc(sizeof(t_pars));
 	if (!pars)
 	{
-		ft_free_all(pars, info, 2);
+		free(info);
+		free(pars);
 		return (1);
-	}
+	} */
 	info->pars_ptr = &pars;
 	info->env = ft_arrycpy(envp);
 	env_conversion(info, pars, envp);
@@ -116,12 +117,12 @@ int main(int argc, char **argv, char **envp)
 		ft_lexer(info);
 		if (ft_parsing(&pars, info->lexer, info) == 1)
 			continue;
-/* 		ft_print_pars(pars); */
+		//ft_print_pars(pars);
 		remove_quotes_from_parsing_list(pars, info);
 		info->command_count = ft_listsize(pars);
-		//update_info(info);
+		update_info(info);
 		ft_executor(pars, info);
-		//free(info->input);
+		free(info->input);
 		info->input = NULL;
 		ft_free_all(pars, info, 1);
 	}

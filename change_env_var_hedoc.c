@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   change_env_var_hedoc.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 11:32:51 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/04 11:43:19 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/05 11:07:56 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	give_env_variable_pos_hedoc(char *input, int i, t_info *info, int mode)
 	while (tmp != NULL)
 	{
 		if (ft_strncmp(tmp->var, input + (i + 1), j - 1) == 0
-			&& tmp->var[j] == '\0')
+			&& tmp->var[j - 1] == '\0')
 			return (pos);
 		if (tmp->next == NULL)
 			break ;
