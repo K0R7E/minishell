@@ -264,6 +264,6 @@ char	*convert_to_cmd(char *str, t_info *info);
 
 
 
-void ft_free_node(t_pars *node);
+void	ft_free_node(t_pars *node);
 
 #endif
