@@ -72,24 +72,32 @@ void free_input(t_info *info)
 {
 	ft_free_env(info->env_list);
 	ft_free_array(info->env);
-	free(info->old_pwd);
-	free(info->pwd);
-	free(info->path);
-	free(info->home);
+	if (info->old_pwd != NULL)
+		free(info->old_pwd);
+	if (info->pwd != NULL)	
+		free(info->pwd);
+	if (info->path != NULL)
+		free(info->path);
+	if(info->home != NULL)
+		free(info->home);
+	if(info->input != NULL)
+		free(info->input);
 	free(info);
+	
 }
 
 
 
 void ft_free_all(t_pars *pars, t_info *info, int flag)
 {
-	if (info && flag == 2)
-	{
-		free_input(info);
-	}
+
 	(void)flag;
 	if (info->lexer != NULL)
 		free_lexer_list(info);
 	if (pars != NULL)
-		free_pars_list(pars);
+		free_pars_list(pars);	
+	if (info && flag == 2)
+	{
+		free_input(info);
+	}
 }

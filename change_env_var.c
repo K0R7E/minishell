@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 13:40:04 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/05 14:16:30 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/05 15:44:35 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,6 @@ char	*replace_dollar(char *input, t_info *info)
 		}
 		else
 		{
-			printf("input[i] = %c\n", input[i]);
 			res = add_char_to_str(res, input[i]);
 			i++;
 		}

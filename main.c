@@ -88,15 +88,14 @@ int main(int argc, char **argv, char **envp)
 		ft_putstr_fd("minishell: malloc error\n", 1);
 		return (1);
 	}
-	pars = malloc(sizeof(t_pars));
-	if (!pars)
-	{
-		ft_putstr_fd("minishell: malloc error\n", 1);
-		free(info);
-		return (1);
-	}
 	info->pars_ptr = &pars;
 	info->env = ft_arrycpy(envp);
+	if (!info->env)
+	{
+		free(info);
+		ft_putstr_fd("minishell: malloc error\n", 1);
+		return (1);
+	}
 	env_conversion(info, pars, envp);
 	get_pwd(info);
 	info->exit_status = 0;
@@ -125,7 +124,7 @@ int main(int argc, char **argv, char **envp)
 		info->command_count = ft_listsize(pars);
 		update_info(info);
 		ft_executor(pars, info);
-		//free(info->input);
+		free(info->input);
 		info->input = NULL;
 		ft_free_all(pars, info, 1);
 	}
