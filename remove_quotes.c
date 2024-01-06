@@ -59,6 +59,7 @@ char	*remove_quotes(char *str)
 			new_str[j++] = str[i++];
 	}
 	new_str[j] = '\0';
+	free(str);
 	return (new_str);
 }
 
@@ -91,7 +92,7 @@ void	remove_quotes_from_parsing_list(t_pars *pars, t_info *info)
 		tmp_token = remove_quotes(tmp->command);
 		if (tmp_token == NULL)
 			ft_error_message(*info->pars_ptr, info);
-		free(tmp->command);
+		//free(tmp->command);
 		tmp->command = strdup(tmp_token);
 		if (tmp->command == NULL)
 			ft_error_message(*info->pars_ptr, info);
@@ -102,7 +103,7 @@ void	remove_quotes_from_parsing_list(t_pars *pars, t_info *info)
 			tmp_token = remove_quotes(tmp->cmd_args[i]);
 			if (tmp_token == NULL)
 				ft_error_message(*info->pars_ptr, info);
-			free(tmp->cmd_args[i]);
+			//free(tmp->cmd_args[i]);
 			tmp->cmd_args[i] = strdup(tmp_token);
 			if (tmp->cmd_args[i] == NULL)
 				ft_error_message(*info->pars_ptr, info);

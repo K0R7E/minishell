@@ -2,9 +2,14 @@
 
 void	ft_redir_input(t_pars *pars, t_info *info, int i, int count)
 {
-	int	fd;
+	int		fd;
+	char    *tmp;
 
-	(void)info;
+    tmp = ft_strdup(pars->args[i + 1]);
+    if (tmp == NULL)
+        ft_error_message(pars, info);
+    free(pars->args[i + 1]);
+    pars->args[i + 1] = remove_quotes(tmp);
 	fd = open(pars->args[i + 1], O_RDONLY);
 	if (i == count)
 	{
@@ -17,9 +22,14 @@ void	ft_redir_input(t_pars *pars, t_info *info, int i, int count)
 
 void	ft_redir_output(t_pars *pars, t_info *info, int i, int count)
 {
-	int	fd;
+	int		fd;
+	char	*tmp;
 
-	(void)info;
+    tmp = ft_strdup(pars->args[i + 1]);
+    if (tmp == NULL)
+        ft_error_message(pars, info);
+    free(pars->args[i + 1]);
+    pars->args[i + 1] = remove_quotes(tmp);
 	fd = open(pars->args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (i == count)
 	{
@@ -32,9 +42,14 @@ void	ft_redir_output(t_pars *pars, t_info *info, int i, int count)
 
 void	ft_redir_output_app(t_pars *pars, t_info *info, int i, int count)
 {
-	int	fd;
+	int		fd;
+	char    *tmp;
 
-	(void)info;
+    tmp = ft_strdup(pars->args[i + 1]);
+    if (tmp == NULL)
+        ft_error_message(pars, info);
+    free(pars->args[i + 1]);
+    pars->args[i + 1] = remove_quotes(tmp);
 	fd = open(pars->args[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0777);
 	if (i == count)
 	{

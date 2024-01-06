@@ -41,7 +41,7 @@ char	*copy_env_value(int j, t_info *info)
 	while (++i < j)
 		tmp = tmp->next;
 	i = 0;
-	res = malloc((ft_strlen(tmp->value + 1)) * sizeof(char));
+	res = malloc((ft_strlen(tmp->value ) + 1) * sizeof(char));
 	if (res == NULL)
 		return (NULL);
 	while (tmp->value[i] != '\0')
