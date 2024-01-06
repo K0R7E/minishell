@@ -3,7 +3,7 @@ NAME			=	minishell
 
 CC				=	cc
 RM				=	rm -rf
-CFLAGS			=	-Wall -Wextra -Werror -g -fsanitize=address,leak,undefined
+CFLAGS			=	-Wall -Wextra -Werror -g #-fsanitize=address,leak,undefined
 FLAGS			=	-lreadline 
 
 SRCS            =	main.c \

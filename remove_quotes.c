@@ -2,6 +2,8 @@
 
 int	find_new_length(char *str)
 {
+	if (str == NULL)
+        return 0;
 	int in_dbl;
 	int in_sgl;
 	int i;
@@ -11,29 +13,15 @@ int	find_new_length(char *str)
 	j = 0;
 	in_dbl = 0;
 	in_sgl = 0;
-	while (str && str[i] != '\0')
+	while (str[i] != '\0')
 	{
 		if (str[i] == '\"' && in_sgl == 0)
-		{
-			if (in_dbl == 0)
-				in_dbl = 1;
-			else
-				in_dbl = 0;
-			i++;
-		}
+			in_dbl = !in_dbl;
 		if (str[i] == '\'' && in_dbl == 0)
-		{
-			if (in_sgl == 0)
-				in_sgl = 1;
-			else
-				in_sgl = 0;
-			i++;
-		}
+			in_dbl = !in_dbl;
 		else
-		{
-			i++;
 			j++;
-		}
+		i++;
 	}
 	return (j);
 }
