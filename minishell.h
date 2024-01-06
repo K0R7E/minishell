@@ -81,6 +81,7 @@ typedef struct s_pars
 	//t_lexer			*lexer;
 	char			*in_file;
 	char			*out_file;
+	int				append; // 1 - append, 0 - rewrite????
 	int				fd_in;
 	int				fd_out;
 	struct s_pars	*next;

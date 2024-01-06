@@ -11,8 +11,8 @@ SRCS            =	main.c \
 					change_env_var.c \
 					change_env_var_utils.c input_check.c ft_signals.c \
 					env_conversion.c ft_export.c \
-					ft_env.c ft_builtin.c ft_echo.c\
-					ft_unset.c builtins_utils.c ft_cd.c gui.c \
+					ft_env.c ft_builtin.c ft_echo.c \
+					ft_unset.c builtins_utils.c ft_cd.c \
 					utils.c parsing_right_way.c\
 					ft_pwd.c \
 					ft_executor.c ft_exit.c ft_free_all.c \
