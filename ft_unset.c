@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 17:44:15 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/03 18:37:20 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/06 12:18:35 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	remove_element2(t_info *info, int j, t_env *tmp)
 	tmp2->next = tmp->next;
 	free(tmp->var);
 	free(tmp->value);
+	free(tmp);
 }
 
 void	remove_element(t_info *info, char *arg)

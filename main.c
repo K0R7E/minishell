@@ -1,10 +1,55 @@
 #include "minishell.h"
 
+void	ft_print_pars(t_pars *pars)
+{
+	int i = 0;
+	int j = 0;
+	int k = 0;
+
+	while (pars != NULL)
+	{
+		printf("Node: %d\n", i);
+		printf("----------------------\n");
+		printf("Fd_in: %d\n", pars->fd_in);
+		printf("Fd_out: %d\n", pars->fd_out);
+		printf("In_file: %s\n", pars->in_file);
+		printf("Out_file: %s\n", pars->out_file);
+		printf("Cmd_path: %s\n", pars->cmd_path);
+		printf("Command: %s\n", pars->command);
+		printf("cmd_args: ");
+		if (pars->cmd_args != NULL)
+		{
+			k = 0;
+			while (pars->cmd_args[k])
+			{
+				printf("%s ", pars->cmd_args[k]);
+				k++;
+			}
+		}
+		printf("\n");
+		printf("Args: ");
+		if (pars->args != NULL)
+		{
+			j = 0;
+			while (pars->args[j])
+			{
+				printf("%s ", pars->args[j]);
+				j++;
+			}
+		}
+		printf("\n");
+		printf("----------------------\n");
+		pars = pars->next;
+		i++;
+	}
+}
+
 void ft_get_input(t_info *info)
 {
 	char *line;
 	
 	line = readline(LIME"minishell>"OFF);
+	/* line = NULL; */
 	info->input = ft_strdup(line);
 	free(line);
 	if (!info->input)
@@ -119,7 +164,7 @@ int main(int argc, char **argv, char **envp)
 		ft_lexer(info);
 		if (ft_parsing(&pars, info->lexer, info) == 1)
 			continue;
-		//ft_print_pars(pars);
+		ft_print_pars(pars);
 		remove_quotes_from_parsing_list(pars, info);
 		info->command_count = ft_listsize(pars);
 		update_info(info);

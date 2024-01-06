@@ -92,7 +92,7 @@ void ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
             int file_fd = tmp->fd_out;
             if (file_fd == -1)
             {
-                perror("Error opening output file");
+                perror("minishell: ");
                 exit(EXIT_FAILURE);
             }
             dup2(file_fd, STDOUT_FILENO);
@@ -103,7 +103,7 @@ void ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
             int file_fd = tmp->fd_in;
             if (file_fd == -1)
             {
-                perror("Error opening output file");
+                perror("minishell: ");
                 exit(EXIT_FAILURE);
             }
             dup2(file_fd, STDIN_FILENO);

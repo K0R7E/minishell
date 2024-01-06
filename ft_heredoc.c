@@ -23,7 +23,9 @@ int	ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 		ft_error_message(pars, info);
 	} */
 	if (info->hd_quote == 1)
+	{
 		pars->args[i + 1] = remove_quotes(pars->args[i + 1]);
+	}
 	while (!g_global.stop_hd)
 	{
 		line = readline("> ");
