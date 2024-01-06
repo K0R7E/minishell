@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 11:31:33 by akortvel          #+#    #+#             */
-/*   Updated: 2023/10/30 14:08:15 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/06 16:16:04 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,6 @@ static void	*ft_free(char **res, int len)
 	free (res);
 	return (NULL);
 }
-
-struct s_data {
-	size_t	i;
-	size_t	j;
-	size_t	start;
-};
 
 char	**ft_split(char const *s, char c)
 {
