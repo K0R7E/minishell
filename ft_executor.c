@@ -70,6 +70,7 @@ void ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
     pid_t pid;
     int status;
 	int ret;
+	char **env = NULL;
 
 	if (tmp->command == NULL || tmp->command[0] == '\0')
 		return ;
@@ -118,7 +119,7 @@ void ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 		{
 			exit(EXIT_SUCCESS);
 		}
-        char **env = env_conversion_back(info);
+        env = env_conversion_back(info);
 		if (execve(tmp->cmd_path, tmp->cmd_args, env) == -1)
         {
             ft_putstr_fd("Error: command not found: ", STDERR_FILENO);

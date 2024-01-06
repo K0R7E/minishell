@@ -3,7 +3,7 @@ NAME			=	minishell
 
 CC				=	cc
 RM				=	rm -rf
-CFLAGS			=	-Wall -Wextra -Werror -g
+CFLAGS			=	-Wall -Wextra -Werror -g #-fsanitize=address,leak,undefined
 FLAGS			=	-lreadline 
 
 SRCS            =	main.c \
@@ -14,7 +14,7 @@ SRCS            =	main.c \
 					ft_env.c ft_builtin.c ft_echo.c\
 					ft_unset.c builtins_utils.c ft_cd.c gui.c \
 					utils.c parsing_right_way.c\
-					simple_command.c ft_pwd.c \
+					ft_pwd.c \
 					ft_executor.c ft_exit.c ft_free_all.c \
 					ft_error_message.c remove_quotes.c input_check_utils.c \
 					env_conversion_back.c builtins_utils2.c\

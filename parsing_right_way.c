@@ -2,37 +2,35 @@
 
 void ft_free_node(t_pars *node)
 {
-	int i;
+    int i;
 
-	i = 0;
-	if (node->args != NULL)
-	{
-		while (node->args[i])
-		{
-			free(node->args[i]);
-			i++;
-		}
-		free(node->args);
-	}
-	else 
-		free(node->args);
-	if (node->cmd_args != NULL)
-	{
-		i = 0;
-		while (node->cmd_args[i])
-		{
-			free(node->cmd_args[i]);
-			i++;
-		}
-		free(node->cmd_args);
-	}
-	else 
-		free(node->cmd_args);
-	free(node->command);
-	free(node->cmd_path);
-	free(node->in_file);
-	free(node->out_file);
-	free(node);
+    i = 0;
+    if (!node)
+		return;
+    if (node->args != NULL)
+    {
+        while (node->args[i])
+        {
+            free(node->args[i]);
+            i++;
+        }
+    }
+    if (node->cmd_args != NULL)
+    {
+        i = 0;
+        while (node->cmd_args[i])
+        {
+            free(node->cmd_args[i]);
+            i++;
+        }
+    }
+    free(node->args);
+    free(node->cmd_args);
+    free(node->command); // Freeing the command
+    free(node->cmd_path);
+    free(node->in_file);
+    free(node->out_file);
+    free(node);
 }
 
 char **calloc_cmd(char **args, t_pars *pars, t_info *info)
@@ -86,9 +84,8 @@ char	**ft_add_cmd_args(char **args, t_pars *pars, t_info *info)
 			{
 				ft_free_1(tmp);
 				ft_free_1(args);
-				ft_putstr_fd("minishell: malloc error\n", 2);
-        		ft_free_all(pars, info, 2);
-				exit(1);
+				ft_free_node(pars);
+				ft_error_message(pars, info);
 			}
 			i++;
 			j++;
@@ -145,17 +142,17 @@ t_pars *allocate_node(t_pars *pars, t_info *info, int arg_size)
     return (node);
 }
 
-void process_special_tokens(t_pars *node, t_pars *pars, t_lexer **tmp, t_info *info)
+void process_special_tokens(t_pars *node, t_pars *pars, t_lexer *tmp, t_info *info)
 {
     int j;
 	
 	j = 0;
-    while ((*tmp)->type != TokenTypePipe)
+    while (tmp->type != TokenTypePipe)
 	{
-        if ((*tmp)->next && (*tmp)->next->next)
+        if (tmp->next && tmp->next->next)
 		{
-            *tmp = (*tmp)->next;
-            *tmp = (*tmp)->next;
+            tmp = tmp->next;
+            tmp = tmp->next;
             j = 1;
         }
 		else
@@ -164,18 +161,18 @@ void process_special_tokens(t_pars *node, t_pars *pars, t_lexer **tmp, t_info *i
             node->cmd_path = NULL;
             break;
         }
-        if (j == 1 && (*tmp)->type == TokenTypeWord)
+        if (j == 1 && tmp->type == TokenTypeWord)
 		{
-            node->command = ft_strdup((*tmp)->token);
+            node->command = ft_strdup(tmp->token);
 			if (node->command == NULL)
 			{
 				ft_free_node(node);
 				ft_error_message(pars, info);
 			}
-            node->cmd_path = get_path_new(pars, (*tmp)->token, info);
+            node->cmd_path = get_path_new(pars, tmp->token, info);
             break;
         }
-		else if ((*tmp)->next == NULL || (*tmp)->type == TokenTypePipe)
+		else if (tmp->next == NULL || tmp->type == TokenTypePipe)
 		{
             node->command = NULL;
             node->cmd_path = NULL;
@@ -204,13 +201,13 @@ t_pars	*node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 			|| tmp->type == TokenTypeInputRedirect)
 		&& tmp->next)
 	{
-		process_special_tokens(node, pars, &tmp, info);
+		process_special_tokens(node, pars, tmp, info);
 		fill_args(node, tmp1, info, pars);
 		node->cmd_args = ft_add_cmd_args(node->args, pars, info);
 	}
 	else
 	{
-		node->command = ft_strdup(tmp->token);
+        node->command = ft_strdup(tmp->token);
 		if (node->command == NULL)
 		{
 			ft_free_node(node);
