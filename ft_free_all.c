@@ -72,15 +72,15 @@ void free_input(t_info *info)
 {
 	ft_free_env(info->env_list);
 	ft_free_array(info->env);
-	if (info->old_pwd != NULL)
+	if (info->old_pwd)
 		free(info->old_pwd);
-	if (info->pwd != NULL)	
+	if (info->pwd)	
 		free(info->pwd);
-	if (info->path != NULL)
+	if (info->path)
 		free(info->path);
-	if(info->home != NULL)
+	if(info->home)
 		free(info->home);
-	if(info->input != NULL)
+	if(info->input)
 		free(info->input);
 	free(info);
 }

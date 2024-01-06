@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 12:31:30 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/05 12:29:29 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/06 15:41:29 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,27 +35,29 @@ void	add_element2(t_env *tmp, char *arg, int i, t_info *info)
 	tmp->next = malloc(sizeof(t_env));
 	if (tmp->next == NULL)
 		ft_error_message(*info->pars_ptr, info);
-	tmp = tmp->next;
-	tmp->next = NULL;
-	tmp->printed = 0;
-	tmp->var = ft_strldup(arg, i);
-	if (tmp->var == NULL)
+	//tmp = tmp->next;
+	tmp->next->printed = 0;
+	tmp->next->var = ft_strldup(arg, i);
+	if (tmp->next->var == NULL)
 	{
-		free(tmp);
+		free(tmp->next);
+		tmp->next = NULL;
 		ft_error_message(*info->pars_ptr, info);
 	}
 	if (arg[i] == '=')
 	{
-		tmp->value = ft_strdup(arg + i + 1);
-		if (tmp->value == NULL)
+		tmp->next->value = ft_strdup(arg + i + 1);
+		if (tmp->next->value == NULL)
 		{
-			free(tmp->var);
-			free(tmp);
+			free(tmp->next->var);
+			free(tmp->next);
+			tmp->next = NULL;
 			ft_error_message(*info->pars_ptr, info);
 		}
 	}
 	else
-		tmp->value = NULL;
+		tmp->next->value = NULL;
+	tmp->next->next = NULL;
 }
 
 void	add_element(t_info *info, char *arg)

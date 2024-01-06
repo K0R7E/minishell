@@ -1,16 +1,20 @@
 #include "minishell.h"
+#include <stdio.h>
 
 void ft_get_input(t_info *info)
 {
 	char *line;
 	
 	line = readline(LIME"minishell>"OFF);
+	//line = NULL;
 	info->input = ft_strdup(line);
 	free(line);
 	if (!info->input)
 	{
-		ft_putendl_fd("exit", STDOUT_FILENO);
-		exit(EXIT_SUCCESS);
+		free(info->input);
+		//ft_putstr_fd("minishell: malloc error\n", 1);
+		ft_free_all(*info->pars_ptr, info, 2);
+		exit(1);
 	}
 	if (info->input[0] == '\0')
 	{
@@ -72,6 +76,16 @@ void print_lexer(t_info *info)
 	printf("token: %s\n", tmp->token);
 }
 
+void	ft_init_values(t_info *info)
+{
+	info->old_pwd = NULL;
+	info->pwd = NULL;
+	info->path = NULL;
+	info->home = NULL;
+	info->input = NULL;
+	info->lexer = NULL;
+}
+
 int main(int argc, char **argv, char **envp)
 {
 	t_info *info;
@@ -82,12 +96,14 @@ int main(int argc, char **argv, char **envp)
 		printf("Please do not add parameters\n");
 		return (1);
 	}
+	pars = NULL;
 	info = malloc(sizeof(t_info));
 	if (!info)
 	{
 		ft_putstr_fd("minishell: malloc error\n", 1);
 		return (1);
-  }
+	}
+	ft_init_values(info);
 	info->pars_ptr = &pars;
 	info->env = ft_arrycpy(envp);
 	if (!info->env)
@@ -139,6 +155,8 @@ echo "hello" > file1 | echo -n "hello" | cat < file1 | cat -e > file2 | cat file
 /bin/ls /bin/ -l
 
 valgrind --suppressions=valgrind_ignore_leaks.txt --trace-children=yes --leak-check=full ./minishell
+
+funcheck -i="readline" -a ./minishell
 
 */
 

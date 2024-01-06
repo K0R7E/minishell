@@ -11,6 +11,7 @@ void ft_free_node(t_pars *node)
     {
         while (node->args[i])
         {
+			//printf("node->args[%d]: %s\n", i, node->args[i]);
             free(node->args[i]);
             i++;
         }
@@ -24,12 +25,18 @@ void ft_free_node(t_pars *node)
             i++;
         }
     }
-    free(node->args);
-    free(node->cmd_args);
-    free(node->command); // Freeing the command
-    free(node->cmd_path);
-    free(node->in_file);
-    free(node->out_file);
+	if (node->args != NULL)
+    	free(node->args);
+	if (node->cmd_args != NULL)
+    	free(node->cmd_args);
+	if (node->command != NULL)
+    	free(node->command); // Freeing the command
+	if (node->cmd_path != NULL)
+		free(node->cmd_path);
+	if (node->in_file != NULL)
+		free(node->in_file);
+	if (node->out_file != NULL)
+    	free(node->out_file);
     free(node);
 }
 
@@ -44,7 +51,7 @@ char **calloc_cmd(char **args, t_pars *pars, t_info *info)
 	tmp = malloc(sizeof(char *) * (i + 1));
 	if (tmp == NULL)
 	{
-		free(tmp);
+		//free(tmp);
 		ft_free_node(pars);
 		ft_free_1(args);
 		ft_putstr_fd("minishell: malloc error\n", 2);
@@ -119,6 +126,19 @@ void fill_args(t_pars *node, t_lexer *tmp1, t_info *info, t_pars *pars)
 	node->args[i] = NULL;
 }
 
+void	init_node(t_pars *node)
+{
+	node->in_file = NULL;
+	node->out_file = NULL;
+	node->command = NULL;
+	node->args = NULL;
+	node->cmd_path = NULL;
+	node->cmd_args = NULL;
+	node->next = NULL;	
+	node->fd_in = 0;
+	node->fd_out = 1;
+}
+
 t_pars *allocate_node(t_pars *pars, t_info *info, int arg_size)
 {
     t_pars *node;
@@ -131,6 +151,7 @@ t_pars *allocate_node(t_pars *pars, t_info *info, int arg_size)
         ft_free_all(pars, info, 2);
         exit(1);
     }
+	init_node(node);
     node->args = malloc(sizeof(char *) * arg_size);
     if (!node->args)
 	{
@@ -201,20 +222,21 @@ t_pars	*node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 			|| tmp->type == TokenTypeInputRedirect)
 		&& tmp->next)
 	{
-		process_special_tokens(node, pars, tmp, info);
 		fill_args(node, tmp1, info, pars);
+		process_special_tokens(node, pars, tmp, info);
 		node->cmd_args = ft_add_cmd_args(node->args, pars, info);
 	}
 	else
 	{
+		fill_args(node, tmp, info, pars);
         node->command = ft_strdup(tmp->token);
+		//node->command = NULL;
 		if (node->command == NULL)
 		{
 			ft_free_node(node);
 			ft_error_message(pars, info);
 		}
 		node->cmd_path = get_path_new(pars, tmp->token, info);
-	 	fill_args(node, tmp, info, pars);
 		node->cmd_args = ft_add_cmd_args(node->args, pars, info);
 	}
 	initialize_node_files(node);
