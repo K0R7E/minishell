@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_conversion_back.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 17:32:19 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/03 17:32:41 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/06 10:32:54 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ char	**env_conversion_back(t_info *info)
 	t_env	*tmp;
 	int		i;
 	char	**res;
+	char	*temp;
 
 	i = 0;
 	tmp = info->env_list;
@@ -40,8 +41,13 @@ char	**env_conversion_back(t_info *info)
 	}
 	while (tmp)
 	{
-		res[i] = ft_strjoin(tmp->var, "=");
-		res[i] = ft_strjoin(res[i], tmp->value);
+		temp = ft_strjoin(tmp->var, "=");
+		if (temp == NULL)
+			ft_error_message(NULL, info);
+		res[i] = ft_strjoin(temp, tmp->value);
+		free(temp);
+		if (res[i] == NULL)
+			ft_error_message(NULL, info);
 		tmp = tmp->next;
 		i++;
 	}

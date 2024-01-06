@@ -193,7 +193,7 @@ char *replace_dollar_hedoc(char *input,  t_info *info);
 char *remove_quotes(char *str);
 
 // ft_simple_command.c
-void ft_command_execute(t_pars *node, int numsimplecommands, t_info *info);
+//void ft_command_execute(t_pars *node, int numsimplecommands, t_info *info);
 
 // ft_signals.c
 void ft_signals(void);
