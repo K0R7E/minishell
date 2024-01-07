@@ -133,6 +133,8 @@ typedef struct s_info
 	t_lexer	*lexer;
 	int		builtin_command_count;
 	t_pars	**pars_ptr;
+	int 	i;
+	int 	flag;
 }	t_info;
 
 typedef struct s_global
@@ -184,10 +186,18 @@ char *ft_strldup(char *s, size_t len);
 int	ft_strchr_lexer(char *s, int c);
 
 // $ variable conversion
-char *replace_dollar(char *input,  t_info *info);
+char	*replace_dollar(char *input,  t_info *info);
 char	*add_char_to_str(char *str, char c);
-char *ft_strjoin2(char *str, char *add);
-char *replace_dollar_hedoc(char *input,  t_info *info);
+char	*ft_strjoin2(char *str, char *add);
+char	*replace_dollar_hedoc(char *input,  t_info *info);
+char	*handle_char(char *res, char *input, t_info *info);
+char	*handle_dollar_sign(t_info *info, char *res, int i, char *input);
+char	*handle_question_mark(t_info *info, char *res);
+char	*handle_hedoc(char *res, char *input, t_info *info);
+int		hedoc_length(t_info *info, int i);
+char	*check_hedoc(char *in, t_info *info, int i);
+char	*copy_env_value(int j, t_info *info);
+int		give_env_variable_pos(char *input, int i, t_info *info, int mode);
 
 // remove quotes
 char *remove_quotes(char *str);

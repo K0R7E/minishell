@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_conversion_back.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 17:32:19 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/06 10:32:54 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/07 13:29:19 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,7 @@ char	**env_conversion_back(t_info *info)
 	tmp = info->env_list;
 	res = malloc((ft_lstsize2(tmp) + 1) * sizeof(char *));
 	if (res == NULL)
-	{
 		ft_error_message(NULL, info);
-	}
 	while (tmp)
 	{
 		temp = ft_strjoin(tmp->var, "=");

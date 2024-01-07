@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 18:13:04 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/03 18:39:05 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/07 13:30:16 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,9 +150,10 @@ int	ft_cd(t_info *info, char **args)
 		}
 	}
 	else if (args[2] != NULL)
+	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
-	else if (args[2] != NULL)
 		return (1);
+	}
 	else
 		ret = ft_cd_arg(info, args);
 	return (ret);

@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 12:31:30 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/06 15:41:29 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/07 13:27:37 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	add_element2(t_env *tmp, char *arg, int i, t_info *info)
 	tmp->next = malloc(sizeof(t_env));
 	if (tmp->next == NULL)
 		ft_error_message(*info->pars_ptr, info);
-	//tmp = tmp->next;
 	tmp->next->printed = 0;
 	tmp->next->var = ft_strldup(arg, i);
 	if (tmp->next->var == NULL)

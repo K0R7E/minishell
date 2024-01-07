@@ -122,8 +122,7 @@ void	ft_lexer(t_info *info)
 	}
 	free(pos);
 }
-
-  /*t_lexer tmp = info->lexer;
+	/*t_lexer tmp = info->lexer;
 	printf("\n");
 	while (tmp.next != NULL)
 	{

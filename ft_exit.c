@@ -68,7 +68,7 @@ int	ft_exit2(char **input, int exit_value, t_info *info)
 		}
 		else
 		{
-			ft_free_all(*info->pars_ptr, info, 2);//test
+			ft_free_all(*info->pars_ptr, info, 2);
 			exit(exit_value);
 		}
 	}
@@ -77,7 +77,7 @@ int	ft_exit2(char **input, int exit_value, t_info *info)
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(input[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
-		ft_free_all(*info->pars_ptr, info, 2);//test
+		ft_free_all(*info->pars_ptr, info, 2);
 		exit(2);
 	}
 }
@@ -93,7 +93,7 @@ int	ft_exit(t_info *info, char **input)
 	if (input[1] == NULL)
 	{
 		exit_value = info->exit_code;
-		ft_free_all(*info->pars_ptr, info, 2);//test
+		ft_free_all(*info->pars_ptr, info, 2);
 		exit(exit_value);
 	}
 	else

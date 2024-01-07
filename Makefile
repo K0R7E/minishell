@@ -19,7 +19,7 @@ SRCS            =	main.c \
 					ft_error_message.c remove_quotes.c input_check_utils.c \
 					env_conversion_back.c builtins_utils2.c\
 					change_env_var_hedoc.c ft_redir.c ft_heredoc.c\
-					ft_getpath_forcmd.c ft_parsing_utils.c\
+					ft_getpath_forcmd.c ft_parsing_utils.c change_env_var_utils2.c\
 
 
 OBJ_DIR				=	obj
