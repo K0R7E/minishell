@@ -2,13 +2,13 @@
 
 int	find_new_length(char *str)
 {
-	if (str == NULL)
-        return 0;
-	int in_dbl;
-	int in_sgl;
-	int i;
-	int j;
+	int	in_dbl;
+	int	in_sgl;
+	int	i;
+	int	j;
 
+	if (str == NULL)
+		return (0);
 	i = 0;
 	j = 0;
 	in_dbl = 0;
@@ -26,18 +26,10 @@ int	find_new_length(char *str)
 	return (j);
 }
 
-
-char	*remove_quotes(char *str)
+char	*remove_quotes2(char *str, t_quote_state qs, int i, int j)
 {
-	int				i;
-	int				j;
-	t_quote_state	qs;
 	char			*new_str;
 
-	qs.state_d = 0;
-	qs.state_s = 0;
-	i = 0;
-	j = 0;
 	new_str = malloc(sizeof(char) * find_new_length(str) + 1);
 	if (new_str == NULL)
 		return (NULL);
@@ -63,6 +55,21 @@ char	*remove_quotes(char *str)
 	return (new_str);
 }
 
+char	*remove_quotes(char *str)
+{
+	int				i;
+	int				j;
+	t_quote_state	qs;
+	char			*new_str;
+
+	qs.state_d = 0;
+	qs.state_s = 0;
+	i = 0;
+	j = 0;
+	new_str = remove_quotes2(str, qs, i, j);
+	return (new_str);
+}
+
 /*
 void	remove_quotes_from_lexer_list(t_lexer *lexer)
 {
@@ -82,32 +89,21 @@ void	remove_quotes_from_lexer_list(t_lexer *lexer)
 
 void	remove_quotes_from_parsing_list(t_pars *pars, t_info *info)
 {
-	t_pars *tmp;
-	char *tmp_token;
-	int i;
+	t_pars	*tmp;
+	int		i;
 
 	tmp = pars;
 	while (tmp != NULL)
 	{
-		tmp_token = remove_quotes(tmp->command);
-		if (tmp_token == NULL)
-			ft_error_message(*info->pars_ptr, info);
-		//free(tmp->command);
-		tmp->command = strdup(tmp_token);
+		tmp->command = remove_quotes(tmp->command);
 		if (tmp->command == NULL)
 			ft_error_message(*info->pars_ptr, info);
-		free(tmp_token);
 		i = 0;
 		while (tmp->cmd_args[i] != NULL)
 		{
-			tmp_token = remove_quotes(tmp->cmd_args[i]);
-			if (tmp_token == NULL)
-				ft_error_message(*info->pars_ptr, info);
-			//free(tmp->cmd_args[i]);
-			tmp->cmd_args[i] = strdup(tmp_token);
+			tmp->cmd_args[i] = remove_quotes(tmp->cmd_args[i]);
 			if (tmp->cmd_args[i] == NULL)
 				ft_error_message(*info->pars_ptr, info);
-			free(tmp_token);
 			i++;
 		}
 		tmp = tmp->next;

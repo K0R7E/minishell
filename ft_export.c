@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 18:14:21 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/06 12:13:25 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/07 14:04:33 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,11 @@ void	print_export2(t_info *info)
 			tmp2 = tmp;
 		tmp = tmp->next;
 	}
-	if ((tmp2->value == NULL && ft_strncmp(tmp2->var, "_", 2) != 0) && (ft_strncmp(tmp2->var, "ZDOTDIR", 8) != 0))
+	if ((tmp2->value == NULL && ft_strncmp(tmp2->var, "_", 2) != 0)
+		&& (ft_strncmp(tmp2->var, "ZDOTDIR", 8) != 0))
 		printf("declare -x %s\n", tmp2->var);
-	else if (ft_strncmp(tmp2->var, "_", 2) != 0 && (ft_strncmp(tmp2->var, "ZDOTDIR", 8) != 0))
+	else if (ft_strncmp(tmp2->var, "_", 2) != 0
+		&& (ft_strncmp(tmp2->var, "ZDOTDIR", 8) != 0))
 		printf("declare -x %s=\"%s\"\n", tmp2->var, tmp2->value);
 	tmp2->printed = 1;
 }

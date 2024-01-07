@@ -79,23 +79,6 @@ char	*check_hedoc(char *in, t_info *info, int i)
 	return (res);
 }
 
-int	update_quote_state2(t_quote_state qs, char c)
-{
-	int	i;
-
-	i = 0;
-	if (c == '\'')
-	{
-		i = update_quote_state(qs.state_s);
-	}
-	else if (c == '\"')
-	{
-		i = update_quote_state(qs.state_d);
-	}
-	//info->i++;
-	return (i);
-}
-
 char	*replace_dollar2(char *in, t_info *info, t_quote_state qs, char *res)
 {
 	while (in[info->i] != '\0' && info->flag == 0)
