@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 09:50:02 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/07 09:50:05 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/07 18:07:20 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@ int	ft_check_word_type(t_pars *pars, t_lexer *tokens, t_info *info)
 {
 	(void)info;
 	(void)pars;
-	if (strcmp(tokens->token, "pwd") == 0 || strcmp(tokens->token, "echo") == 0
-		|| strcmp(tokens->token, "cd") == 0 || strcmp(tokens->token, "env") == 0
-		|| strcmp(tokens->token, "export") == 0
-		|| strcmp(tokens->token, "unset") == 0
-		|| strcmp(tokens->token, "exit") == 0)
+	if (ft_strcmp_123(tokens->token, "pwd") == 0
+		|| ft_strcmp_123(tokens->token, "echo") == 0
+		|| ft_strcmp_123(tokens->token, "cd") == 0
+		|| ft_strcmp_123(tokens->token, "env") == 0
+		|| ft_strcmp_123(tokens->token, "export") == 0
+		|| ft_strcmp_123(tokens->token, "unset") == 0
+		|| ft_strcmp_123(tokens->token, "exit") == 0)
 		return (1);
 	return (0);
 }
@@ -48,11 +50,24 @@ int	ft_lstsize(t_lexer *tokens)
 
 char	*convert_to_cmd(char *str, t_info *info)
 {
-	(void)info;
+	char	*tmp;
+
 	if (ft_strncmp(str, "/usr/bin/", 9) == 0)
-		return (str = ft_substr(str, 9, ft_strlen(str) - 9));
+	{
+		tmp = ft_substr(str, 9, ft_strlen(str) - 9);
+		if (tmp == NULL)
+			ft_error_message(*info->pars_ptr, info);
+		free(str);
+		return (tmp);
+	}
 	else if (ft_strncmp(str, "/bin/", 5) == 0)
-		return (str = ft_substr(str, 5, ft_strlen(str) - 5));
+	{
+		tmp = ft_substr(str, 5, ft_strlen(str) - 5);
+		if (tmp == NULL)
+			ft_error_message(*info->pars_ptr, info);
+		free(str);
+		return (tmp);
+	}
 	else
 		return (str);
 }

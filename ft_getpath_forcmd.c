@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_getpath_forcmd.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 11:00:02 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/07 11:23:22 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/07 17:58:31 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,10 @@ char	*get_path_new(t_pars *pars, char *token, t_info *info)
 	ft_free_array(s_cmd);
 	if (exec)
 		return (exec);
-	return (strdup(token));
+	exec = ft_strdup(token);
+	if (exec == NULL)
+		ft_error_message(pars, info);
+	return (exec);
 }
 
 /* char	*get_path_new(t_pars *pars, char *token, t_info *info)

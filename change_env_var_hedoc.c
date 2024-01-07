@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 11:32:51 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/07 13:01:08 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/07 18:07:35 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,11 @@ char	*replace_dollar_he2(char *in, t_info *info, t_quote_state qs, char *res)
 	}
 	free (in);
 	if (res == NULL)
-		return (strdup("\0"));
+	{
+		res = ft_strdup("\0");
+		if (res == NULL)
+			ft_error_message(*info->pars_ptr, info);
+	}
 	return (res);
 }
 

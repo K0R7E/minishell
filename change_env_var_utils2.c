@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   change_env_var_utils2.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:20:53 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/07 14:21:04 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/07 17:54:43 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	*handle_dollar_sign2(t_info *info, char *res, int j)
 	res = ft_strjoin2(res, tmp);
 	if (res == NULL)
 		ft_error_message(*info->pars_ptr, info);
-	tmp = strdup(res);
+	tmp = ft_strdup(res);
 	if (tmp == NULL)
 	{
 		free(res);
@@ -61,7 +61,7 @@ char	*handle_dollar_sign(t_info *info, char *res, int i, char *input)
 	}
 	else
 	{
-		tmp = strdup(res);
+		tmp = ft_strdup(res);
 		if (tmp == NULL)
 		{
 			free(res);
@@ -107,7 +107,12 @@ char	*handle_hedoc(char *res, char *input, t_info *info)
 	res = handle_char(res, input, info);
 	res = check_hedoc(res, info, info->i);
 	info->i = hedoc_length(info, info->i);
-	tmp = strdup(res);
+	tmp = ft_strdup(res);
+	if (tmp == NULL)
+	{
+		free(res);
+		ft_error_message(*info->pars_ptr, info);
+	}
 	info->flag = 1;
 	free(res);
 	return (tmp);

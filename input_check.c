@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 12:16:30 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/03 15:18:30 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/07 17:18:29 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,9 +190,20 @@ int	ft_check_input(t_info *info)
 
 	i = -1;
 	type_last = 3;
+	if (check_empty(info) == 1)
+	{
+		free(info->input);
+		return (1);
+	}
 	if (ft_check_input_quotes(info) == 1)
+	{
+		free(info->input);
 		return (1);
+	}
 	if (ft_check_input_syntax(info, type_last, i) == 1)
+	{
+		free(info->input);
 		return (1);
+	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 18:35:32 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/07 14:08:15 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/07 18:12:01 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,14 @@ int	update_quote_state2(t_quote_state qs, char c)
 	{
 		i = update_quote_state(qs.state_d);
 	}
+	return (i);
+}
+
+int	change_one_zero(int i)
+{
+	if (i == 1)
+		i = 0;
+	else if (i == 0)
+		i = 1;
 	return (i);
 }

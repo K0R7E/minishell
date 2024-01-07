@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 18:13:04 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/07 13:30:16 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/07 18:00:07 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	ft_cd_arg(t_info *info, char **args)
 	int		ret;
 
 	ret = 0;
-	if (strncmp(args[1], "..", 3) == 0)
+	if (ft_strncmp(args[1], "..", 3) == 0)
 	{
 		tmp = convert_path_back(info->pwd, info);
 		if (chdir(tmp) == 0)

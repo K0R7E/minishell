@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   change_env_var.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:20:43 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/07 15:15:54 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/07 18:11:45 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,9 @@ char	*check_hedoc(char *in, t_info *info, int i)
 	char	*res;
 
 	state = 0;
-	res = strdup(in);
+	res = ft_strdup(in);
+	if (res == NULL)
+		ft_error_message(*info->pars_ptr, info);
 	while ((info->input[i] == ' ' || info->input[i] == '\t')
 		&& info->input[i] != '\0')
 		i++;
@@ -78,10 +80,7 @@ char	*check_hedoc(char *in, t_info *info, int i)
 	{
 		if (info->input[i] == '\'' || info->input[i] == '\"')
 		{
-			if (state == 0)
-				state = 1;
-			else if (state == 1)
-				state = 0;
+			state = change_one_zero(state);
 		}
 		if (state == 0 && ft_strchr_lexer(" \t<>|", info->input[i]))
 			break ;
@@ -117,7 +116,7 @@ char	*replace_dollar2(char *in, t_info *info, t_quote_state qs, char *res)
 	}
 	free (in);
 	if (res == NULL)
-		return (strdup("\0"));
+		return (ft_strdup("\0"));
 	return (res);
 }
 

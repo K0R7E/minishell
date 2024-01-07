@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:20:33 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/07 16:00:02 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/07 18:11:27 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ void	init_loop(t_pars *pars, t_info *info);
 
 //input check.c
 int		ft_check_input(t_info *info);
+int		check_empty(t_info *info);
 
 //input check_utils.c
 int		check_if_allowed(int newer, int last, t_info *info, int i);
@@ -196,6 +197,7 @@ char	*remove_quotes(char *str);
 void	sigint_handler(int sig);
 void	sigquit_handler(int sig);
 void	init_signals(void);
+int		ft_strcmp_123(const char *s1, const char *s2);
 
 //utils.c
 void	ft_close(int fd);
@@ -203,6 +205,7 @@ void	ft_error_message(t_pars *pars, t_info *info);
 int		update_quote_state(int i);
 void	ft_3(char *first, char *second, char *third);
 int		ft_strncmp_12(const char *s1, const char *s2, size_t n);
+int		change_one_zero(int i);
 
 // env conversion
 void	env_conversion(t_info *info, t_pars *pars, char **envp);
