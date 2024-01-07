@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:44:40 by akortvel          #+#    #+#             */
-/*   Updated: 2023/11/02 14:14:21 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/06 16:18:14 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,26 @@
 # include <stdint.h>
 # include <limits.h>
 # include <fcntl.h>
+
+struct s_data
+{
+	size_t	i;
+	size_t	j;
+	size_t	start;
+};
+
+struct s_data1
+{
+	int		i;
+	int		j;
+	int		len;
+	char	*line;
+	char	*buffer;
+	int		read;
+	char	*ln;
+	int		k;
+	int		b;
+};
 
 /*LIBFT*/
 int		ft_isalpha(int c);

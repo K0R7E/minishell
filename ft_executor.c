@@ -1,186 +1,118 @@
-#include "libft/libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_executor.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/06 18:16:57 by akortvel          #+#    #+#             */
+/*   Updated: 2024/01/07 09:38:03 by akortvel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-#include <stdlib.h>
 
-int	is_builtin_1(char *command)
+void	handle_execve_error(char *command, char **env)
 {
-	if (ft_strncmp(command, "echo", 5) == 0)
-		return (1);
-
-	if (ft_strncmp(command, "pwd", 4) == 0)
-		return (1);
-
-	if (ft_strncmp(command, "env", 4) == 0)
-		return (1);
-/* 	if (ft_strncmp(command, "export", 7) == 0)
-		return (1);
-	if (ft_strncmp(command, "unset", 6) == 0)
-		return (1);
-	if (ft_strncmp(command, "cd", 3) == 0)
-		return (1);
-	if (ft_strncmp(command, "exit", 5) == 0)
-		return (1);*/
-	return (0);
+	ft_putstr_fd("Error: command not found: ", STDERR_FILENO);
+	ft_putendl_fd(command, STDERR_FILENO);
+	ft_free_array(env);
+	exit(127);
 }
 
-int	is_builtin_2(char *command)
+void	handle_child_process(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 {
-/* 	if (ft_strncmp(command, "echo", 5) == 0)
-		return (1);
+	int		ret;
+	int		file_fd;
+	char	**env;
 
-	if (ft_strncmp(command, "pwd", 4) == 0)
-		return (1);
-
-	if (ft_strncmp(command, "env", 4) == 0)
-		return (1); */
-	if (ft_strncmp(command, "export", 7) == 0)
-		return (1);
-	if (ft_strncmp(command, "unset", 6) == 0)
-		return (1);
-	if (ft_strncmp(command, "cd", 3) == 0)
-		return (1);
-	if (ft_strncmp(command, "exit", 5) == 0)
-		return (1);
-	return (0);
+	setup_fd(&fd_in, STDIN_FILENO);
+	setup_fd(&fd_out, STDOUT_FILENO);
+	setup_file_fd(&file_fd, tmp->out_file, tmp->fd_out, STDOUT_FILENO);
+	setup_file_fd(&file_fd, tmp->in_file, tmp->fd_in, STDIN_FILENO);
+	if (is_builtin(tmp->command, tmp->cmd_args))
+	{
+		ret = ft_builtin(tmp, info);
+		exit(ret);
+	}
+	else if (is_builtin_2(tmp->command) && info->command_count == 1)
+		exit(EXIT_SUCCESS);
+	env = env_conversion_back(info);
+	if (execve(tmp->cmd_path, tmp->cmd_args, env) == -1)
+		handle_execve_error(tmp->command, env);
+	ft_free_array(env);
+	exit(EXIT_SUCCESS);
 }
 
-int	is_builtin_3(char *command)
+void	handle_parent_proc(pid_t pid, t_info *info, int fd_in, int fd_out)
 {
-/* 	if (ft_strncmp(command, "echo", 5) == 0)
-		return (1);
+	int		status;
+	t_pars	*tmp;
 
-	if (ft_strncmp(command, "pwd", 4) == 0)
-		return (1);
-
-	if (ft_strncmp(command, "env", 4) == 0)
-		return (1); */
-	/*if (ft_strncmp(command, "export", 7) == 0)
-		return (1);*/
-	if (ft_strncmp(command, "unset", 6) == 0)
-		return (1);
-	if (ft_strncmp(command, "cd", 3) == 0)
-		return (1);
-	if (ft_strncmp(command, "exit", 5) == 0)
-		return (1);
-	return (0);
+	tmp = *info->pars_ptr;
+	waitpid(pid, &status, 0);
+	if (is_builtin_2(tmp->command) && info->command_count == 1)
+	{
+		if (ft_strncmp(tmp->command, "export", 7) != 0
+			|| (ft_strncmp(tmp->command, "export", 7) == 0
+				&& tmp->cmd_args[1] != NULL))
+			info->exit_code = ft_builtin(tmp, info);
+	}
+	else
+	{
+		if (WIFEXITED(status))
+			info->exit_code = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			info->exit_code = 128 + WTERMSIG(status);
+	}
+	if (fd_in != 0)
+		close(fd_in);
+	if (fd_out != 1)
+		close(fd_out);
 }
 
-void ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
+void	ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 {
-    pid_t pid;
-    int status;
-	int ret;
-	char **env = NULL;
+	pid_t	pid;
 
 	if (tmp->command == NULL || tmp->command[0] == '\0')
 		return ;
-    pid = fork();
-    if (pid == 0)
-    {
-        if (fd_in != 0)
-        {
-            dup2(fd_in, STDIN_FILENO);
-            close(fd_in);
-        }
-        if (fd_out != 1)
-        {
-            dup2(fd_out, STDOUT_FILENO);
-            close(fd_out);
-        }
-		if (tmp->out_file)
-        {
-            int file_fd = tmp->fd_out;
-            if (file_fd == -1)
-            {
-                perror("Error opening output file");
-                exit(EXIT_FAILURE);
-            }
-            dup2(file_fd, STDOUT_FILENO);
-            close(file_fd);
-        }
-		if (tmp->in_file)
-        {
-            int file_fd = tmp->fd_in;
-            if (file_fd == -1)
-            {
-                perror("Error opening output file");
-                exit(EXIT_FAILURE);
-            }
-            dup2(file_fd, STDIN_FILENO);
-            close(file_fd);
-        }
-		if ((is_builtin_1(tmp->command) || (ft_strncmp(tmp->command, "export", 7) == 0 
-			&& tmp->cmd_args[1] == NULL)) || (is_builtin_2(tmp->command) && info->command_count > 1))
-		{	
-			ret = ft_builtin(tmp, info);
-			exit(ret);
-		}
-		else if (is_builtin_2(tmp->command))
-		{
-			exit(EXIT_SUCCESS);
-		}
-        env = env_conversion_back(info);
-		if (execve(tmp->cmd_path, tmp->cmd_args, env) == -1)
-        {
-            ft_putstr_fd("Error: command not found: ", STDERR_FILENO);
-            ft_putendl_fd(tmp->command, STDERR_FILENO);
-            ft_free_array(env);
-            exit(127);
-        }
-        ft_free_array(env);
-        exit(EXIT_SUCCESS);
-    }
-    else if (pid < 0)
-    {
-        ft_putendl_fd("Error: fork failed", STDERR_FILENO);
-        exit(EXIT_FAILURE);
-    }
-    else
-    {
-        waitpid(pid, &status, 0);
-		//printf("command_count:%d\n", info->command_count);
-		if ((is_builtin_2(tmp->command) && info->command_count == 1))
-		{
-			if (ft_strncmp(tmp->command, "export", 7) != 0 || 
-				(ft_strncmp(tmp->command, "export", 7) == 0 && tmp->cmd_args[1] != NULL))
-			{	
-				info->exit_code = ft_builtin(tmp, info); 
-			}
-		}
-		else
-			info->exit_code = (WEXITSTATUS(status));
-		if (WIFSIGNALED(status))
-			info->exit_code = 128 + WTERMSIG(status);
-        if (fd_in != 0) close(fd_in);
-        if (fd_out != 1) close(fd_out);
-		//printf("exit code: %d\n", info->exit_code);
-    }
+	pid = fork();
+	if (pid == 0)
+		handle_child_process(tmp, info, fd_in, fd_out);
+	else if (pid < 0)
+	{
+		ft_putendl_fd("Error: fork failed", STDERR_FILENO);
+		exit(EXIT_FAILURE);
+	}
+	else
+		handle_parent_proc(pid, info, fd_in, fd_out);
 }
 
-void ft_executor(t_pars *pars, t_info *info)
+void	ft_executor(t_pars *pars, t_info *info)
 {
-    t_pars *tmp;
-    int fd[2], fd_in = 0, fd_out = 1;
- 
-    tmp = pars;
+	t_pars	*tmp;
+	int		fd[2];
+	int		fd_in;
+	int		fd_out;
+
+	fd_in = 0;
+	fd_out = 1;
+	tmp = pars;
 	g_global.in_cmd = 1;
-    while(tmp)
-    {
-        pipe(fd);
-        if (tmp->next == NULL)
-        {
-            fd_out = 1;
-        }
-        else
-        {
-            fd_out = fd[1];
-        }
-        ft_fork(tmp, info, fd_in, fd_out);
-        close(fd[1]);
-        if (fd_in != 0) close(fd_in);
-        fd_in = fd[0];
-        tmp = tmp->next;
-    }
+	while (tmp)
+	{
+		pipe(fd);
+		if (tmp->next == NULL)
+			fd_out = 1;
+		else
+			fd_out = fd[1];
+		ft_fork(tmp, info, fd_in, fd_out);
+		close(fd[1]);
+		if (fd_in != 0)
+			close(fd_in);
+		fd_in = fd[0];
+		tmp = tmp->next;
+	}
 	g_global.in_cmd = 0;
 }
-

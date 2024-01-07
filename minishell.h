@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/07 10:50:58 by akortvel          #+#    #+#             */
+/*   Updated: 2024/01/07 12:18:54 by akortvel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -27,28 +38,29 @@
 # define OFF "\033[0m"
 
 // Token types
-enum {
-    TokenTypeWord = 1,
-    TokenTypeOutputRedirect = 2,
-    TokenTypeInputRedirect = 3,
-    TokenTypeOutputAppend = 4,
-    TokenTypeHeredoc = 5,
-    TokenTypePipe = 6,
+enum
+{
+	TokenTypeWord = 1,
+	TokenTypeOutputRedirect = 2,
+	TokenTypeInputRedirect = 3,
+	TokenTypeOutputAppend = 4,
+	TokenTypeHeredoc = 5,
+	TokenTypePipe = 6,
 	TokenTypeEnd = 7,
 	TokenTypeDelimiter = 8,
 };
 
 typedef struct s_fds
 {
-	int flag;
-	int fd_in;
-	int fd_out;
-	char *value;
-	struct s_fds *next;
+	int				flag;
+	int				fd_in;
+	int				fd_out;
+	char			*value;
+	struct s_fds	*next;
 }	t_fds;
 
 typedef struct s_lexer
-{	
+{
 	int				command;
 	int				type;
 	int				hd_quote;
@@ -58,18 +70,17 @@ typedef struct s_lexer
 
 //for lexer
 typedef struct s_lexer_pos
-{	
-	int i;
-	int command_number;
-	int hedoc;
+{
+	int	i;
+	int	command_number;
+	int	hedoc;
 }	t_lexer_pos;
 
 typedef struct quote_state
 {
-	int state_s;
-	int state_d;
+	int	state_s;
+	int	state_d;
 }	t_quote_state;
-
 
 //linked pars
 typedef struct s_pars
@@ -87,30 +98,9 @@ typedef struct s_pars
 	//struct s_pars	*prev;
 }	t_pars;
 
-/*
-typedef struct s_parsing
-{
-	char	**cmd_path;
-	char	**cmd_cmd;
-	char	**cmd_builtin;
-	int		yon;
-	char	*heredoc_delimiter;
-	int 	pipes_count;
-	int		command_count;
-	t_lexer	lexer;
-	t_fds	fds;
-	char	**args;
-	char	*in_file;
-	char	*out_file;
-	int		fd_in;
-	int		fd_out;
-	int		fd_pipe[2];
-	char 	*check_cmd[7];
-}	t_parsing;
-*/
 typedef struct s_env
 {
-	int 			printed;
+	int				printed;
 	char			*var;
 	char			*value;
 	struct s_env	*next;
@@ -145,125 +135,149 @@ typedef struct s_global
 
 extern t_global	g_global;
 
-void	sigint_handler(int sig);
-void	sigquit_handler(int sig);
-void	init_signals(void);
+void	ft_print_pars(t_pars *pars);
 
-void ft_executor_pars(t_pars *pars, t_info *info);
-void ft_executor(t_pars *pars, t_info *info);
-int ft_listsize(t_pars *pars);
+void	ft_executor_pars(t_pars *pars, t_info *info);
+void	ft_executor(t_pars *pars, t_info *info);
+int		ft_listsize(t_pars *pars);
 
 // main.c
-void ft_get_input(t_info *info);
+void	ft_get_input(t_info *info);
 
 // ft_cpyarray.c
 char	**ft_arrycpy(char **envp);
-void ft_free_array(char **arr);
+void	ft_free_array(char **arr);
 
 // ft_getpwd.c
-void 	get_pwd(t_info *info);
-
-// parsing.c
-/*
-void ft_parser(t_lexer *tokens, t_parsing *pars, t_info *info);
-void free_parsing(t_parsing *pars);*/
-//void print_tokens(t_lexer *tokens);
+void	get_pwd(t_info *info);
 
 //input check.c
-int	ft_check_input(t_info *info);
+int		ft_check_input(t_info *info);
 
 //input check_utils.c
-int	check_if_allowed(int newer, int last, t_info *info, int i);
-int	ft_find_last_redirect(t_info *info, int i);
-int	ft_handle_redirect_length(t_info *info, int i);
+int		check_if_allowed(int newer, int last, t_info *info, int i);
+int		ft_find_last_redirect(t_info *info, int i);
+int		ft_handle_redirect_length(t_info *info, int i);
 
 // lexer.c
 void	ft_lexer(t_info *info);
 void	remove_quotes_from_parsing_list(t_pars *pars, t_info *info);
-char *ft_strldup(char *s, size_t len);
-int	ft_strchr_lexer(char *s, int c);
+char	*ft_strldup(char *s, size_t len);
+int		ft_strchr_lexer(char *s, int c);
 
 // $ variable conversion
-char *replace_dollar(char *input,  t_info *info);
+char	*replace_dollar(char *input, t_info *info);
 char	*add_char_to_str(char *str, char c);
-char *ft_strjoin2(char *str, char *add);
-char *replace_dollar_hedoc(char *input,  t_info *info);
+char	*ft_strjoin2(char *str, char *add);
+char	*replace_dollar_hedoc(char *input, t_info *info);
 
 // remove quotes
-char *remove_quotes(char *str);
-
-// ft_simple_command.c
-//void ft_command_execute(t_pars *node, int numsimplecommands, t_info *info);
+char	*remove_quotes(char *str);
 
 // ft_signals.c
-void ft_signals(void);
-void ft_sigquit(int signum);
-void ft_sigint(int signum);
-
-// gui.c
-void print_centered(char *text);
-void ft_print_minishell_gui(void);
+void	sigint_handler(int sig);
+void	sigquit_handler(int sig);
+void	init_signals(void);
 
 //utils.c
 void	ft_close(int fd);
 void	ft_error_message(t_pars *pars, t_info *info);
-int update_quote_state(int i);
+int		update_quote_state(int i);
 void	ft_3(char *first, char *second, char *third);
+int		ft_strncmp_12(const char *s1, const char *s2, size_t n);
 
 // env conversion
 void	env_conversion(t_info *info, t_pars *pars, char **envp);
-char **env_conversion_back(t_info *info);
+char	**env_conversion_back(t_info *info);
 
 //builtin
-int	ft_builtin(t_pars *pars, t_info *info);
-int	ft_export(t_info *info, char **args);
-int	ft_env(t_info *info);
-int	ft_echo(char **input);
-int	ft_unset(t_info *info, char **args);
-int	ft_cd(t_info *info, char **args);
-int	ft_pwd(t_info *info);
-int ft_exit(t_info *info, char **input);
+int		ft_builtin(t_pars *pars, t_info *info);
+int		ft_export(t_info *info, char **args);
+int		ft_env(t_info *info);
+int		ft_echo(char **input);
+int		ft_unset(t_info *info, char **args);
+int		ft_cd(t_info *info, char **args);
+int		ft_pwd(t_info *info);
+int		ft_exit(t_info *info, char **input);
 
 //ft_check_input.c
-int	ft_check_input(t_info *info);
+int		ft_check_input(t_info *info);
 
 //builtin utils
-int strlcmp_export(char *str1, char *str2, int n);
-void add_element(t_info *info, char *arg);
-char *get_path(char *token, t_info *info);
+int		strlcmp_export(char *str1, char *str2, int n);
+void	add_element(t_info *info, char *arg);
+char	*get_path(char *token, t_info *info);
 void	update_info(t_info *info);
-int	is_valid_env(char *env);
+int		is_valid_env(char *env);
 void	update_pwd(t_info *info, char *path);
 
-//parsing_right_way.c
-int ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info);
-void free_pars_list(t_pars *head);
-void ft_print_pars(t_pars *pars);
-
 //ft_free_all.c
-void ft_free_1 (char **array);
-void ft_free_all(t_pars *pars, t_info *info, int flag);
+void	ft_free_all(t_pars *pars, t_info *info, int flag);
 
-
-int	ft_strncmp_12(const char *s1, const char *s2, size_t n);
-
-// ft_redir.c
-int	ft_redir(t_pars *pars, t_info *info);
-
-//ft_heredoc.c
-int	ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count);
+/*##########################################################*/
+/*###################  AKORTVEL-DONE  ######################*/
+/*##########################################################*/
 
 //ft_getpath_forcmd.c
 char	*get_path_new(t_pars *pars, char *token, t_info *info);
 
+//ft_heredoc.c
+int		ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count);
+
+// ft_redir.c
+int		ft_redir(t_pars *pars, t_info *info);
+int		ft_handle_redirection(t_pars *tmp, t_info *info);
+void	ft_redir_output_app(t_pars *pars, t_info *info, int i, int count);
+void	ft_redir_output(t_pars *pars, t_info *info, int i, int count);
+void	ft_redir_input(t_pars *pars, t_info *info, int i, int count);
+
+//ft_redir_utils.c
+int		ft_check_num(char **str, char *c);
+
+//ft_parsing.c
+int		ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info);
+void	add_pars_node(t_pars *pars, t_pars **head, t_lexer *tmp, t_info *info);
+t_pars	*node_for_word(t_pars *pars, t_lexer *tmp, t_info *info);
+void	proc_spec(t_pars *node, t_pars *pars, t_lexer *tmp, t_info *info);
+void	fill_args(t_pars *node, t_lexer *tmp1, t_info *info, t_pars *pars);
+
+//ft_parsing_1.c
+void	free_argsnode(t_pars *node);
+void	free_cmdnode(t_pars *node);
+void	ft_free_node(t_pars *node);
+char	**calloc_cmd(char **args, t_pars *pars, t_info *info);
+int		should_skip_arg(char *arg);
+
+//ft_parsing_2.c
+void	initialize_node_files(t_pars *node);
+void	check_null(t_pars *node, t_pars *pars, t_info *info);
+int		iterate_lexer_tokens(t_lexer *tmp, t_pars *node);
+void	set_c_p(t_pars *node, t_lexer *tmp, t_pars *pars, t_info *info);
+void	init_node(t_pars *node);
+
+//ft_parsing_3.c
+t_pars	*allocate_node(t_pars *pars, t_info *info, int arg_size);
+void	hand_all_fail(char **tmp, char **args, t_pars *pars, t_info *info);
+char	**ft_add_cmd_args(char **args, t_pars *pars, t_info *info);
+
 //ft_parsing_utils.c
-int	ft_check_word_type(t_pars *pars, t_lexer *tokens, t_info *info);
-int	is_next_args(t_lexer *tokens);
-int	ft_lstsize(t_lexer *tokens);
+int		ft_check_word_type(t_pars *pars, t_lexer *tokens, t_info *info);
+int		is_next_args(t_lexer *tokens);
+int		ft_lstsize(t_lexer *tokens);
 char	*convert_to_cmd(char *str, t_info *info);
 
+//ft_executor.c
+void	handle_execve_error(char *command, char **env);
+void	handle_child_process(t_pars *tmp, t_info *info, int fd_in, int fd_out);
+void	handle_parent_proc(pid_t pid, t_info *info, int fd_in, int fd_out);
+void	ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out);
+void	ft_executor(t_pars *pars, t_info *info);
 
-
-void	ft_free_node(t_pars *node);
+//ft_executor_utils.c
+int		is_builtin_1(char *command);
+int		is_builtin_2(char *command);
+void	setup_fd(int *fd, int std_no);
+void	setup_file_fd(int *file_fd, char *file, int fd, int std_no);
+int		is_builtin(char *command, char **cmd_args);
 
 #endif
