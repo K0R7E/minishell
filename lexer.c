@@ -134,19 +134,3 @@ void	ft_lexer(t_info *info)
 	}
 	free(pos);
 }
-
-/*t_lexer tmp = info->lexer;
-	printf("\n");
-	while (tmp.next != NULL)
-	{
-		printf("hd_quote %d\n", tmp.hd_quote);
-		printf("command: %d\n", tmp.command);
-		printf("type: %d\n", tmp.type);
-		printf("token: %s\n\n", tmp.token);
-		tmp = *tmp.next;
-	}
-	printf("hd_quote %d\n", tmp.hd_quote);
-	printf("command: %d\n", tmp.command);
-	printf("type: %d\n", tmp.type);
-	printf("token: %s\n", tmp.token);
-	*/

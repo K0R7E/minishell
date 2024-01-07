@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   change_env_var_hedoc.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 11:32:51 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/05 11:07:56 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/07 13:01:08 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
 int	give_env_variable_pos_hedoc(char *input, int i, t_info *info, int mode)
 {
 	int		j;
@@ -62,8 +63,9 @@ char	*copy_env_value_hedoc(int j, t_info *info)
 	}
 	res[i] = '\0';
 	return (res);
-}
+}*/
 
+/*
 char	*replace_dollar_hedoc(char *input, t_info *info)
 {
 	int				i;
@@ -106,5 +108,44 @@ char	*replace_dollar_hedoc(char *input, t_info *info)
 	free (input);
 	if (res == NULL)
 		return (strdup("\0"));
+	return (res);
+}*/
+
+char	*replace_dollar_he2(char *in, t_info *info, t_quote_state qs, char *res)
+{
+	while (in[info->i] != '\0' && info->flag == 0)
+	{
+		if (in[info->i] == '$' && (qs.state_s == 0))
+		{
+			if (in[info->i +1] == '?')
+				res = handle_question_mark(info, res);
+			else if (ft_isalpha(in[info->i +1]) == 0 && in[info->i +1] != '_')
+				res = handle_char(res, in, info);
+			else
+				res = handle_dollar_sign(info, res, info->i, in);
+		}
+		else
+			res = handle_char(res, in, info);
+	}
+	free (in);
+	if (res == NULL)
+		return (strdup("\0"));
+	return (res);
+}
+
+char	*replace_dollar_hedoc(char *input, t_info *info)
+{
+	t_quote_state	qs;
+	int				i;
+	char			*res;
+	char			*tmp;
+
+	tmp = NULL;
+	info->flag = 0;
+	qs.state_d = 0;
+	qs.state_s = 0;
+	i = 0;
+	info->i = 0;
+	res = replace_dollar_he2(input, info, qs, tmp);
 	return (res);
 }

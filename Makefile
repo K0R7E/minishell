@@ -25,7 +25,6 @@ SRCS            =	main.c \
 					change_env_var_hedoc.c ft_heredoc.c\
 					ft_getpath_forcmd.c ft_parsing_utils.c\
 
-
 OBJ_DIR				=	obj
 OBJS				=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
 
