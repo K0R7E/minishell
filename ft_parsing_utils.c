@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 09:50:02 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/07 09:50:05 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/07 17:28:24 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,19 @@ char	*convert_to_cmd(char *str, t_info *info)
 {
 	(void)info;
 	if (ft_strncmp(str, "/usr/bin/", 9) == 0)
-		return (str = ft_substr(str, 9, ft_strlen(str) - 9));
+	{
+		str = ft_substr(str, 9, ft_strlen(str) - 9);
+		if (str == NULL)
+			ft_error_message(*info->pars_ptr, info);
+		return (str);
+	}
 	else if (ft_strncmp(str, "/bin/", 5) == 0)
-		return (str = ft_substr(str, 5, ft_strlen(str) - 5));
+	{
+		str = ft_substr(str, 5, ft_strlen(str) - 5);
+		if (str == NULL)
+			ft_error_message(*info->pars_ptr, info);
+		return (str);
+	}
 	else
 		return (str);
 }
