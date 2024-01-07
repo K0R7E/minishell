@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:25:08 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/07 13:02:00 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/07 16:23:16 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,22 @@ char	*ft_str_123(t_pars *pars, t_info *info, char *str, char *line)
 	if (str == NULL)
 		ft_error_message(pars, info);
 	return (str);
+}
+
+int	ft_check_qoutes(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'')
+			return (1);
+		else if (str[i] == '\"')
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 static int	hd_loop(t_pars *pars, t_info *info, int i, int fd)
@@ -67,6 +83,10 @@ int	ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 		return (1);
 	}
 	g_global.in_hd = 1;
+	if (ft_check_qoutes(pars->args[i + 1]) == 1)
+		info->hd_quote = 1;
+	else
+		info->hd_quote = 0;
 	pars->args[i + 1] = remove_quotes(pars->args[i + 1]);
 	hd_loop(pars, info, i, fd);
 	if (i == count)

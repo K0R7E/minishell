@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   change_env_var.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/07 14:20:43 by akortvel          #+#    #+#             */
+/*   Updated: 2024/01/07 15:15:54 by akortvel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	give_env_variable_pos(char *input, int i, t_info *info, int mode)
@@ -62,8 +74,7 @@ char	*check_hedoc(char *in, t_info *info, int i)
 	while ((info->input[i] == ' ' || info->input[i] == '\t')
 		&& info->input[i] != '\0')
 		i++;
-	while (info->input[i] != '\0' && (info->input[i] != ' '
-			&& info->input[i] != '\t' && state == 0))
+	while (info->input[i] != '\0')
 	{
 		if (info->input[i] == '\'' || info->input[i] == '\"')
 		{
@@ -72,6 +83,8 @@ char	*check_hedoc(char *in, t_info *info, int i)
 			else if (state == 1)
 				state = 0;
 		}
+		if (state == 0 && ft_strchr_lexer(" \t<>|", info->input[i]))
+			break ;
 		res = add_char_to_str(res, info->input[i]);
 		i++;
 	}

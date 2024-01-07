@@ -8,9 +8,9 @@
 			"type": "lldb",
 			"request": "launch",
 			"name": "Debug",
-			"program": "/nfs/homes/fstark/My_Files/github/minishell/maim/./minishell",
+			"program": "/nfs/homes/akortvel/minishell/./minishell",
 			"args": [],
-			"cwd": "/nfs/homes/fstark/My_Files/github/minishell/maim"
+			"cwd": "/nfs/homes/akortvel/minishell"
 		}
 	]
 }
