@@ -1,7 +1,18 @@
-#include "minishell.h"
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/07 14:21:49 by akortvel          #+#    #+#             */
+/*   Updated: 2024/01/07 16:00:10 by akortvel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	ft_print_pars(t_pars *pars)
+#include "minishell.h"
+
+/* void	ft_print_pars(t_pars *pars)
 {
 	int i = 0;
 	int j = 0;
@@ -43,20 +54,18 @@ void	ft_print_pars(t_pars *pars)
 		pars = pars->next;
 		i++;
 	}
-}
+} */
 
-void ft_get_input(t_info *info)
+void	ft_get_input(t_info *info)
 {
-	char *line;
-	
+	char	*line;
+
 	line = readline(LIME"minishell>"OFF);
-	//line = NULL;
 	info->input = ft_strdup(line);
 	free(line);
 	if (!info->input)
 	{
 		free(info->input);
-		//ft_putstr_fd("minishell: malloc error\n", 1);
 		ft_free_all(*info->pars_ptr, info, 2);
 		exit(1);
 	}
@@ -70,25 +79,10 @@ void ft_get_input(t_info *info)
 	return ;
 }
 
-/*
-void test_lexer_print(t_parsing *pars)
+int	ft_listsize(t_pars *pars)
 {
-	t_lexer *tmp;
-	int i = 0;
-
-	tmp = &pars->lexer;
-	while (tmp)
-	{
-		printf("Token: %d: %s\n", i, tmp->token);
-		tmp = tmp->next;
-		i++;
-	}
-}*/
-
-int ft_listsize(t_pars *pars)
-{
-	int i;
-	t_pars *tmp;
+	int		i;
+	t_pars	*tmp;
 
 	i = 0;
 	tmp = pars;
@@ -100,26 +94,6 @@ int ft_listsize(t_pars *pars)
 	return (i);
 }
 
-void print_lexer(t_info *info)
-{
-	t_lexer *tmp; 
-	
-	tmp = info->lexer;
-	printf("\n");
-	while (tmp->next != NULL)
-	{
-		printf("hd_quote %d\n", tmp->hd_quote);
-		printf("command: %d\n", tmp->command);
-		printf("type: %d\n", tmp->type);
-		printf("token: %s\n\n", tmp->token);
-		tmp = tmp->next;
-	}
-	printf("hd_quote %d\n", tmp->hd_quote);
-	printf("command: %d\n", tmp->command);
-	printf("type: %d\n", tmp->type);
-	printf("token: %s\n", tmp->token);
-}
-
 void	ft_init_values(t_info *info)
 {
 	info->old_pwd = NULL;
@@ -128,49 +102,43 @@ void	ft_init_values(t_info *info)
 	info->home = NULL;
 	info->input = NULL;
 	info->lexer = NULL;
-}
-
-int main(int argc, char **argv, char **envp)
-{
-	t_info *info;
-	t_pars *pars;
-
-	if (argc != 1 || argv[1])
-	{
-		printf("Please do not add parameters\n");
-		return (1);
-	}
-	pars = NULL;
-	info = malloc(sizeof(t_info));
-	if (!info)
-	{
-		ft_putstr_fd("minishell: malloc error\n", 1);
-		return (1);
-	}
-	ft_init_values(info);
-	info->pars_ptr = &pars;
-	info->env = ft_arrycpy(envp);
-	if (!info->env)
-	{
-		free(info);
-		ft_putstr_fd("minishell: malloc error\n", 1);
-		return (1);
-	}
-	env_conversion(info, pars, envp);
-	get_pwd(info);
 	info->exit_status = 0;
 	g_global.stop_hd = 0;
 	g_global.in_cmd = 0;
 	g_global.in_hd = 0;
 	info->exit_code = 0;
 	init_signals();
-	printf("\033[2J\033[1;1H");
- 	while (1)
+}
+
+t_info	*calloc_info(void)
+{
+	t_info	*info;
+
+	info = malloc(sizeof(t_info));
+	if (!info)
 	{
+		ft_putstr_fd("minishell: malloc error\n", 1);
+		exit (1);
+	}
+	ft_init_values(info);
+	return (info);
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_info	*info;
+	t_pars	*pars;
+
+	ft_args(argv, argc);
+	pars = NULL;
+	info = calloc_info();
+	info->pars_ptr = &pars;
+	info->env = ft_arrycpy_main(envp, info);
+	env_conversion(info, pars, envp);
+	while (1)
+	{
+		init_loop(pars, info);
 		pars = NULL;
-		info->lexer = NULL;
-		info->command_count = 1;
-		info->builtin_command_count = 0;
 		ft_get_input(info);
 		if (!info->input)
 			continue ;
@@ -178,30 +146,22 @@ int main(int argc, char **argv, char **envp)
 			continue ;
 		ft_lexer(info);
 		if (ft_parsing(&pars, info->lexer, info) == 1)
-			continue;
-		//ft_print_pars(pars);
-		remove_quotes_from_parsing_list(pars, info);
-		//printf("pars->command%s\n", pars->command);
-		info->command_count = ft_listsize(pars);
-		update_info(info);
-		ft_executor(pars, info);
-		free(info->input);
-		info->input = NULL;
-		ft_free_all(pars, info, 1);
+			continue ;
+		ft_1(info, pars);
 	}
 	ft_free_all(pars, info, 2);
 	return (0);
 }
-
 /*
 
-echo "hello" > file1 | echo -n "hello" | cat < file1 | cat -e > file2 | cat file2 | ls -l | wc -l
+echo "hello" > file1 | echo -n "hello" | cat < file1 
+| cat -e > file2 | cat file2 | ls -l | wc -l
 
 /bin/ls /bin/ -l
 
-valgrind --suppressions=valgrind_ignore_leaks.txt --trace-children=yes --leak-check=full ./minishell
+valgrind --suppressions=valgrind_ignore_leaks.txt 
+--trace-children=yes --leak-check=full ./minishell
 
 funcheck -i="readline" -a ./minishell
 
 */
-

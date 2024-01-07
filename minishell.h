@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/07 14:20:33 by akortvel          #+#    #+#             */
+/*   Updated: 2024/01/07 16:00:02 by akortvel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -131,6 +143,8 @@ void	ft_executor_pars(t_pars *pars, t_info *info);
 void	ft_executor(t_pars *pars, t_info *info);
 int		ft_listsize(t_pars *pars);
 
+char	**ft_arrycpy_main(char **envp, t_info *info);
+
 // main.c
 void	ft_get_input(t_info *info);
 
@@ -140,6 +154,11 @@ void	ft_free_array(char **arr);
 
 // ft_getpwd.c
 void	get_pwd(t_info *info);
+
+//main_utils.c
+void	ft_1(t_info *info, t_pars *pars);
+void	ft_args(char **argv, int argc);
+void	init_loop(t_pars *pars, t_info *info);
 
 //input check.c
 int		ft_check_input(t_info *info);

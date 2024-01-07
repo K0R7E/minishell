@@ -14,7 +14,7 @@ SRCS            =	main.c \
 					ft_env.c ft_builtin.c ft_echo.c \
 					ft_unset.c builtins_utils.c ft_cd.c \
 					utils.c ft_pwd.c \
-					\
+					ft_main_arrycpy.c main_utils.c\
 					ft_redir.c ft_redir_utils.c \
 					ft_parsing.c ft_parsing_1.c ft_parsing_2.c ft_parsing_3.c \
 					ft_executor.c ft_executor_utils.c \
