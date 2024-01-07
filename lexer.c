@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/07 10:49:37 by akortvel          #+#    #+#             */
+/*   Updated: 2024/01/07 10:58:45 by akortvel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	ft_new_prompt_add(t_info *info, t_lexer *new, int type, int command_num)
@@ -122,18 +134,3 @@ void	ft_lexer(t_info *info)
 	}
 	free(pos);
 }
-	/*t_lexer tmp = info->lexer;
-	printf("\n");
-	while (tmp.next != NULL)
-	{
-		printf("hd_quote %d\n", tmp.hd_quote);
-		printf("command: %d\n", tmp.command);
-		printf("type: %d\n", tmp.type);
-		printf("token: %s\n\n", tmp.token);
-		tmp = *tmp.next;
-	}
-	printf("hd_quote %d\n", tmp.hd_quote);
-	printf("command: %d\n", tmp.command);
-	printf("type: %d\n", tmp.type);
-	printf("token: %s\n", tmp.token);
-	*/

@@ -6,25 +6,24 @@ RM				=	rm -rf
 CFLAGS			=	-Wall -Wextra -Werror -g #-fsanitize=address,leak,undefined
 FLAGS			=	-lreadline 
 
-SRCS            =    main.c \
-                    ft_getpwd.c ft_cpyarry.c lexer_utils.c lexer.c \
-                    change_env_var.c \
-                    change_env_var_utils.c input_check.c ft_signals.c \
-                    env_conversion.c ft_export.c \
-                    ft_env.c ft_builtin.c ft_echo.c \
-                    ft_unset.c builtins_utils.c ft_cd.c \
-                    utils.c ft_pwd.c \
-                    \
-                    ft_redir.c ft_redir_utils.c \
-                    ft_parsing.c ft_parsing_1.c ft_parsing_2.c ft_parsing_3.c \
-                    ft_executor.c ft_executor_utils.c \
-                    \
-                    ft_exit.c ft_free_all.c \
-                    ft_error_message.c remove_quotes.c input_check_utils.c \
-                    env_conversion_back.c builtins_utils2.c\
-                    change_env_var_hedoc.c ft_heredoc.c\
-                    ft_getpath_forcmd.c ft_parsing_utils.c\
-
+SRCS            =	main.c \
+					ft_getpwd.c ft_cpyarry.c lexer_utils.c lexer.c \
+					change_env_var.c \
+					change_env_var_utils.c input_check.c ft_signals.c \
+					env_conversion.c ft_export.c \
+					ft_env.c ft_builtin.c ft_echo.c \
+					ft_unset.c builtins_utils.c ft_cd.c \
+					utils.c ft_pwd.c \
+					\
+					ft_redir.c ft_redir_utils.c \
+					ft_parsing.c ft_parsing_1.c ft_parsing_2.c ft_parsing_3.c \
+					ft_executor.c ft_executor_utils.c \
+					\
+					ft_exit.c ft_free_all.c \
+					ft_error_message.c remove_quotes.c input_check_utils.c \
+					env_conversion_back.c builtins_utils2.c\
+					change_env_var_hedoc.c ft_heredoc.c\
+					ft_getpath_forcmd.c ft_parsing_utils.c\
 
 OBJ_DIR				=	obj
 OBJS				=	$(SRCS:%.c=$(OBJ_DIR)/%.o)
