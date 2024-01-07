@@ -3,16 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   ft_getpwd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 18:43:45 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/05 15:45:37 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/07 11:48:02 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	set_env_value(t_info *info, char *env_str, char *key, char **target)
+{
+	size_t	key_len;
+
+	key_len = ft_strlen(key);
+	if (!ft_strncmp(env_str, key, key_len))
+	{
+		*target = ft_substr(env_str, key_len,
+				ft_strlen(env_str) - key_len);
+		if (*target == NULL)
+			ft_error_message(*info->pars_ptr, info);
+	}
+}
+
 void	get_pwd(t_info *info)
+{
+	int	i;
+
+	i = 0;
+	while (info->env[i])
+	{
+		set_env_value(info, info->env[i], "PWD=", &info->pwd);
+		set_env_value(info, info->env[i], "OLDPWD=", &info->old_pwd);
+		set_env_value(info, info->env[i], "HOME=", &info->home);
+		set_env_value(info, info->env[i], "PATH=", &info->path);
+		i++;
+	}
+}
+
+/* void	get_pwd(t_info *info)
 {
 	int	i;
 
@@ -48,4 +77,4 @@ void	get_pwd(t_info *info)
 		}
 		i++;
 	}
-}
+} */

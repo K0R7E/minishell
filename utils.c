@@ -1,4 +1,15 @@
-#include "libft/libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/07 10:21:04 by akortvel          #+#    #+#             */
+/*   Updated: 2024/01/07 10:49:24 by akortvel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	ft_strncmp_12(const char *s1, const char *s2, size_t n)
@@ -53,4 +64,3 @@ void	ft_3(char *first, char *second, char *third)
 	ft_putstr_fd(second, 2);
 	ft_putstr_fd(third, 2);
 }
-
