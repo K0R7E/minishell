@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 18:16:57 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/07 09:38:03 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/30 18:44:54 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ void	ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 {
 	pid_t	pid;
 
-	if (tmp->command == NULL || tmp->command[0] == '\0')
-		return ;
+/* 	if (tmp->command == NULL || tmp->command[0] == '\0')
+		return ; */
 	pid = fork();
 	if (pid == 0)
 		handle_child_process(tmp, info, fd_in, fd_out);
