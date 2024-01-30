@@ -31,7 +31,6 @@ int	ft_check_input_quotes(t_info *info)
 	if (qs.state_d == 1 || qs.state_s == 1)
 	{
 		printf("syntax error near unexpected token `newline'\n");
-		free (info->input);
 		return (1);
 	}
 	return (0);
