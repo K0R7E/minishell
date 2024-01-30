@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:06:10 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/07 12:24:30 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/30 19:25:16 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	ft_redir_input(t_pars *pars, t_info *info, int i, int count)
 		ft_error_message(pars, info);
 	free(pars->args[i + 1]);
 	pars->args[i + 1] = remove_quotes(tmp);
+	if (pars->fd_out != STDOUT_FILENO && pars->fd_out != STDERR_FILENO)
+        close(pars->fd_out);
 	fd = open(pars->args[i + 1], O_RDONLY);
 	if (i == count)
 	{
@@ -30,6 +32,8 @@ void	ft_redir_input(t_pars *pars, t_info *info, int i, int count)
 		if (pars->in_file == NULL)
 			ft_error_message(pars, info);
 	}
+	else 
+		close(fd);
 }
 
 void	ft_redir_output(t_pars *pars, t_info *info, int i, int count)
@@ -50,6 +54,8 @@ void	ft_redir_output(t_pars *pars, t_info *info, int i, int count)
 		if (pars->out_file == NULL)
 			ft_error_message(pars, info);
 	}
+	else 
+		close(fd);
 }
 
 void	ft_redir_output_app(t_pars *pars, t_info *info, int i, int count)
@@ -70,6 +76,8 @@ void	ft_redir_output_app(t_pars *pars, t_info *info, int i, int count)
 		if (pars->out_file == NULL)
 			ft_error_message(pars, info);
 	}
+	else 
+		close(fd);
 }
 
 int	ft_handle_redirection(t_pars *tmp, t_info *info)

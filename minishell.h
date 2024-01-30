@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:20:33 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/07 18:11:27 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/30 19:38:00 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,6 +220,7 @@ int		ft_unset(t_info *info, char **args);
 int		ft_cd(t_info *info, char **args);
 int		ft_pwd(t_info *info);
 int		ft_exit(t_info *info, char **input);
+int		ft_strncmp2(char *s1, char *s2, int n);
 
 //ft_check_input.c
 int		ft_check_input(t_info *info);
