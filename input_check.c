@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 12:16:30 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/07 17:18:29 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/31 16:00:50 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	ft_check_input_quotes(t_info *info)
 	if (qs.state_d == 1 || qs.state_s == 1)
 	{
 		printf("syntax error near unexpected token `newline'\n");
-		free (info->input);
 		return (1);
 	}
 	return (0);

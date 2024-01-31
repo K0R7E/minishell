@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 18:16:57 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/31 14:11:30 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/31 15:54:21 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,12 @@ void	handle_child_process(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 	setup_fd(fd_out, STDOUT_FILENO);
 	i = setup_file_fd(file_fd, tmp->out_file, tmp->fd_out, STDOUT_FILENO);
 	k = setup_file_fd(file_fd, tmp->in_file, tmp->fd_in, STDIN_FILENO);
-	if (is_builtin(tmp->command, tmp->cmd_args))
+	if (is_builtin(tmp->command, tmp->cmd_args) )
+	{
+		ret = ft_builtin(tmp, info);
+		exit(ret);
+	}
+	else if (is_builtin_2(tmp->command) && info->command_count > 1)
 	{
 		ret = ft_builtin(tmp, info);
 		exit(ret);
@@ -88,8 +93,8 @@ void	ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 {
 	pid_t	pid;
 
-	if (tmp->command == NULL || tmp->command[0] == '\0')
-		return ;
+/* 	if (tmp->command == NULL || tmp->command[0] == '\0')
+		return ; */
 	pid = fork();
 	if (pid == 0)
 		handle_child_process(tmp, info, fd_in, fd_out);

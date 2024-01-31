@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:06:10 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/31 13:27:33 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/31 16:04:21 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,6 @@ void	ft_redir_input(t_pars *pars, t_info *info, int i, int count)
 	if (pars->fd_out != STDOUT_FILENO && pars->fd_out != STDERR_FILENO)
         close(pars->fd_out);
 	fd = open(pars->args[i + 1], O_RDONLY);
-	if (fd == -1) {
-    	perror("Error opening file");
-    	// vagy egyéb hibakezelés
-	} else {
-    	printf("File descriptor opened: %d\n", fd);
-	}
 	if (i == count)
 	{
 		pars->fd_in = fd;
@@ -53,12 +47,6 @@ void	ft_redir_output(t_pars *pars, t_info *info, int i, int count)
 	free(pars->args[i + 1]);
 	pars->args[i + 1] = remove_quotes(tmp);
 	fd = open(pars->args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	if (fd == -1) {
-    	perror("Error opening file");
-    	// vagy egyéb hibakezelés
-	} else {
-    	printf("File descriptor opened: %d\n", fd);
-	}
 	if (i == count)
 	{
 		pars->fd_out = fd;
@@ -81,12 +69,6 @@ void	ft_redir_output_app(t_pars *pars, t_info *info, int i, int count)
 	free(pars->args[i + 1]);
 	pars->args[i + 1] = remove_quotes(tmp);
 	fd = open(pars->args[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0777);
-	if (fd == -1) {
-    	perror("Error opening file");
-    	// vagy egyéb hibakezelés
-	} else {
-    	printf("File descriptor opened: %d\n", fd);
-	}
 	if (i == count)
 	{
 		pars->fd_out = fd;

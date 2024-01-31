@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:21:49 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/31 14:20:06 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/31 15:51:59 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int	ft_listsize(t_pars *pars)
 	t_pars	*tmp;
 
 	i = 0;
-	tmp = pars;		ft_1(info, pars);
+	tmp = pars;
 	while (tmp)
 	{
 		tmp = tmp->next;
