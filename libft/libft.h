@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:44:40 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/06 16:18:14 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/31 17:03:09 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,13 @@ struct s_data
 	size_t	j;
 	size_t	start;
 };
-
+struct s_joinvars
+{
+	int		full_len;
+	int		i;
+	int		j;
+	char	*res;
+};
 struct s_data1
 {
 	int		i;
@@ -101,17 +107,17 @@ int		ft_putunsigned(unsigned int nbr);
 
 /*GET_NEXT_LINE*/
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
-# endif
+# define BUFFER_SIZE 4096
 
-char	*ft_read(int fd, char *backup);
 char	*get_next_line(int fd);
-char	*ft_data(char *backup);
-char	*ft_strcpy_ptr(char *dst, const char *src);
-size_t	ft_strlen_gnl(char *s);
-char	*ft_strchr_gnl(const char *s, int c);
-char	*ft_strjoin_gnl(char *s1, char *s2);
-char	*ft_strcpy_gnl(char *dst, const char *src);
+char	*ft_strjoin_gnl(char *leftov_str, char *line);
+
+int		ft_strlen2(char *str);
+char	*ft_strchr2(char *str, int c);
+char	*ft_strjoin4(char *str, char *buf);
+char	*ft_new(char *str);
+char	*ft_helper_strhoin(char *str);
+
+
 
 #endif

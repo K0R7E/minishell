@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: akortvel <akortvel@student.42.fr>          +#+  +:+       +#+         #
+#    By: fstark <fstark@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/11 09:58:37 by akortvel          #+#    #+#              #
-#    Updated: 2023/10/30 13:41:15 by akortvel         ###   ########.fr        #
+#    Updated: 2024/01/31 17:01:07 by fstark           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRCS            =   ft_isalnum.c ft_isprint.c ft_memcmp.c  ft_putchar_fd.c ft_sp
                     ft_printf.c ft_putnbr_base_hex_low.c \
                     ft_putnbr_base_hex_up.c ft_putnbr_dec.c ft_putnbr_int.c \
                     ft_putpercent.c ft_putunsigned.c ft_putptr.c\
-					get_next_line.c get_next_line_utils.c \
+					ft_get_next_line.c ft_get_next_line_utils.c ft_get_next_line_utils2.c\
 
 
 OBJ_DIR				=	obj

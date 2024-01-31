@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: rluari <rluari@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/07 15:44:41 by akortvel          #+#    #+#             */
-/*   Updated: 2023/09/14 17:08:24 by akortvel         ###   ########.fr       */
+/*   Created: 2023/09/10 09:01:54 by rluari            #+#    #+#             */
+/*   Updated: 2024/01/18 20:00:00 by rluari           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,20 @@
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	size_t	i;
-	size_t	start;
-	char	*result;
+	int		i;
+	int		j;
+	char	*res;
 
-	start = 0;
-	i = ft_strlen(s1);
+	i = 0;
 	if (!s1 || !set)
-		return (0);
-	while (s1[start] && ft_strchr(set, s1[start]))
-		start++;
-	while (i > start && ft_strchr(set, s1[i - 1]))
-		i--;
-	result = ft_substr(s1, start, (i - start));
-	return (result);
+		return (NULL);
+	j = ft_strlen(s1);
+	while (s1[i] && ft_strchr(set, s1[i]) != NULL && i < j)
+		i++;
+	while (s1[j - 1] && ft_strchr(set, s1[j - 1]) != NULL && i < j)
+		j--;
+	res = ft_substr(s1, i, j - i);
+	if (!res)
+		return (NULL);
+	return (res);
 }
-/*
-int main() 
-{
-    char input[] = "   Hello, World!   "; 
-    const char charSet[] = " \t\n\r";
-	char *trim = ft_strtrim(input, charSet);
-	printf("Original string: '%s'\n", input);
-	printf("Trimmed string: '%s'\n", trim);
-	free(trim);
-
-    return 0;
-}*/

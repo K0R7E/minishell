@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:21:49 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/31 15:51:59 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/31 17:49:52 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,74 @@ void	ft_get_input(t_info *info)
 	return ;
 }
 
+/* void ft_get_input_tester(t_info *info)
+{
+    char *line;
+
+    line = NULL;
+    if (isatty(fileno(stdin)))
+    {
+        line = readline(LIME "minishell>" OFF);
+        if (line && *line)
+            add_history(line);
+    }
+    else
+    {
+        char *line2 = get_next_line(fileno(stdin));
+        line = ft_strtrim(line2, "\n");
+        free(line2);
+    }
+
+    if (!line)
+    {
+        // Handle the case where input retrieval fails (e.g., out of memory)
+        ft_free_all(*info->pars_ptr, info, 2);
+        exit(1);
+    }
+
+    if (line[0] == '\0')
+    {
+        // Handle the case where input is empty
+        free(line);
+        return;
+    }
+
+    info->input = ft_strdup(line);
+    free(line);
+} */
+
+void	ft_get_input_tester(t_info *info)
+{
+	char	*line;
+
+	line = NULL;
+	if (isatty(fileno(stdin)))
+		info->input = readline(LIME"minishell>"OFF);
+	else
+	{
+		char *line2;
+		line2 = get_next_line(fileno(stdin));
+		info->input = ft_strtrim(line2, "\n");
+		free(line2);
+	}
+	//info->input = ft_strdup(line);
+	//free(line);
+/* 	if (!info->input)
+	{
+		free(info->input);
+		ft_free_all(*info->pars_ptr, info, 2);
+		exit(1);
+	} */
+	if (info->input[0] == '\0')
+	{
+		free(info->input);
+		info->input = NULL;
+		return ;
+	}
+	add_history(info->input);
+	return ;
+}
+
 int	ft_listsize(t_pars *pars)
 {
 	int		i;
@@ -160,7 +228,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		init_loop(pars, info);
 		pars = NULL;
-		ft_get_input(info);
+		ft_get_input_tester(info);
 		if (!info->input)
 			continue ;
 		if (ft_check_input(info) == 1)

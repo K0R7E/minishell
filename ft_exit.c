@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:39:06 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/07 10:39:28 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/31 16:14:38 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@ int	ft_exit(t_info *info, char **input)
 	int	exit_value;
 
 	i = 0;
-	if (info->command_count == 1)
-		printf("exit\n");
+	//if (info->command_count == 1)
+		//printf("exit\n");
 	if (input[1] == NULL)
 	{
 		exit_value = info->exit_code;
