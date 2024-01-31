@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:39:06 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/31 16:14:38 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/31 18:19:37 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,10 @@ int	ft_exit2(char **input, int exit_value, t_info *info)
 
 int	ft_exit(t_info *info, char **input)
 {
-	int	i;
+	//int	i;
 	int	exit_value;
 
-	i = 0;
+	//i = 0;
 	//if (info->command_count == 1)
 		//printf("exit\n");
 	if (input[1] == NULL)

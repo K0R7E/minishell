@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_conversion.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 14:34:23 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/07 15:50:54 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/31 18:44:05 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,19 +84,17 @@ void	env_conversion2(t_info *info, t_pars *pars, char **envp, int i)
 
 void	env_conversion(t_info *info, t_pars *pars, char **envp)
 {
-	t_env	*tmp;
 	int		i;
 
 	info->env_list = NULL;
 	i = 0;
-	tmp = NULL;
 	while (envp[i])
 	{
 		env_conversion2(info, pars, envp, i);
 		i++;
 	}
 	get_pwd(info);
-	printf("\033[2J\033[1;1H");
+	//printf("\033[2J\033[1;1H");
 }
 
 /*

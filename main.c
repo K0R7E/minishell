@@ -6,7 +6,7 @@
 /*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:21:49 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/31 17:49:52 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/31 18:52:33 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,26 +138,32 @@ void	ft_get_input(t_info *info)
 
 void	ft_get_input_tester(t_info *info)
 {
-	char	*line;
+	//char	*line;
 
-	line = NULL;
+	//line = NULL;
 	if (isatty(fileno(stdin)))
 		info->input = readline(LIME"minishell>"OFF);
 	else
 	{
 		char *line2;
 		line2 = get_next_line(fileno(stdin));
+		if (!line2)
+		{
+			free(line2);
+			ft_free_all(*info->pars_ptr, info, 2);
+			exit(info->exit_code);
+		}
 		info->input = ft_strtrim(line2, "\n");
 		free(line2);
 	}
 	//info->input = ft_strdup(line);
 	//free(line);
-/* 	if (!info->input)
+	if (info->input == NULL)
 	{
 		free(info->input);
 		ft_free_all(*info->pars_ptr, info, 2);
-		exit(1);
-	} */
+		exit(info->exit_code);
+	}
 	if (info->input[0] == '\0')
 	{
 		free(info->input);
@@ -189,7 +195,7 @@ void	ft_init_values(t_info *info)
 	info->pwd = NULL;
 	info->path = NULL;
 	info->home = NULL;
-	info->input = NULL;
+	//info->input = NULL;
 	info->lexer = NULL;
 	info->exit_status = 0;
 	g_global.stop_hd = 0;
