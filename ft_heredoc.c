@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:25:08 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/07 16:23:16 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/31 21:01:25 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ static int	hd_loop(t_pars *pars, t_info *info, int i, int fd)
 		write(fd, str, ft_strlen(str));
 		free_hd(line, str);
 	}
-	close(fd);
 	g_global.in_hd = 0;
 	if (g_global.stop_hd || !line)
 		return (1);
@@ -76,12 +75,12 @@ int	ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 	int		fd;
 
 	fd = open("/tmp/temp8726343", O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	if (fd == -1)
+/* 	if (fd == -1)
 	{
 		printf("minishell: %s: No such file or directory\n", ".tmp");
 		info->exit_status = 1;
 		return (1);
-	}
+	} */
 	g_global.in_hd = 1;
 	if (ft_check_qoutes(pars->args[i + 1]) == 1)
 		info->hd_quote = 1;
@@ -96,5 +95,7 @@ int	ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 		if (pars->in_file == NULL)
 			ft_error_message(pars, info);
 	}
+	else
+		close (fd);
 	return (0);
 }

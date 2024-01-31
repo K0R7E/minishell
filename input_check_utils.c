@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_check_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:25:10 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/03 17:42:31 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/31 20:52:52 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ int	ft_find_last_redirect(t_info *info, int i)
 			return (4);
 		else if (info->input[i] == '<' && info->input[i - 1] == '<')
 			return (3);
-		else if (info->input[i] == '>')
+		else if (info->input[i] == '>' || info->input[i + 1] == '>')  // <--- here
 			return (2);
-		else if (info->input[i] == '<')
+		else if (info->input[i] == '<' || info->input[i + 1] == '>')  // <--- here
 			return (1);
 		i--;
 	}

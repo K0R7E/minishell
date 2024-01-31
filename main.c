@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:21:49 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/31 18:52:33 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/31 20:23:57 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,6 +230,7 @@ int	main(int argc, char **argv, char **envp)
 	info->pars_ptr = &pars;
 	info->env = ft_arrycpy_main(envp, info);
 	env_conversion(info, pars, envp);
+	printf("\033[2J\033[H");
 	while (1)
 	{
 		init_loop(pars, info);

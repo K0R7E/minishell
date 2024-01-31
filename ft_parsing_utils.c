@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 09:50:02 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/07 18:07:20 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/31 19:42:37 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,13 @@ int	ft_lstsize(t_lexer *tokens)
 char	*convert_to_cmd(char *str, t_info *info)
 {
 	char	*tmp;
-
+	
+/* 	if (str == NULL)
+		return (NULL);
+	else if (str[0] == '/')
+		return (str);
+	else if (ft_strncmp(str, "./", 2) == 0)
+		return (str); */
 	if (ft_strncmp(str, "/usr/bin/", 9) == 0)
 	{
 		tmp = ft_substr(str, 9, ft_strlen(str) - 9);

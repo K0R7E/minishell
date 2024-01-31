@@ -1,0 +1,38 @@
+/bin/echo ""'totally logical'"" #ok
+
+>">" asd
+/bin/rm -f ">"
+
+ls -l | awk '$1 ~ /^d/ {print $9}' #ok
+
+cat << hello # replace dollar malloc, fd open
+$USER
+$NOVAR
+$HOME
+hello
+
+cat << 'lim'
+$USER
+$NOVAR
+$HOME
+lim
+
+cat << lim''
+$USER
+$NOVAR
+$HOME
+lim
+
+cat << "lim"
+$USER
+$NOVAR
+$HOME
+lim
+
+cat << 'lim'
+$USER
+$NOVAR
+$HOME
+lim
+
+< > #ok  // int	ft_find_last_redirect(t_info *info, int i) \\ maybe fix if more space than 1...

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   change_env_var_utils2.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:20:53 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/07 17:54:43 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/31 20:56:51 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ char	*handle_dollar_sign(t_info *info, char *res, int i, char *input)
 	int		j;
 	char	*tmp;
 
+	tmp = NULL;
 	j = give_env_variable_pos(input, i, info, 0);
 	if (j != -1)
 	{
