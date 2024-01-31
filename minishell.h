@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:20:33 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/07 18:11:27 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/31 14:20:25 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <dirent.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <errno.h>
 
 # define MAX_INPUT_SIZE 1024
 
@@ -220,6 +221,7 @@ int		ft_unset(t_info *info, char **args);
 int		ft_cd(t_info *info, char **args);
 int		ft_pwd(t_info *info);
 int		ft_exit(t_info *info, char **input);
+int		ft_strncmp2(char *s1, char *s2, int n);
 
 //ft_check_input.c
 int		ft_check_input(t_info *info);
@@ -297,8 +299,8 @@ void	ft_executor(t_pars *pars, t_info *info);
 //ft_executor_utils.c
 int		is_builtin_1(char *command);
 int		is_builtin_2(char *command);
-void	setup_fd(int *fd, int std_no);
-void	setup_file_fd(int *file_fd, char *file, int fd, int std_no);
+void	setup_fd(int fd, int std_no);
+int		setup_file_fd(int file_fd, char *file, int fd, int std_no);
 int		is_builtin(char *command, char **cmd_args);
 
 #endif

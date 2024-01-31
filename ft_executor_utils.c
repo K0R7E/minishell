@@ -6,11 +6,13 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 09:34:55 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/07 09:38:45 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/31 14:22:46 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <asm-generic/errno-base.h>
+#include <errno.h>
 
 int	is_builtin_1(char *command)
 {
@@ -36,28 +38,31 @@ int	is_builtin_2(char *command)
 	return (0);
 }
 
-void	setup_fd(int *fd, int std_no)
+void	setup_fd(int fd, int std_no)
 {
-	if (*fd != std_no)
+	if (fd != std_no)
 	{
-		dup2(*fd, std_no);
-		close(*fd);
+		errno = 0;
+		dup2(fd, std_no);
+		close(fd);
 	}
 }
 
-void	setup_file_fd(int *file_fd, char *file, int fd, int std_no)
+int	setup_file_fd(int file_fd, char *file, int fd, int std_no)
 {
 	if (file)
 	{
-		*file_fd = fd;
-		if (*file_fd == -1)
+		file_fd = fd;
+		if (file_fd == -1)
 		{
 			perror("minishell");
 			exit(EXIT_FAILURE);
 		}
-		dup2(*file_fd, std_no);
-		close(*file_fd);
+		errno = 0;
+		dup2(file_fd, std_no);
+		close(file_fd);
 	}
+	return (std_no);
 }
 
 int	is_builtin(char *command, char **cmd_args)

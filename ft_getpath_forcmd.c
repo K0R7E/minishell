@@ -3,23 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ft_getpath_forcmd.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 11:00:02 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/07 17:58:31 by fstark           ###   ########.fr       */
+/*   Updated: 2024/01/31 15:59:09 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	free_path(t_pars *pars, t_info *info, char **allpath, char **s_cmd)
+static void	free_path(t_pars *pars, t_info *info, char **allpath)
 {
 	ft_free_array(allpath);
-	ft_free_array(s_cmd);
 	ft_error_message(pars, info);
 }
 
-static char	**get_s_smd(t_pars *pars, t_info *info, char *token, char **allpath)
+/* static char	**get_s_smd(t_pars *pars, t_info *info, char *token, char **allpath)
 {
 	char	**s_cmd;
 
@@ -30,7 +29,7 @@ static char	**get_s_smd(t_pars *pars, t_info *info, char *token, char **allpath)
 		ft_error_message(pars, info);
 	}
 	return (s_cmd);
-}
+} */
 
 char	**prepare_paths(t_pars *pars, t_info *info)
 {
@@ -42,7 +41,7 @@ char	**prepare_paths(t_pars *pars, t_info *info)
 	return (allpath);
 }
 
-char	*exec_path(t_pars *pars, t_info *info, char **allpath, char **s_cmd)
+char	*exec_path(t_pars *pars, t_info *info, char **allpath, char *s_cmd)
 {
 	int		i;
 	char	*path_part;
@@ -53,13 +52,13 @@ char	*exec_path(t_pars *pars, t_info *info, char **allpath, char **s_cmd)
 	{
 		path_part = ft_strjoin(allpath[i], "/");
 		if (path_part == NULL)
-			free_path(pars, info, allpath, s_cmd);
-		exec = ft_strjoin(path_part, s_cmd[0]);
+			free_path(pars, info, allpath);
+		exec = ft_strjoin(path_part, s_cmd);
 		free(path_part);
 		if (exec == NULL)
 		{
 			ft_free_array(allpath);
-			ft_free_array(s_cmd);
+			free(s_cmd);
 			ft_error_message(pars, info);
 		}
 		if (access(exec, F_OK | X_OK) == 0)
@@ -72,14 +71,17 @@ char	*exec_path(t_pars *pars, t_info *info, char **allpath, char **s_cmd)
 char	*get_path_new(t_pars *pars, char *token, t_info *info)
 {
 	char	**allpath;
-	char	**s_cmd;
+	char	*s_cmd;
 	char	*exec;
 
 	allpath = prepare_paths(pars, info);
-	s_cmd = get_s_smd(pars, info, token, allpath);
+	//s_cmd = get_s_smd(pars, info, token, allpath);
+	s_cmd = ft_strdup(token);
+	if (s_cmd == NULL)
+		free_path(pars, info, allpath);
 	exec = exec_path(pars, info, allpath, s_cmd);
 	ft_free_array(allpath);
-	ft_free_array(s_cmd);
+	free(s_cmd);
 	if (exec)
 		return (exec);
 	exec = ft_strdup(token);
