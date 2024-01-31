@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:20:33 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/30 19:38:00 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/01/31 14:20:25 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <dirent.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <errno.h>
 
 # define MAX_INPUT_SIZE 1024
 
@@ -298,8 +299,8 @@ void	ft_executor(t_pars *pars, t_info *info);
 //ft_executor_utils.c
 int		is_builtin_1(char *command);
 int		is_builtin_2(char *command);
-void	setup_fd(int *fd, int std_no);
-void	setup_file_fd(int *file_fd, char *file, int fd, int std_no);
+void	setup_fd(int fd, int std_no);
+int		setup_file_fd(int file_fd, char *file, int fd, int std_no);
 int		is_builtin(char *command, char **cmd_args);
 
 #endif
