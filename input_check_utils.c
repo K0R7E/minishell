@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:25:10 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/31 20:52:52 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/01 13:55:23 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,16 @@ int	ft_find_last_redirect(t_info *info, int i)
 		i--;
 	while (i >= 0)
 	{
-		if (info->input[i] == '>' && info->input[i - 1] == '>')
-			return (4);
-		else if (info->input[i] == '<' && info->input[i - 1] == '<')
-			return (3);
-		else if (info->input[i] == '>' || info->input[i + 1] == '>')  // <--- here
+		if (i >= 1)
+		{
+			if (info->input[i] == '>' && info->input[i - 1] == '>')
+				return (4);
+			else if (info->input[i] == '<' && info->input[i - 1] == '<')
+				return (3);
+		}
+		if (info->input[i] == '>')
 			return (2);
-		else if (info->input[i] == '<' || info->input[i + 1] == '>')  // <--- here
+		if (info->input[i] == '<')
 			return (1);
 		i--;
 	}

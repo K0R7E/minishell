@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:25:08 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/31 21:01:25 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/01 15:11:48 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	hd_loop(t_pars *pars, t_info *info, int i, int fd)
 			free(line);
 			break ;
 		}
-		if (ft_strncmp_12(line, pars->args[i + 1],
+		if (ft_strncmp_12hd(line, pars->args[i + 1],
 				ft_strlen(pars->args[i + 1])) == 0)
 			break ;
 		str = ft_str_123(pars, info, str, line);
@@ -81,6 +81,7 @@ int	ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 		info->exit_status = 1;
 		return (1);
 	} */
+	pars->heredoc = pars->args[i + 1];
 	g_global.in_hd = 1;
 	if (ft_check_qoutes(pars->args[i + 1]) == 1)
 		info->hd_quote = 1;

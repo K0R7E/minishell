@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:06:10 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/31 16:04:21 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/01 16:24:05 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void	ft_redir_output(t_pars *pars, t_info *info, int i, int count)
 	if (i == count)
 	{
 		pars->fd_out = fd;
+		if (pars->out_file)
+			free(pars->out_file);
 		pars->out_file = ft_strdup(pars->args[i + 1]);
 		if (pars->out_file == NULL)
 			ft_error_message(pars, info);
@@ -84,15 +86,18 @@ int	ft_handle_redirection(t_pars *tmp, t_info *info)
 {
 	int	i;
 
+/* 	i = 0;
+	while (tmp->args[i])
+	{
+		printf("args[%d]: %s\n", i, tmp->args[i]);
+		i++;
+	} */
 	i = 0;
 	while (tmp->args[i])
 	{
 		if (ft_strncmp(tmp->args[i], "<<", 2) == 0)
-		{
-			if (ft_redir_heredoc(tmp, info, i,
-					ft_check_num(tmp->args, "<<")) == 1)
-				return (1);
-		}
+			ft_redir_heredoc(tmp, info, i,
+				ft_check_num(tmp->args, "<<"));
 		else if (ft_strncmp(tmp->args[i], ">>", 2) == 0)
 			ft_redir_output_app(tmp, info, i,
 				ft_check_num(tmp->args, ">>"));
@@ -112,6 +117,7 @@ int	ft_redir(t_pars *pars, t_info *info)
 	t_pars	*tmp;
 
 	tmp = pars;
+	(void) info;
 	while (tmp)
 	{
 		if (ft_handle_redirection(tmp, info) == 1)

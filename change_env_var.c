@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   change_env_var.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:20:43 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/07 18:11:45 by fstark           ###   ########.fr       */
+/*   Updated: 2024/02/01 16:03:47 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ char	*replace_dollar2(char *in, t_info *info, t_quote_state qs, char *res)
 		if (in[info->i] == '<' && in[info->i + 1] == '<'
 			&& qs.state_s == 0 && qs.state_d == 0)
 			res = handle_hedoc(res, in, info);
-		else if (in[info->i] == '$' && (qs.state_s == 0))
+		else if (in[info->i] == '$' && (qs.state_s == 0) && slash(in, info))
 		{
 			if (in[info->i +1] == '?')
 				res = handle_question_mark(info, res);
@@ -111,6 +111,8 @@ char	*replace_dollar2(char *in, t_info *info, t_quote_state qs, char *res)
 			else
 				res = handle_dollar_sign(info, res, info->i, in);
 		}
+		if (in[info->i] == '\\' && qs.state_s == 0)
+			res = slash_rem(in, info, res);
 		else
 			res = handle_char(res, in, info);
 	}

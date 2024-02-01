@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:20:33 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/31 14:20:25 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/01 16:03:42 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_pars
 	char			*out_file;
 	int				fd_in;
 	int				fd_out;
+	char			*heredoc;
 	struct s_pars	*next;
 	//struct s_pars	*prev;
 }	t_pars;
@@ -190,6 +191,8 @@ char	*check_hedoc(char *in, t_info *info, int i);
 char	*copy_env_value(int j, t_info *info);
 int		give_env_variable_pos(char *input, int i, t_info *info, int mode);
 int		update_quote_state2(t_quote_state qs, char c);
+char	*slash_rem(char *in, t_info *info, char *res);
+int		slash(char *str, t_info *info);
 
 // remove quotes
 char	*remove_quotes(char *str);
@@ -206,6 +209,7 @@ void	ft_error_message(t_pars *pars, t_info *info);
 int		update_quote_state(int i);
 void	ft_3(char *first, char *second, char *third);
 int		ft_strncmp_12(const char *s1, const char *s2, size_t n);
+int		ft_strncmp_12hd(const char *s1, const char *s2, size_t n);
 int		change_one_zero(int i);
 
 // env conversion

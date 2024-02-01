@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   change_env_var_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 11:18:52 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/07 14:10:41 by fstark           ###   ########.fr       */
+/*   Updated: 2024/02/01 16:01:46 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,56 @@ char	*ft_strjoin2(char *str, char *add)
 	}
 	total = ft_fill_str(str, add, i, j);
 	return (total);
+}
+
+int    slash(char *str, t_info *info)
+{
+    int i;
+
+    i = 1;
+    
+    if (info->i >= 2 && str[info->i] == '$')
+    {
+        if (str[info->i - 1] == '\\')
+        {
+            while (str[info->i - i] == '\\')
+                i++;
+            if ((i % 2) == 0) //maybe reverse
+                return (0);
+            else
+                return (1);
+        }
+    }
+    return(1);
+}
+
+
+char *slash_rem(char *in, t_info *info, char *res)
+{
+    int i;
+    char *str2;
+
+    i = -1;
+    if (res == NULL)
+        str2 = ft_strdup("\0");
+    else 
+        str2 = ft_strdup(res);
+    free(res);
+    if (str2 == NULL)
+        ft_error_message(*info->pars_ptr, info);
+    while (in[info->i] == '\\')
+    {
+        info->i++;
+        i++;
+    }
+    while (i > 0)
+    {
+        str2 = add_char_to_str(str2, '\\');
+        if (str2 == NULL)
+            ft_error_message(*info->pars_ptr, info);
+        i -= 2;
+    }
+    return (str2);
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 09:50:02 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/31 19:42:37 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/01 15:37:19 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,14 @@ char	*convert_to_cmd(char *str, t_info *info)
 		return (str);
 	else if (ft_strncmp(str, "./", 2) == 0)
 		return (str); */
+	//printf("BEFORE--str: %s\n", str);
 	if (ft_strncmp(str, "/usr/bin/", 9) == 0)
 	{
 		tmp = ft_substr(str, 9, ft_strlen(str) - 9);
 		if (tmp == NULL)
 			ft_error_message(*info->pars_ptr, info);
 		free(str);
+		//printf("AFTER--str: %s\n", str);
 		return (tmp);
 	}
 	else if (ft_strncmp(str, "/bin/", 5) == 0)
@@ -72,13 +74,17 @@ char	*convert_to_cmd(char *str, t_info *info)
 		if (tmp == NULL)
 			ft_error_message(*info->pars_ptr, info);
 		free(str);
+		//printf("AFTER--str: %s\n", str);
 		return (tmp);
 	}
 	else
+	{
+		//printf("AFTER--str: %s\n", str);
 		return (str);
+	}
 }
 
-/* void	ft_print_pars(t_pars *pars)
+void	ft_print_pars(t_pars *pars)
 {
 	int i = 0;
 	int j = 0;
@@ -94,6 +100,7 @@ char	*convert_to_cmd(char *str, t_info *info)
 		printf("Out_file: %s\n", pars->out_file);
 		printf("Cmd_path: %s\n", pars->cmd_path);
 		printf("Command: %s\n", pars->command);
+		printf("heredoc: %s\n", pars->heredoc);
 		printf("cmd_args: ");
 		if (pars->cmd_args != NULL)
 		{
@@ -120,4 +127,4 @@ char	*convert_to_cmd(char *str, t_info *info)
 		pars = pars->next;
 		i++;
 	}
-} */
+}

@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:20:53 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/31 20:56:51 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/01 15:54:27 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,10 @@ char	*handle_dollar_sign(t_info *info, char *res, int i, char *input)
 	}
 	else
 	{
-		tmp = ft_strdup(res);
+		if (res == NULL)
+			tmp = ft_strdup("\0");
+		else
+			tmp = ft_strdup(res);
 		if (tmp == NULL)
 		{
 			free(res);
@@ -114,7 +117,6 @@ char	*handle_hedoc(char *res, char *input, t_info *info)
 		free(res);
 		ft_error_message(*info->pars_ptr, info);
 	}
-	info->flag = 1;
 	free(res);
 	return (tmp);
 }

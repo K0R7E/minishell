@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:21:49 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/31 20:23:57 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/01 15:56:45 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@
 	}
 } */
 
-/*
+
 void	print_lexer_list(t_info *info)
 {
 	t_lexer	*tmp;
@@ -75,7 +75,7 @@ void	print_lexer_list(t_info *info)
 	printf("command: %d\n", tmp->command);
 	printf("type: %d\n", tmp->type);
 	printf("token: %s\n", tmp->token);
-}*/
+}
 
 void	ft_get_input(t_info *info)
 {
@@ -230,7 +230,7 @@ int	main(int argc, char **argv, char **envp)
 	info->pars_ptr = &pars;
 	info->env = ft_arrycpy_main(envp, info);
 	env_conversion(info, pars, envp);
-	printf("\033[2J\033[H");
+	//printf("\033[2J\033[H");
 	while (1)
 	{
 		init_loop(pars, info);
@@ -241,8 +241,10 @@ int	main(int argc, char **argv, char **envp)
 		if (ft_check_input(info) == 1)
 			continue ;
 		ft_lexer(info);
+		//print_lexer_list(info);
 		if (ft_parsing(&pars, info->lexer, info) == 1)
 			continue ;
+		//ft_print_pars(pars);
 		ft_1(info, pars);
 	}
 	ft_free_all(pars, info, 2);

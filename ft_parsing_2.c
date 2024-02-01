@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 09:45:08 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/31 13:10:20 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/01 12:48:55 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	initialize_node_files(t_pars *node)
 {
+	node->heredoc = NULL;
 	node->in_file = NULL;
 	node->out_file = NULL;
 	node->fd_in = 0;

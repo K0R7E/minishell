@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 09:34:55 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/31 14:22:46 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/01 15:44:28 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	setup_fd(int fd, int std_no)
 {
 	if (fd != std_no)
 	{
-		errno = 0;
 		dup2(fd, std_no);
 		close(fd);
 	}
@@ -58,7 +57,6 @@ int	setup_file_fd(int file_fd, char *file, int fd, int std_no)
 			perror("minishell");
 			exit(EXIT_FAILURE);
 		}
-		errno = 0;
 		dup2(file_fd, std_no);
 		close(file_fd);
 	}
