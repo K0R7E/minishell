@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:20:33 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/01 16:03:42 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/01 18:10:26 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@
 # include <readline/history.h>
 # include <errno.h>
 
-# define MAX_INPUT_SIZE 1024
+# define SIGINT  2
+# define SIGQUIT 3 
 
 # define R "\033[0;31m"
 # define G "\033[0;32m"
@@ -138,6 +139,13 @@ typedef struct s_global
 }	t_global;
 
 extern t_global	g_global;
+
+//extern int g_global;
+
+/*##########################################################*/
+/*#####################  FUNCTIONS  ########################*/
+/*##########################################################*/
+
 
 void	ft_print_pars(t_pars *pars);
 

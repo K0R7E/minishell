@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:40:03 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/01 14:31:10 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/01 18:53:27 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	free_pars_list(t_pars *head)
 		free(current->command);
 		ft_free_array(current->cmd_args);
 		ft_free_array(current->args);
+		free(current->heredoc);
 		free(current->in_file);
 		free(current->out_file);
 		free(current);

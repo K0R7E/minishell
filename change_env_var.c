@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:20:43 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/01 16:03:47 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/01 18:25:41 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,31 +64,32 @@ char	*copy_env_value(int j, t_info *info)
 	return (res);
 }
 
-char	*check_hedoc(char *in, t_info *info, int i)
+char    *check_hedoc(char *in, t_info *info, int i)
 {
-	int		state;
-	char	*res;
+    struct quote_state    qs;
+    char    *res;
 
-	state = 0;
-	res = ft_strdup(in);
-	if (res == NULL)
-		ft_error_message(*info->pars_ptr, info);
-	while ((info->input[i] == ' ' || info->input[i] == '\t')
-		&& info->input[i] != '\0')
-		i++;
-	while (info->input[i] != '\0')
-	{
-		if (info->input[i] == '\'' || info->input[i] == '\"')
-		{
-			state = change_one_zero(state);
-		}
-		if (state == 0 && ft_strchr_lexer(" \t<>|", info->input[i]))
-			break ;
-		res = add_char_to_str(res, info->input[i]);
-		i++;
-	}
-	free(in);
-	return (res);
+    qs.state_d = 0;
+    qs.state_s = 0;
+    res = ft_strdup(in);
+    if (res == NULL)
+        ft_error_message(*info->pars_ptr, info);
+    while ((info->input[i] == ' ' || info->input[i] == '\t')
+        && info->input[i] != '\0')
+        i++;
+    while (info->input[i] != '\0')
+    {
+        if (info->input[i] == '\'' && qs.state_d == 0)
+            qs.state_s = update_quote_state2(qs, '\'');
+        if (info->input[i] == '\"' && qs.state_s == 0)
+            qs.state_d = update_quote_state2(qs, '\"');
+        if (qs.state_d == 0 && qs.state_s == 0 && ft_strchr_lexer(" \t<>|", info->input[i]))
+            break ;
+        res = add_char_to_str(res, info->input[i]);
+        i++;
+    }
+    free(in);
+    return (res);
 }
 
 char	*replace_dollar2(char *in, t_info *info, t_quote_state qs, char *res)

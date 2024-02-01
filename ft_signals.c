@@ -6,11 +6,59 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:06:20 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/06 17:12:58 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:10:13 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/* int g_global = 0;
+
+void ft_memdel(void *ptr)
+{
+	if (ptr)
+	{
+		free(ptr);
+		ptr = NULL;
+	}
+}	
+
+void	sig_int(int sig)
+{
+	(void)sig;
+	if (g_global != 1)
+	{
+		ft_putstr_fd("\b\b  ", 2);
+		ft_putstr_fd("\n", 2);
+		ft_putstr_fd("\033[0;36m\033[1m🤬 minishell ▸ \033[0m", 2);
+		g_sig.exit_status = 1;
+	}
+	else
+	{
+		ft_putstr_fd("\n", 2);
+		g_sig.exit_status = 130;
+	}
+	g_sig.sigint = 1;
+}
+
+void	sig_quit(int code)
+{
+	char	*nbr;
+
+	nbr = ft_itoa(code);
+	if (g_sig.pid != 0)
+	{
+		ft_putstr_fd("Quit: ", 2);
+		ft_putendl_fd(nbr, 2);
+		g_sig.exit_status = 131;
+		g_sig.sigquit = 1;
+	}
+	else
+		ft_putstr_fd("\b\b  \b\b", 2);
+	ft_memdel(nbr);
+} */
+
+
 
 t_global	g_global;
 
