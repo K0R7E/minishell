@@ -98,6 +98,8 @@ static int	hd_loop(t_pars *pars, t_info *info, int i, int fd)
 		info->stop_hd = 0;
 		return (1);
 	}
+	if (line)
+		free(line); // we need this, but itt couse 2 more errors
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:39:06 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/02 17:39:56 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/02 18:03:32 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ int	ft_exit(t_info *info, char **input)
 {
 	int	exit_value;
 
-	if (info->command_count == 1)
-		printf("exit\n");
+/* 	if (info->command_count == 1)
+		printf("exit\n"); */
 	if (input[1] == NULL)
 	{
 		exit_value = info->exit_code;
