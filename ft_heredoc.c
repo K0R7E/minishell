@@ -64,18 +64,25 @@ static int	hd_loop(t_pars *pars, t_info *info, int i, int fd)
 	{
 		write(1, "> ", 2);
 		input = get_next_line(0);
+		if (info->stop_hd)
+		{
+			if (input)
+				free(input);
+			break ;
+		}
 		if (input == NULL)
-			continue ;
+		{
+			write(1, "\n", 1);
+			ft_putstr_fd("minishell: warning: here-document delimited by end-of-file (wanted `", 2);
+			ft_putstr_fd(pars->args[i + 1], 2);
+			ft_putstr_fd("')\n\n", 2);
+			break ;
+		}
 		line = ft_strtrim(input, "\n");
 		free(input);
 		if (line == NULL)
 			ft_error_message(pars, info);
 		//line = readline("> ");
-		if (info->stop_hd)
-		{
-			free(line);
-			break ;
-		}
 		if ((ft_strncmp_12hd(line, pars->args[i + 1],
 					ft_strlen(pars->args[i + 1])) == 0))
 			break ;
