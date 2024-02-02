@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/02 17:41:00 by akortvel          #+#    #+#             */
+/*   Updated: 2024/02/02 17:42:02 by akortvel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /* void	ft_print_pars(t_pars *pars)
@@ -125,25 +137,16 @@ void	ft_get_input(t_info *info)
 
 void	ft_get_input_tester(t_info *info)
 {
-	//char	*line;
-	//line = NULL;
 	int i;
 
 	if (isatty(fileno(stdin)))
-	{
 		info->input = readline(LIME"minishell>"OFF);
-		//write(1, LIME"minishell> "OFF, 18);
-		//ft_putstr_fd(LIME"minishell> "OFF, 1);
-		//info->input = get_next_line(0);
-		//info->input = ft_strtrim(info->input, "\n");
-	}
 	else
 	{
 		char	*line2;
 		line2 = get_next_line(fileno(stdin));
 		if (!line2)
 		{
-			//free(line2);
 			i = info->exit_code;
 			ft_free_all(*info->pars_ptr, info, 2);
 			exit(i);
@@ -151,8 +154,6 @@ void	ft_get_input_tester(t_info *info)
 		info->input = ft_strtrim(line2, "\n");
 		free(line2);
 	}
-	//info->input = ft_strdup(line);
-	//free(line);
 	if (info->input == NULL)
 	{
 		free(info->input);
@@ -190,7 +191,6 @@ void	ft_init_values(t_info *info)
 	info->pwd = NULL;
 	info->path = NULL;
 	info->home = NULL;
-	//info->input = NULL;
 	info->lexer = NULL;
 	info->exit_status = 0;
 	info->in_cmd = 0;
@@ -227,7 +227,6 @@ int	main(int argc, char **argv, char **envp)
 	info->pars_ptr = &pars;
 	info->env = ft_arrycpy_main(envp, info);
 	env_conversion(info, pars, envp);
-	//printf("\033[2J\033[H");
 	while (1)
 	{
 		init_loop(pars, info);
@@ -238,10 +237,8 @@ int	main(int argc, char **argv, char **envp)
 		if (ft_check_input(info) == 1)
 			continue ;
 		ft_lexer(info);
-		//print_lexer_list(info);
 		if (ft_parsing(&pars, info->lexer, info) == 1)
 			continue ;
-		//ft_print_pars(pars);
 		ft_1(info, pars);
 	}
 	ft_free_all(pars, info, 2);

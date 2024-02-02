@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_conversion.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 14:34:23 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/31 18:44:05 by fstark           ###   ########.fr       */
+/*   Updated: 2024/02/02 17:35:58 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ void	env_conversion(t_info *info, t_pars *pars, char **envp)
 		i++;
 	}
 	get_pwd(info);
-	//printf("\033[2J\033[1;1H");
 }
 
 /*

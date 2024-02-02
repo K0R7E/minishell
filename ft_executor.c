@@ -34,31 +34,13 @@ void	handle_child_process(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 	else if (is_builtin_2(tmp->command) && info->command_count == 1)
 		exit(EXIT_SUCCESS);
 	env = env_conversion_back(info);
-	//ft_putstr_fd(tmp->cmd_args[0], 2);
-	//printf("heredoc: %s\n", tmp->heredoc);
-	//printf("cmd_args: %s\n", tmp->cmd_args[0]);
-	//############################################################x
 	if (tmp->heredoc && tmp->cmd_args[0] == NULL)
 	{
-		//printf("hi\n");
 		close (tmp->fd_in);
 		exit(EXIT_SUCCESS);
 	}
-	//############################################################x
 	if (execve(tmp->cmd_path, tmp->cmd_args, env) == -1)
 		handle_execve_error(tmp->command, env);
-/* 	if (i != 1 &&  i != 0)
-		close(i);
-	if (k != 1 &&  k != 0)
-		close(k); */
-/* 	if (tmp->fd_in != 0 && tmp->fd_in != 1) {
-        close(tmp->fd_in);
-    }
-    if (tmp->fd_out != 0 && tmp->fd_out != 1) {
-        close(tmp->fd_out);
-    }
-	ft_free_array(env);
-	exit(EXIT_SUCCESS); */
 }
 
 void	handle_parent_proc(pid_t pid, t_info *info, int fd_in, int fd_out)
@@ -92,8 +74,6 @@ void	ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 {
 	pid_t	pid;
 
-/* 	if (tmp->command == NULL || tmp->command[0] == '\0')
-		return ; */
 	pid = fork();
 	if (pid == 0)
 		handle_child_process(tmp, info, fd_in, fd_out);
@@ -105,14 +85,6 @@ void	ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 	else
 		handle_parent_proc(pid, info, fd_in, fd_out);
 }
-
-/* void ft_check_hd(t_pars *tmp, t_info *info)
-{
-	if (ft_strncmp(tmp->args[i], "<<", 2) == 0)
-	{
-		
-	}
-} */
 
 void	ft_executor(t_pars *pars, t_info *info)
 {

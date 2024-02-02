@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:06:10 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/02 16:29:18 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:39:39 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,6 @@ int	ft_handle_redirection(t_pars *tmp, t_info *info)
 {
 	int	i;
 
-/* 	i = 0;
-	while (tmp->args[i])
-	{
-		printf("args[%d]: %s\n", i, tmp->args[i]);
-		i++;
-	} */
 	i = 0;
 	while (tmp->args[i])
 	{

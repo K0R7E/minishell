@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   change_env_var.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/02 17:37:23 by akortvel          #+#    #+#             */
+/*   Updated: 2024/02/02 17:37:25 by akortvel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	give_env_variable_pos(char *input, int i, t_info *info, int mode)
@@ -95,12 +107,14 @@ char	*replace_dollar2(char *in, t_info *info, t_quote_state qs, char *res)
 		{
 			if (in[info->i +1] == '?')
 				res = handle_question_mark(info, res);
+			else if (ft_isalpha(in[info->i +1]) == 0 && in[info->i +1] != '_' && qs.state_d == 0)
+				info->i++;
 			else if (ft_isalpha(in[info->i +1]) == 0 && in[info->i +1] != '_')
 				res = handle_char(res, in, info);
 			else
 				res = handle_dollar_sign(info, res, info->i, in);
 		}
-		if (in[info->i] == '\\' && qs.state_s == 0)
+		else if (in[info->i] == '\\' && qs.state_s == 0)
 			res = slash_rem(in, info, res);
 		else
 			res = handle_char(res, in, info);
