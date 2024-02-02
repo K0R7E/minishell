@@ -8,9 +8,9 @@
 			"type": "lldb",
 			"request": "launch",
 			"name": "Debug",
-			"program": "/nfs/homes/akortvel/tester/./minishell",
+			"program": "/nfs/homes/akortvel/minishell/./minishell",
 			"args": [],
-			"cwd": "/nfs/homes/akortvel/tester"
+			"cwd": "/nfs/homes/akortvel/minishell"
 		}
 	]
 }

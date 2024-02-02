@@ -127,6 +127,8 @@ void	ft_get_input_tester(t_info *info)
 {
 	//char	*line;
 	//line = NULL;
+	int i;
+
 	if (isatty(fileno(stdin)))
 	{
 		info->input = readline(LIME"minishell>"OFF);
@@ -141,9 +143,10 @@ void	ft_get_input_tester(t_info *info)
 		line2 = get_next_line(fileno(stdin));
 		if (!line2)
 		{
-			free(line2);
+			//free(line2);
+			i = info->exit_code;
 			ft_free_all(*info->pars_ptr, info, 2);
-			exit(info->exit_code);
+			exit(i);
 		}
 		info->input = ft_strtrim(line2, "\n");
 		free(line2);

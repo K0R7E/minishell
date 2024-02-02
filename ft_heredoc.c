@@ -55,7 +55,7 @@ static int	hd_loop(t_pars *pars, t_info *info, int i, int fd)
 	char	*line;
 	char	*str;
 	char	*input;
-  int		len;
+	int		len;
 
   
   ft_check_newline(pars, pars->args[i + 1], i),
@@ -114,7 +114,8 @@ int	ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 	pars->heredoc = ft_strdup(pars->args[i + 1]);
 	pars->args[i + 1] = remove_quotes(pars->args[i + 1]);
 	//pars->args[i + 1] = ft_check_newlinw(pars->args[i + 1]);
-	hd_loop(pars, info, i, fd);
+	if (hd_loop(pars, info, i, fd) == 1)
+		return (1);
 	if (i == count)
 	{
 		pars->fd_in = open("/tmp/temp8726343", O_RDONLY);

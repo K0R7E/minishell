@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:06:10 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/02 13:10:03 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/02 16:29:18 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,11 @@ int	ft_handle_redirection(t_pars *tmp, t_info *info)
 	while (tmp->args[i])
 	{
 		if (ft_strncmp(tmp->args[i], "<<", 2) == 0)
-			ft_redir_heredoc(tmp, info, i,
-				ft_check_num(tmp->args, "<<"));
+		{
+			if (ft_redir_heredoc(tmp, info, i,
+				ft_check_num(tmp->args, "<<")) == 1)
+				return (1);
+		}
 		else if (ft_strncmp(tmp->args[i], ">>", 2) == 0)
 			ft_redir_output_app(tmp, info, i,
 				ft_check_num(tmp->args, ">>"));
