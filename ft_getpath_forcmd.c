@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 11:00:02 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/31 15:59:09 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:52:32 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ char	*get_path_new(t_pars *pars, char *token, t_info *info)
 	char	*exec;
 
 	allpath = prepare_paths(pars, info);
-	//s_cmd = get_s_smd(pars, info, token, allpath);
 	s_cmd = ft_strdup(token);
 	if (s_cmd == NULL)
 		free_path(pars, info, allpath);

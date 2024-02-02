@@ -1,12 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_handle_signals.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/02 17:40:17 by akortvel          #+#    #+#             */
+/*   Updated: 2024/02/02 17:40:54 by akortvel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-#include <stdio.h>
 
 void	handle_sig(int sig, t_info *info_in)
 {
 	static t_info	*info;
 	if (info_in != NULL)
 	{
-		//printf("set_up");
 		info = info_in;
 		return ;
 	}
@@ -14,6 +24,7 @@ void	handle_sig(int sig, t_info *info_in)
 	{
 		if (info->in_cmd)
 		{
+			write(1, "\n", 1);
 			rl_replace_line("", 0);
 			rl_redisplay();
 			return ;
@@ -22,11 +33,8 @@ void	handle_sig(int sig, t_info *info_in)
 		{
 			info->stop_hd = 1;
 			write(1, "\n", 1);
-			//printf("info->stop_hd = 1:\n");
-			//ft_putchar_fd('\n', 0);
 			rl_replace_line("", 0);
 			rl_on_new_line();
-			//rl_redisplay();
 			return ;
 		}
 		else

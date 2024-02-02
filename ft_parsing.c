@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:28:20 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/01 15:38:24 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:39:04 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	proc_spec(t_pars *node, t_pars *pars, t_lexer *tmp, t_info *info)
 	}
 }
 
-void ft_print_tmp(t_lexer *tmp)
+/* void	ft_print_tmp(t_lexer *tmp)
 {
 	while (tmp)
 	{
@@ -75,7 +75,7 @@ void ft_print_tmp(t_lexer *tmp)
 		printf("token: %s\n\n", tmp->token);
 		tmp = tmp->next;
 	}
-}
+} */
 
 t_pars	*node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 {
@@ -83,7 +83,6 @@ t_pars	*node_for_word(t_pars *pars, t_lexer *tmp, t_info *info)
 	t_lexer	*tmp1;
 
 	tmp1 = tmp;
-	//ft_print_tmp(tmp);
 	node = allocate_node(pars, info, ft_lstsize(tmp) + 2);
 	if ((tmp->type == TokenTypeHeredoc || tmp->type == TokenTypeOutputRedirect
 			|| tmp->type == TokenTypeOutputAppend
@@ -131,7 +130,6 @@ int	ft_parsing(t_pars **pars, t_lexer *tokens, t_info *info)
 
 	info->val = 0;
 	tmp = tokens;
-	//ft_print_tmp(tmp);
 	while (tmp)
 	{
 		tmp->token = convert_to_cmd(tmp->token, info);

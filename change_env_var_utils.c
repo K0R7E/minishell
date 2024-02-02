@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   change_env_var_utils.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/02 17:37:30 by akortvel          #+#    #+#             */
+/*   Updated: 2024/02/02 17:37:33 by akortvel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	hedoc_length(t_info *info, int i)
@@ -19,7 +31,6 @@ int	hedoc_length(t_info *info, int i)
 			&& ft_strchr_lexer(" \t<>|", info->input[i]))
 			break ;
 		i++;
-		
 	}
 	return (i);
 }
@@ -108,7 +119,7 @@ int	slash(char *str, t_info *info)
 		{
 			while (str[info->i - i] == '\\')
 				i++;
-			if ((i % 2) == 0) //maybe reverse
+			if ((i % 2) == 0)
 				return (0);
 			else
 				return (1);
