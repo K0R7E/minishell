@@ -13,7 +13,7 @@ VALGRIND		=	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes
 SRCS            =	main.c \
 					ft_getpwd.c ft_cpyarry.c lexer_utils.c lexer.c \
 					change_env_var.c \
-					change_env_var_utils.c input_check.c \
+					change_env_var_utils.c input_check.c ft_handle_signals.c \
 					env_conversion.c ft_export.c \
 					ft_env.c ft_builtin.c ft_echo.c \
 					ft_unset.c builtins_utils.c ft_cd.c \

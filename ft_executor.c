@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_executor.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/06 18:16:57 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/02 13:06:41 by akortvel         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 void	handle_execve_error(char *command, char **env)
@@ -136,6 +124,7 @@ void	ft_executor(t_pars *pars, t_info *info)
 	fd_in = 0;
 	fd_out = 1;
 	tmp = pars;
+	info->in_cmd = 1;
 	while (tmp)
 	{
 		if (tmp->cmd_args == NULL)
@@ -168,4 +157,5 @@ void	ft_executor(t_pars *pars, t_info *info)
 		fd_in = fd[0];
 		tmp = tmp->next;
 	}
+	info->in_cmd    = 0;
 }

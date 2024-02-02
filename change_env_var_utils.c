@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   change_env_var_utils.c                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/05 11:18:52 by fstark            #+#    #+#             */
-/*   Updated: 2024/02/02 13:12:01 by akortvel         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 int	hedoc_length(t_info *info, int i)
@@ -31,6 +19,7 @@ int	hedoc_length(t_info *info, int i)
 			&& ft_strchr_lexer(" \t<>|", info->input[i]))
 			break ;
 		i++;
+		
 	}
 	return (i);
 }

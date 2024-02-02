@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/07 14:21:49 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/02 15:49:32 by akortvel         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 /* void	ft_print_pars(t_pars *pars)
@@ -202,6 +190,12 @@ void	ft_init_values(t_info *info)
 	//info->input = NULL;
 	info->lexer = NULL;
 	info->exit_status = 0;
+	info->in_cmd = 0;
+	info->in_hd = 0;
+	info->stop_hd = 0;
+	info->exit_code = 0;
+	config_signals();
+	handle_sig(0, info);
 	info->exit_code = 0;
 }
 

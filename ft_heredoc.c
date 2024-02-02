@@ -1,16 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_heredoc.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/07 10:25:08 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/02 13:14:42 by akortvel         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "libft/libft.h"
 #include "minishell.h"
 
 static void	free_hd(char *line, char *str)
@@ -67,19 +54,28 @@ static int	hd_loop(t_pars *pars, t_info *info, int i, int fd)
 {
 	char	*line;
 	char	*str;
-	int		len;
+	char	*input;
+  int		len;
 
-	ft_check_newline(pars, pars->args[i + 1], i),
+  
+  ft_check_newline(pars, pars->args[i + 1], i),
 	len = ft_strlen(pars->heredoc) - ft_strlen(pars->args[i + 1]);
-	//printf("delim: %s\n", pars->args[i + 1]);
-	while (1)
+	while (!info->stop_hd)
 	{
-		line = readline("> ");
-/* 		if (g_global.stop_hd)
+		write(1, "> ", 2);
+		input = get_next_line(0);
+		if (input == NULL)
+			continue ;
+		line = ft_strtrim(input, "\n");
+		free(input);
+		if (line == NULL)
+			ft_error_message(pars, info);
+		//line = readline("> ");
+		if (info->stop_hd)
 		{
 			free(line);
 			break ;
-		} */
+		}
 		if ((ft_strncmp_12hd(line, pars->args[i + 1],
 					ft_strlen(pars->args[i + 1])) == 0))
 			break ;
@@ -89,8 +85,12 @@ static int	hd_loop(t_pars *pars, t_info *info, int i, int fd)
 		write(fd, str, ft_strlen(str));
 		free_hd(line, str);
 	}
-	if (!line)
+	info->in_hd = 0;
+	if (info->stop_hd || !line)
+	{
+		info->stop_hd = 0;
 		return (1);
+	}
 	return (0);
 }
 
@@ -99,12 +99,14 @@ int	ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 	int		fd;
 
 	fd = open("/tmp/temp8726343", O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	if (fd == -1)	// could be deleted
-	{
+/*if (fd == -1)	// could be deleted
+  {
 		printf("minishell: %s: No such file or directory\n", ".tmp");
 		info->exit_status = 1;
 		return (1);
-	}
+	} */
+	pars->heredoc = pars->args[i + 1];
+	info->in_hd = 1;
 	if (ft_check_qoutes(pars->args[i + 1]) == 1)
 		info->hd_quote = 1;
 	else

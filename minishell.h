@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/07 14:20:33 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/02 11:54:38 by akortvel         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -128,24 +116,14 @@ typedef struct s_info
 	t_pars	**pars_ptr;
 	int		i;
 	int		flag;
+	int		in_cmd;
+	int		in_hd;
+	int		stop_hd;
 }	t_info;
-
-typedef struct s_global
-{
-	int	error;
-	int	stop_hd;
-	int	in_cmd;
-	int	in_hd;
-}	t_global;
-
-extern t_global	g_global;
-
-//extern int g_global;
 
 /*##########################################################*/
 /*#####################  FUNCTIONS  ########################*/
 /*##########################################################*/
-
 
 void	ft_print_pars(t_pars *pars);
 
@@ -319,5 +297,9 @@ int		is_builtin_2(char *command);
 void	setup_fd(int fd, int std_no);
 int		setup_file_fd(int file_fd, char *file, int fd, int std_no);
 int		is_builtin(char *command, char **cmd_args);
+
+//handle_signals.c
+void	config_signals(void);
+void	handle_sig(int sig, t_info *info);
 
 #endif
