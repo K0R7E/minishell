@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/07 14:20:33 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/02 15:47:51 by fstark           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -30,7 +18,8 @@
 # include <readline/history.h>
 # include <errno.h>
 
-# define MAX_INPUT_SIZE 1024
+# define SIGINT  2
+# define SIGQUIT 3 
 
 # define R "\033[0;31m"
 # define G "\033[0;32m"
@@ -132,6 +121,10 @@ typedef struct s_info
 	int		stop_hd;
 }	t_info;
 
+/*##########################################################*/
+/*#####################  FUNCTIONS  ########################*/
+/*##########################################################*/
+
 void	ft_print_pars(t_pars *pars);
 
 void	ft_executor_pars(t_pars *pars, t_info *info);
@@ -195,6 +188,11 @@ void	sigint_handler(int sig);
 void	sigquit_handler(int sig);
 void	init_signals(void);
 int		ft_strcmp_123(const char *s1, const char *s2);
+
+// signal_new.c
+void	ignore_sigquit(void);
+void	set_signals_interactive(void);
+void	set_signals_noninteractive(void);
 
 //utils.c
 void	ft_close(int fd);

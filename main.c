@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/07 14:21:49 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/02 15:19:34 by fstark           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 /* void	ft_print_pars(t_pars *pars)
@@ -56,8 +44,7 @@
 	}
 } */
 
-
-void	print_lexer_list(t_info *info)
+/* void	print_lexer_list(t_info *info)
 {
 	t_lexer	*tmp;
 
@@ -75,7 +62,7 @@ void	print_lexer_list(t_info *info)
 	printf("command: %d\n", tmp->command);
 	printf("type: %d\n", tmp->type);
 	printf("token: %s\n", tmp->token);
-}
+} */
 
 void	ft_get_input(t_info *info)
 {
@@ -139,13 +126,18 @@ void	ft_get_input(t_info *info)
 void	ft_get_input_tester(t_info *info)
 {
 	//char	*line;
-
 	//line = NULL;
 	if (isatty(fileno(stdin)))
+	{
 		info->input = readline(LIME"minishell>"OFF);
+		//write(1, LIME"minishell> "OFF, 18);
+		//ft_putstr_fd(LIME"minishell> "OFF, 1);
+		//info->input = get_next_line(0);
+		//info->input = ft_strtrim(info->input, "\n");
+	}
 	else
 	{
-		char *line2;
+		char	*line2;
 		line2 = get_next_line(fileno(stdin));
 		if (!line2)
 		{
@@ -198,16 +190,13 @@ void	ft_init_values(t_info *info)
 	//info->input = NULL;
 	info->lexer = NULL;
 	info->exit_status = 0;
-	//g_global.stop_hd = 0;
-	//g_global.in_cmd = 0;
-	//g_global.in_hd = 0;
 	info->in_cmd = 0;
 	info->in_hd = 0;
 	info->stop_hd = 0;
 	info->exit_code = 0;
-	//init_signals();
 	config_signals();
 	handle_sig(0, info);
+	info->exit_code = 0;
 }
 
 t_info	*calloc_info(void)

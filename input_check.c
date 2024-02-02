@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 12:16:30 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/31 20:08:14 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/02 14:26:35 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,11 +197,13 @@ int	ft_check_input(t_info *info)
 	if (ft_check_input_quotes(info) == 1)
 	{
 		free(info->input);
+		info->exit_code = 2;
 		return (1);
 	}
 	if (ft_check_input_syntax(info, type_last, i) == 1)
 	{
 		free(info->input);
+		info->exit_code = 2;
 		return (1);
 	}
 	return (0);

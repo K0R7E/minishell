@@ -36,3 +36,18 @@ $HOME
 lim
 
 < > #ok  // int	ft_find_last_redirect(t_info *info, int i) \\ maybe fix if more space than 1...
+
+
+minishell><< "hi"
+==689934== Invalid read of size 1
+==689934==    at 0x402654: replace_dollar2 (change_env_var.c:97)
+==689934==    by 0x402947: replace_dollar (change_env_var.c:139)
+==689934==    by 0x402149: ft_lexer (lexer.c:122)
+==689934==    by 0x4017BC: main (main.c:243)
+==689934==  Address 0x4b667c8 is 0 bytes after a block of size 8 alloc'd
+==689934==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==689934==    by 0x48AABAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==689934==    by 0x4888694: readline_internal_teardown (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==689934==    by 0x4892D2A: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==689934==    by 0x4014A7: ft_get_input_tester (main.c:145)
+==689934==    by 0x401788: main (main.c:238)

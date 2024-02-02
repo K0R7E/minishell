@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:21:04 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/01 15:11:31 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/02 13:12:40 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	ft_strncmp_12(const char *s1, const char *s2, size_t n)
 	}
 	return ((unsigned char)(s1[i]) - (unsigned char)(s2[i]));
 }
+
 int	ft_strncmp_12hd(const char *s1, const char *s2, size_t n)
 {
 	size_t	i;
