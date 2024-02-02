@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 15:58:45 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/02 16:42:51 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/02 16:44:26 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,5 @@ void	init_loop(t_pars *pars, t_info *info)
 	info->lexer = NULL;
 	info->command_count = 1;
 	info->builtin_command_count = 0;
-	//info->input = NULL;
+	info->input = NULL;
 }
