@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 10:25:08 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/01 15:11:48 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/02 15:44:37 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,20 @@ static int	hd_loop(t_pars *pars, t_info *info, int i, int fd)
 {
 	char	*line;
 	char	*str;
+	char	*input;
 
-	while (!g_global.stop_hd)
+	while (!info->stop_hd)
 	{
-		line = readline("> ");
-		if (g_global.stop_hd)
+		write(1, "> ", 2);
+		input = get_next_line(0);
+		if (input == NULL)
+			continue ;
+		line = ft_strtrim(input, "\n");
+		free(input);
+		if (line == NULL)
+			ft_error_message(pars, info);
+		//line = readline("> ");
+		if (info->stop_hd)
 		{
 			free(line);
 			break ;
@@ -64,9 +73,12 @@ static int	hd_loop(t_pars *pars, t_info *info, int i, int fd)
 		write(fd, str, ft_strlen(str));
 		free_hd(line, str);
 	}
-	g_global.in_hd = 0;
-	if (g_global.stop_hd || !line)
+	info->in_hd = 0;
+	if (info->stop_hd || !line)
+	{
+		info->stop_hd = 0;
 		return (1);
+	}
 	return (0);
 }
 
@@ -82,7 +94,7 @@ int	ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 		return (1);
 	} */
 	pars->heredoc = pars->args[i + 1];
-	g_global.in_hd = 1;
+	info->in_hd = 1;
 	if (ft_check_qoutes(pars->args[i + 1]) == 1)
 		info->hd_quote = 1;
 	else
@@ -95,6 +107,7 @@ int	ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 		pars->in_file = ft_strdup("/tmp/temp8726343");
 		if (pars->in_file == NULL)
 			ft_error_message(pars, info);
+		close (fd);
 	}
 	else
 		close (fd);

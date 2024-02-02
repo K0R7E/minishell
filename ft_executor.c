@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_executor.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 18:16:57 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/01 16:29:18 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/02 13:05:46 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void	ft_executor(t_pars *pars, t_info *info)
 	fd_in = 0;
 	fd_out = 1;
 	tmp = pars;
-	g_global.in_cmd = 1;
+	info->in_cmd = 1;
 	while (tmp)
 	{
 		if (tmp->cmd_args == NULL)
@@ -171,5 +171,5 @@ void	ft_executor(t_pars *pars, t_info *info)
 		fd_in = fd[0];
 		tmp = tmp->next;
 	}
-	g_global.in_cmd    = 0;
+	info->in_cmd    = 0;
 }

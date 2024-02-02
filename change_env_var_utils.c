@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   change_env_var_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 11:18:52 by fstark            #+#    #+#             */
-/*   Updated: 2024/02/01 16:01:46 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/01 18:20:56 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,23 @@
 
 int	hedoc_length(t_info *info, int i)
 {
-	int	state;
+	struct quote_state	qs;
 
-	state = 0;
+	qs.state_d = 0;
+	qs.state_s = 0;
 	while ((info->input[i] == ' ' || info->input[i] == '\t')
 		&& info->input[i] != '\0')
 		i++;
-	while (info->input[i] != '\0' && (info->input[i] != ' '
-			&& info->input[i] != '\t' && state == 0))
+	while (info->input[i] != '\0')
 	{
-		if (info->input[i] == '\'' || info->input[i] == '\"')
-		{
-			if (state == 0)
-				state = 1;
-			else if (state == 1)
-				state = 0;
-		}
+		if (info->input[i] == '\"' && qs.state_s == 0)
+			qs.state_d = update_quote_state2(qs, info->input[i]);
+		else if (info->input[i] == '\'' && qs.state_d == 0)
+			qs.state_s = update_quote_state2(qs, info->input[i]);
+		if (qs.state_d == 0 && qs.state_s == 0 && ft_strchr_lexer(" \t<>|", info->input[i]))
+			break ;
 		i++;
+		
 	}
 	return (i);
 }

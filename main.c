@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:21:49 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/01 15:56:45 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/02 15:19:34 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,11 +198,16 @@ void	ft_init_values(t_info *info)
 	//info->input = NULL;
 	info->lexer = NULL;
 	info->exit_status = 0;
-	g_global.stop_hd = 0;
-	g_global.in_cmd = 0;
-	g_global.in_hd = 0;
+	//g_global.stop_hd = 0;
+	//g_global.in_cmd = 0;
+	//g_global.in_hd = 0;
+	info->in_cmd = 0;
+	info->in_hd = 0;
+	info->stop_hd = 0;
 	info->exit_code = 0;
-	init_signals();
+	//init_signals();
+	config_signals();
+	handle_sig(0, info);
 }
 
 t_info	*calloc_info(void)

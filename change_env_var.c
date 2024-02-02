@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   change_env_var.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:20:43 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/01 16:03:47 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/01 18:21:04 by fstark           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,11 @@ char	*copy_env_value(int j, t_info *info)
 
 char	*check_hedoc(char *in, t_info *info, int i)
 {
-	int		state;
+	struct quote_state	qs;
 	char	*res;
 
-	state = 0;
+	qs.state_d = 0;
+	qs.state_s = 0;
 	res = ft_strdup(in);
 	if (res == NULL)
 		ft_error_message(*info->pars_ptr, info);
@@ -78,11 +79,11 @@ char	*check_hedoc(char *in, t_info *info, int i)
 		i++;
 	while (info->input[i] != '\0')
 	{
-		if (info->input[i] == '\'' || info->input[i] == '\"')
-		{
-			state = change_one_zero(state);
-		}
-		if (state == 0 && ft_strchr_lexer(" \t<>|", info->input[i]))
+		if (info->input[i] == '\'' && qs.state_d == 0)
+			qs.state_s = update_quote_state2(qs, '\'');
+		if (info->input[i] == '\"' && qs.state_s == 0)
+			qs.state_d = update_quote_state2(qs, '\"');
+		if (qs.state_d == 0 && qs.state_s == 0 && ft_strchr_lexer(" \t<>|", info->input[i]))
 			break ;
 		res = add_char_to_str(res, info->input[i]);
 		i++;
