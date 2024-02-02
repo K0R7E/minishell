@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:21:49 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/02 15:47:40 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/02 15:49:32 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@
 	}
 } */
 
-void	print_lexer_list(t_info *info)
+/* void	print_lexer_list(t_info *info)
 {
 	t_lexer	*tmp;
 
@@ -74,7 +74,7 @@ void	print_lexer_list(t_info *info)
 	printf("command: %d\n", tmp->command);
 	printf("type: %d\n", tmp->type);
 	printf("token: %s\n", tmp->token);
-}
+} */
 
 void	ft_get_input(t_info *info)
 {
