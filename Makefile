@@ -6,6 +6,10 @@ RM				=	rm -rf
 CFLAGS			=	-Wall -Wextra -Werror -g #-fsanitize=address,leak,undefined,
 FLAGS			=	-lreadline 
 
+VAL 			=	valgrind --leak-check=full --track-fds=yes --suppressions=valgrind.txt
+
+VALGRIND		=	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=all --suppressions=valgrind.txt
+
 SRCS            =	main.c \
 					ft_getpwd.c ft_cpyarry.c lexer_utils.c lexer.c \
 					change_env_var.c \
@@ -57,7 +61,17 @@ fclean: 		    clean
 
 re: 			fclean all
 
-run:			${NAME}
-				${VALGRIND} ./${NAME} map.ber
+v:			${NAME}
+				${VAL} ./${NAME}
 
-.PHONY: 		all clean fclean re run libft
+va:			${NAME}
+				${VALGRIND} ./${NAME}
+
+r:			${NAME}
+				./${NAME}
+
+norm:		
+				norminette $(SRCS) minishell.h libft libft.h | grep -v Norme -B 1 || true
+
+
+.PHONY: 		all clean fclean re v va r norm libft
