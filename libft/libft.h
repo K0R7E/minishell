@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:44:40 by akortvel          #+#    #+#             */
-/*   Updated: 2024/01/31 17:03:09 by fstark           ###   ########.fr       */
+/*   Updated: 2024/02/02 13:05:52 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,5 @@ char	*ft_strchr2(char *str, int c);
 char	*ft_strjoin4(char *str, char *buf);
 char	*ft_new(char *str);
 char	*ft_helper_strhoin(char *str);
-
-
 
 #endif

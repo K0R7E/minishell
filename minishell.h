@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 14:20:33 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/01 18:10:26 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/02 11:54:38 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,6 +210,11 @@ void	sigint_handler(int sig);
 void	sigquit_handler(int sig);
 void	init_signals(void);
 int		ft_strcmp_123(const char *s1, const char *s2);
+
+// signal_new.c
+void	ignore_sigquit(void);
+void	set_signals_interactive(void);
+void	set_signals_noninteractive(void);
 
 //utils.c
 void	ft_close(int fd);

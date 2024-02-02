@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 18:16:57 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/01 16:29:18 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/02 13:06:41 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ void	handle_child_process(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 	int		file_fd;
 	char	**env;
 	int		i;
-	int 	k;
+	int		k;
 
 	file_fd = -1;
 	setup_fd(fd_in, STDIN_FILENO);
 	setup_fd(fd_out, STDOUT_FILENO);
 	i = setup_file_fd(file_fd, tmp->out_file, tmp->fd_out, STDOUT_FILENO);
 	k = setup_file_fd(file_fd, tmp->in_file, tmp->fd_in, STDIN_FILENO);
-	if (is_builtin(tmp->command, tmp->cmd_args) )
+	if (is_builtin(tmp->command, tmp->cmd_args))
 	{
 		ret = ft_builtin(tmp, info);
 		exit(ret);
@@ -136,7 +136,6 @@ void	ft_executor(t_pars *pars, t_info *info)
 	fd_in = 0;
 	fd_out = 1;
 	tmp = pars;
-	g_global.in_cmd = 1;
 	while (tmp)
 	{
 		if (tmp->cmd_args == NULL)
@@ -144,10 +143,10 @@ void	ft_executor(t_pars *pars, t_info *info)
 			if (tmp->next)
 			{
 				tmp = tmp->next;
-				continue;
+				continue ;
 			}
 			else
-				break;
+				break ;
 		}
 		pipe(fd);
 		if (tmp->next == NULL)
@@ -159,17 +158,14 @@ void	ft_executor(t_pars *pars, t_info *info)
 		else
 			fd_out = fd[1];
 		ft_fork(tmp, info, fd_in, fd_out);
-		if (tmp->fd_in != 0 && tmp->fd_in != 1) {
-        	close(tmp->fd_in);
-    	}
-     	if (tmp->fd_out != 0 && tmp->fd_out != 1) {
-        	close(tmp->fd_out);
-    	}
+		if (tmp->fd_in != 0 && tmp->fd_in != 1)
+			close(tmp->fd_in);
+		if (tmp->fd_out != 0 && tmp->fd_out != 1)
+			close(tmp->fd_out);
 		close(fd[1]);
 		if (fd_in != 0)
 			close(fd_in);
 		fd_in = fd[0];
 		tmp = tmp->next;
 	}
-	g_global.in_cmd    = 0;
 }

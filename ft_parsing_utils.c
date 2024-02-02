@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 09:50:02 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/01 15:37:19 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/02 13:07:56 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	*convert_to_cmd(char *str, t_info *info)
 	}
 }
 
-void	ft_print_pars(t_pars *pars)
+/* void	ft_print_pars(t_pars *pars)
 {
 	int i = 0;
 	int j = 0;
@@ -127,4 +127,4 @@ void	ft_print_pars(t_pars *pars)
 		pars = pars->next;
 		i++;
 	}
-}
+} */
