@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 15:57:48 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/03 17:27:30 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/03 20:08:00 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,16 @@ void	handle_execve_error(char *command, char **env)
 void	handle_child_process(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 {
 	int		ret;
-	int		file_fd;
 	char	**env;
 	int		i;
 	int		k;
 
-	file_fd = -1;
 	setup_fd(fd_in, STDIN_FILENO);
 	setup_fd(fd_out, STDOUT_FILENO);
-	i = setup_file_fd(file_fd, tmp->out_file, tmp->fd_out, STDOUT_FILENO);
-	k = setup_file_fd(file_fd, tmp->in_file, tmp->fd_in, STDIN_FILENO);
-	if (is_builtin(tmp->command, tmp->cmd_args))
-	{
-		ret = ft_builtin(tmp, info);
-		exit(ret);
-	}
-	else if (is_builtin_2(tmp->command) && info->command_count > 1)
+	i = setup_file_fd(-1, tmp->out_file, tmp->fd_out, STDOUT_FILENO);
+	k = setup_file_fd(-1, tmp->in_file, tmp->fd_in, STDIN_FILENO);
+	if ((is_builtin(tmp->command, tmp->cmd_args))
+		|| (is_builtin_2(tmp->command) && info->command_count > 1))
 	{
 		ret = ft_builtin(tmp, info);
 		exit(ret);
@@ -98,46 +92,29 @@ void	ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 		handle_parent_proc(pid, info, fd_in, fd_out);
 }
 
-void	ft_executor(t_pars *pars, t_info *info)
+void	ft_executor(t_pars *pars, t_info *info, int fd_in, int fd_out)
 {
 	t_pars	*tmp;
 	int		fd[2];
-	int		fd_in;
-	int		fd_out;
 
-	fd_in = 0;
-	fd_out = 1;
 	tmp = pars;
 	info->in_cmd = 1;
 	while (tmp)
 	{
-		if (tmp->cmd_args == NULL)
+		if (should_move_to_next(tmp) == 1)
 		{
-			if (tmp->next)
-			{
-				tmp = tmp->next;
-				continue ;
-			}
-			else
-				break ;
+			tmp = tmp->next;
+			continue ;
 		}
+		else if (should_move_to_next(tmp) == 2)
+			break ;
 		pipe(fd);
 		if (tmp->next == NULL)
-		{
-			fd_out = 1;
-			close (fd[1]);
-			close (fd[0]);
-		}
+			setup_fd_2(fd_out, fd);
 		else
 			fd_out = fd[1];
 		ft_fork(tmp, info, fd_in, fd_out);
-		if (tmp->fd_in != 0 && tmp->fd_in != 1)
-			close(tmp->fd_in);
-		if (tmp->fd_out != 0 && tmp->fd_out != 1)
-			close(tmp->fd_out);
-		close(fd[1]);
-		if (fd_in != 0)
-			close(fd_in);
+		close_fds_from_list(tmp->fd_in, tmp->fd_out, fd[1], fd_in);
 		fd_in = fd[0];
 		tmp = tmp->next;
 	}

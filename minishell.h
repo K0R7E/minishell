@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:39:43 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/03 16:14:40 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/03 19:32:29 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,6 @@ typedef struct s_info
 void	ft_print_pars(t_pars *pars);
 
 void	ft_executor_pars(t_pars *pars, t_info *info);
-void	ft_executor(t_pars *pars, t_info *info);
 int		ft_listsize(t_pars *pars);
 
 char	**ft_arrycpy_main(char **envp, t_info *info);
@@ -253,10 +252,23 @@ char	*get_path_new(t_pars *pars, char *token, t_info *info);
 
 //ft_heredoc.c
 int		ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count);
+int		hd_loop(t_pars *pars, t_info *info, int i, int fd);
+char	*remove_newline(char *line, char *input);
+char	*add_line(char *input);
+int		ft_delimiter(char *delim, char *line);
 
 //ft_heredoc_utils.c
-int		ft_check_newline(t_pars *pars, char *str, int j);
 int		ft_check_qoutes(char *str);
+int		ft_check_newline(t_pars *pars, char *str, int j);
+void	free_hd(char *line, char *str);
+char	*ft_str_123(t_pars *pars, t_info *info, char *str, char *line);
+
+//ft_heredoc_utils_2.c
+void	hd_error_msg(char *msg);
+int		ft_check_stop_hd(t_info *info, char *line);
+char	*ft_hd_str_01(t_pars *pars, t_info *info, char *str, char *line);
+int		ft_check_empty_line(char *str, char *input);
+int		ft_check_hd(t_info *info, char *input);
 
 // ft_redir.c
 int		ft_redir(t_pars *pars, t_info *info);
@@ -305,7 +317,7 @@ void	handle_execve_error(char *command, char **env);
 void	handle_child_process(t_pars *tmp, t_info *info, int fd_in, int fd_out);
 void	handle_parent_proc(pid_t pid, t_info *info, int fd_in, int fd_out);
 void	ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out);
-void	ft_executor(t_pars *pars, t_info *info);
+void	ft_executor(t_pars *pars, t_info *info, int fd_in, int fd_out);
 
 //ft_executor_utils.c
 int		is_builtin_1(char *command);
@@ -313,6 +325,11 @@ int		is_builtin_2(char *command);
 void	setup_fd(int fd, int std_no);
 int		setup_file_fd(int file_fd, char *file, int fd, int std_no);
 int		is_builtin(char *command, char **cmd_args);
+
+//ft_executor_utils2.c
+void	close_fds_from_list(int in, int out, int ft_pip, int fd_in);
+void	setup_fd_2(int fd_out, int fd_pipe[2]);
+int		should_move_to_next(t_pars *tmp);
 
 //handle_signals.c
 void	config_signals(void);
