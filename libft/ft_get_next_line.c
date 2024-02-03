@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_get_next_line.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 13:31:29 by rluari            #+#    #+#             */
-/*   Updated: 2024/01/31 17:03:15 by fstark           ###   ########.fr       */
+/*   Updated: 2024/02/03 17:04:39 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ char	*ft_read(int fd, char *str)
 		rc = read(fd, buf, BUFFER_SIZE);
 		if (rc == -1)
 			return (free(buf), free(str), NULL);
+/* 		if (rc == 0)
+			continue ; */
 		buf[rc] = '\0';
 		str = ft_strjoin4(str, buf);
 	}

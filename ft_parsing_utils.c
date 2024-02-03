@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 09:50:02 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/02 17:43:23 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/03 15:56:09 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	ft_lstsize(t_lexer *tokens)
 char	*convert_to_cmd(char *str, t_info *info)
 {
 	char	*tmp;
-	
+
 	if (ft_strncmp(str, "/usr/bin/", 9) == 0)
 	{
 		tmp = ft_substr(str, 9, ft_strlen(str) - 9);

@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:39:43 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/02 17:39:48 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/03 16:14:40 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,6 +254,10 @@ char	*get_path_new(t_pars *pars, char *token, t_info *info);
 //ft_heredoc.c
 int		ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count);
 
+//ft_heredoc_utils.c
+int		ft_check_newline(t_pars *pars, char *str, int j);
+int		ft_check_qoutes(char *str);
+
 // ft_redir.c
 int		ft_redir(t_pars *pars, t_info *info);
 int		ft_handle_redirection(t_pars *tmp, t_info *info);
@@ -312,6 +316,6 @@ int		is_builtin(char *command, char **cmd_args);
 
 //handle_signals.c
 void	config_signals(void);
-void	handle_sig(int sig, t_info *info);
-
+//void	handle_sig(int sig, t_info *info);
+t_info	*handle_sig(int sig, t_info *info);
 #endif

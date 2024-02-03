@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 11:00:02 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/02 17:52:32 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/03 15:56:31 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static void	free_path(t_pars *pars, t_info *info, char **allpath)
 	ft_error_message(pars, info);
 }
 
-/* static char	**get_s_smd(t_pars *pars, t_info *info, char *token, char **allpath)
+/* static char	**get_s_smd(t_pars *pars, t_info *info, 
+	char *token, char **allpath)
 {
 	char	**s_cmd;
 

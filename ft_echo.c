@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fstark <fstark@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 15:50:26 by fstark            #+#    #+#             */
-/*   Updated: 2024/01/05 11:26:59 by fstark           ###   ########.fr       */
+/*   Updated: 2024/02/03 16:18:04 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ int	ft_echo(char **input)
 	int	i;
 
 	i = 1;
-	while (ft_strncmp3(input[i], "-n", 2) == 0 && input[1][2] == '\0')
+	while (ft_strncmp3(input[i], "-n", 2) == 0
+		&& input[1][2] == '\0' && ((ft_strlen(input[i]) == 2)
+			|| (input[i][2] == 'n')))
 		i++;
 	while (input[i])
 	{

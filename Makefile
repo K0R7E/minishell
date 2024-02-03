@@ -17,12 +17,12 @@ SRCS            =	main.c \
 					env_conversion.c ft_export.c \
 					ft_env.c ft_builtin.c ft_echo.c \
 					ft_unset.c builtins_utils.c ft_cd.c \
-					utils.c ft_pwd.c \
+					utils.c ft_pwd.c change_env_var_utils3.c\
 					ft_main_arrycpy.c main_utils.c\
 					ft_redir.c ft_redir_utils.c \
 					ft_parsing.c ft_parsing_1.c ft_parsing_2.c ft_parsing_3.c \
 					ft_executor.c ft_executor_utils.c \
-					\
+					utils2.c ft_heredoc_utils.c\
 					ft_exit.c ft_free_all.c \
 					ft_error_message.c remove_quotes.c input_check_utils.c \
 					env_conversion_back.c builtins_utils2.c\

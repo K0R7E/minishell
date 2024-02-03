@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:41:00 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/02 17:42:02 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/03 17:08:34 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,13 +137,13 @@ void	ft_get_input(t_info *info)
 
 void	ft_get_input_tester(t_info *info)
 {
-	int i;
+	int		i;
+	char	*line2;
 
 	if (isatty(fileno(stdin)))
 		info->input = readline(LIME"minishell>"OFF);
 	else
 	{
-		char	*line2;
 		line2 = get_next_line(fileno(stdin));
 		if (!line2)
 		{

@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:37:23 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/02 17:37:25 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/03 17:17:33 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	*copy_env_value(int j, t_info *info)
 char	*check_hedoc(char *in, t_info *info, int i)
 {
 	struct quote_state	qs;
-	char	*res;
+	char				*res;
 
 	qs.state_d = 0;
 	qs.state_s = 0;
@@ -83,7 +83,8 @@ char	*check_hedoc(char *in, t_info *info, int i)
 			qs.state_s = update_quote_state2(qs, '\'');
 		if (info->input[i] == '\"' && qs.state_s == 0)
 			qs.state_d = update_quote_state2(qs, '\"');
-		if (qs.state_d == 0 && qs.state_s == 0 && ft_strchr_lexer(" \t<>|", info->input[i]))
+		if (qs.state_d == 0 && qs.state_s == 0
+			&& ft_strchr_lexer(" \t<>|", info->input[i]))
 			break ;
 		res = add_char_to_str(res, info->input[i]);
 		i++;
@@ -107,7 +108,10 @@ char	*replace_dollar2(char *in, t_info *info, t_quote_state qs, char *res)
 		{
 			if (in[info->i +1] == '?')
 				res = handle_question_mark(info, res);
-			else if (ft_isalpha(in[info->i +1]) == 0 && in[info->i +1] != '_' && qs.state_d == 0)
+			else if (in[info->i +1] == '\0')
+				res = handle_char(res, in, info);
+			else if (ft_isalpha(in[info->i +1]) == 0
+				&& in[info->i +1] != '_' && qs.state_d == 0)
 				info->i++;
 			else if (ft_isalpha(in[info->i +1]) == 0 && in[info->i +1] != '_')
 				res = handle_char(res, in, info);

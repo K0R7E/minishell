@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_heredoc.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/03 16:10:56 by akortvel          #+#    #+#             */
+/*   Updated: 2024/02/03 16:15:33 by akortvel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	free_hd(char *line, char *str)
@@ -14,52 +26,13 @@ char	*ft_str_123(t_pars *pars, t_info *info, char *str, char *line)
 	return (str);
 }
 
-int	ft_check_qoutes(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '\'')
-			return (1);
-		else if (str[i] == '\"')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	ft_check_newline(t_pars *pars, char *str, int j)
-{
-	int		i;
-	char	*str2;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '\\' && str[i + 1] == 'n')
-		{
-			str2 = ft_substr(str, 0, i);
-			free(pars->args[j + 1]);
-			pars->args[j + 1] = ft_strdup(str2);
-			return (1);
-		}
-		i++;
-	}
-	return (0);
-}
-
 static int	hd_loop(t_pars *pars, t_info *info, int i, int fd)
 {
 	char	*line;
 	char	*str;
 	char	*input;
-	int		len;
 
-  
-  ft_check_newline(pars, pars->args[i + 1], i),
-	len = ft_strlen(pars->heredoc) - ft_strlen(pars->args[i + 1]);
+	ft_check_newline(pars, pars->args[i + 1], i);
 	while (!info->stop_hd)
 	{
 		write(1, "> ", 2);
@@ -73,7 +46,7 @@ static int	hd_loop(t_pars *pars, t_info *info, int i, int fd)
 		if (input == NULL)
 		{
 			write(1, "\n", 1);
-			ft_putstr_fd("minishell: warning: here-document delimited by end-of-file (wanted `", 2);
+			ft_putstr_fd("minishell: warning: here-documentdelimited by end-of-file (wanted `", 2);
 			ft_putstr_fd(pars->args[i + 1], 2);
 			ft_putstr_fd("')\n\n", 2);
 			break ;
@@ -82,10 +55,12 @@ static int	hd_loop(t_pars *pars, t_info *info, int i, int fd)
 		free(input);
 		if (line == NULL)
 			ft_error_message(pars, info);
-		//line = readline("> ");
 		if ((ft_strncmp_12hd(line, pars->args[i + 1],
 					ft_strlen(pars->args[i + 1])) == 0))
+		{
+			free(line);
 			break ;
+		}
 		str = ft_str_123(pars, info, str, line);
 		if (info->hd_quote == 0)
 			str = replace_dollar_hedoc(str, info);
@@ -98,8 +73,6 @@ static int	hd_loop(t_pars *pars, t_info *info, int i, int fd)
 		info->stop_hd = 0;
 		return (1);
 	}
-	if (line)
-		free(line); // we need this, but itt couse 2 more errors
 	return (0);
 }
 
@@ -108,12 +81,6 @@ int	ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 	int		fd;
 
 	fd = open("/tmp/temp8726343", O_WRONLY | O_CREAT | O_TRUNC, 0777);
-/*if (fd == -1)	// could be deleted
-  {
-		printf("minishell: %s: No such file or directory\n", ".tmp");
-		info->exit_status = 1;
-		return (1);
-	} */
 	pars->heredoc = pars->args[i + 1];
 	info->in_hd = 1;
 	if (ft_check_qoutes(pars->args[i + 1]) == 1)
@@ -122,7 +89,6 @@ int	ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 		info->hd_quote = 0;
 	pars->heredoc = ft_strdup(pars->args[i + 1]);
 	pars->args[i + 1] = remove_quotes(pars->args[i + 1]);
-	//pars->args[i + 1] = ft_check_newlinw(pars->args[i + 1]);
 	if (hd_loop(pars, info, i, fd) == 1)
 		return (1);
 	if (i == count)

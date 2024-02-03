@@ -1,38 +1,41 @@
-###########################################
->echo $ should be '$'
->/bin/echo $USER$TESTNOTFOUND$HOME$ should be '$' at the end
-###########################################
-
-
-###########################################
 ###############--LEAKS--###################
-###########################################
 
-/bin/echo ""'totally logical'""
+/bin/echo ""'totally logical'""  #ok
 
-ls -l | awk '$1 ~ /^d/ {print $9}'
+ls -l | awk '$1 ~ /^d/ {print $9}' #ok
 
-< >
+< > #ok
 
-==1516155== Memcheck, a memory error detector
-==1516155== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==1516155== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==1516155== Command: ./minishell
-==1516155== 
-==1516155== Syscall param rt_sigaction(act->sa_mask) points to uninitialised byte(s)
-==1516155==    at 0x49075F3: __libc_sigaction (libc_sigaction.c:58)
-==1516155==    by 0x4036B7: config_signals (ft_handle_signals.c:81)
-==1516155==    by 0x401583: ft_init_values (main.c:200)
-==1516155==    by 0x4015E7: calloc_info (main.c:215)
-==1516155==    by 0x401632: main (main.c:226)
-==1516155==  Address 0x1ffeffff88 is on thread 1's stack
-==1516155==  in frame #0, created by __libc_sigaction (libc_sigaction.c:43)
-==1516155== 
-==1516155== Syscall param rt_sigaction(act->sa_mask) points to uninitialised byte(s)
-==1516155==    at 0x49075F3: __libc_sigaction (libc_sigaction.c:58)
-==1516155==    by 0x4036CC: config_signals (ft_handle_signals.c:82)
-==1516155==    by 0x401583: ft_init_values (main.c:200)
-==1516155==    by 0x4015E7: calloc_info (main.c:215)
-==1516155==    by 0x401632: main (main.c:226)
-==1516155==  Address 0x1ffeffff88 is on thread 1's stack
-==1516155==  in frame #0, created by __libc_sigaction (libc_sigaction.c:43)
+
+##############--STD_OUT--##################
+
+export T="|"
+echo segfault $T grep segfault
+
+export T='|'
+echo segfault $T grep segfault
+
+export T=">"
+echo segfault $T grep segfault
+
+export T='<'
+echo segfault $T grep segfault
+
+export T="<<"
+echo segfault $T grep segfault
+
+export T='<<'
+echo segfault $T grep segfault
+
+##############--SIGNALS--###################
+
+ctrl-C in an empty prompt should display a new line with a new prompt. # ok
+ctrl-\ in an empty prompt should not do anything. # wrong
+ctrl-D in an empty prompt should quit minishell # exitcode 1 instead of 0 >> 2 instead of 0
+ctrl-C in a prompt after you wrote some stuff should display a new line with a new prompt. # ok
+The buffer should be clean too. Press "Enter" to make sure nothing from the previous line is executed. # ok
+ctrl-D in a prompt after you wrote some stuff should not do anything. # ok
+ctrl-\ in a prompt after you wrote some stuff should not do anything. # wrong
+Try ctrl-C after running a blocking command like cat without arguments or grep “something“. # exitcode 0 instead of 130
+Try ctrl-\ after running a blocking command like cat without arguments or grep “something“. # exitcode 0 instead of 131 (Core dumped)
+Try ctrl-D after running a blocking command like cat without arguments or grep “something“. # ok
