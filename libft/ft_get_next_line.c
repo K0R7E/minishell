@@ -6,13 +6,14 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 13:31:29 by rluari            #+#    #+#             */
-/*   Updated: 2024/02/03 17:04:39 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/04 14:55:44 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <fcntl.h>
 #include <stdio.h>
+#include <signal.h>
 
 char	*ft_line(char *str)
 {
@@ -72,6 +73,7 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
+	//signal(SIGQUIT, SIG_IGN);
 	str = ft_read(fd, str);
 	if (!str)
 		return (NULL);

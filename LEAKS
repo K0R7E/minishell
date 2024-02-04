@@ -7,6 +7,12 @@ ls -l | awk '$1 ~ /^d/ {print $9}' #ok
 < > #ok
 
 
+##################--FDS--##################
+
+export > file | cat file | grep "XDG" #ok when exit the minishell
+
+
+
 ##############--STD_OUT--##################
 
 export T="|"

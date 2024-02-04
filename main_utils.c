@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 15:58:45 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/03 19:34:20 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/04 14:43:41 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	ft_1(t_info *info, t_pars *pars)
 	info->command_count = ft_listsize(pars);
 	update_info(info);
 	ft_executor(pars, info, fd_in, fd_out);
+	signal(SIGQUIT, SIG_IGN);
 	free(info->input);
 	info->input = NULL;
 	ft_free_all(pars, info, 1);
