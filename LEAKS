@@ -1,3 +1,22 @@
+###############-TO_DO-#####################
+
+Signals (ctrl-C, ctrl-D, ctrl-\)
+2 option: 
+	heredoc - with get_next_line: (branch - main_test)
+		ctrl-\ >> doesn't ignore the signal, it shows the signal sign, wich doesn't make affect the process,
+				  BUT every time if we send a ctre-\ signal in the hd, (even if several other cmd are entered)
+				  at the end of the process, it shows Core dumped!!! >> according to ChatGPT in gnl we can not fix this
+		ctrl-C >> if we in a child process, like enter only "cat" or "wc" this doesn't exit the right exit code...
+
+		only 156 error, no leaks as I tested it...
+
+	heredoc - with readline: (branch - main_test_HDW_readline)
+		ctrl-l >> works perfectly fine in hd, i didn't test any other option
+		ctrl-C >> not work in hd
+
+		206 error, no leaks as I tested it...
+
+
 ###############--LEAKS--###################
 
 /bin/echo ""'totally logical'""  #ok
