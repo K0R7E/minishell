@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 16:10:56 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/03 18:38:03 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/04 17:22:07 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,15 @@ int	ft_delimiter(char *delim, char *line)
 
 char	*add_line(char *input)
 {
-	write(1, "> ", 2);
-	input = get_next_line(0);
+/* 	write(1, "> ", 2);
+	input = get_next_line(0); */
+	input = readline("> ");
 	return (input);
 }
 
 char	*remove_newline(char *line, char *input)
 {
+	line = ft_strdup(input);
 	line = ft_strtrim(input, "\n");
 	free(input);
 	return (line);
@@ -44,7 +46,7 @@ int	hd_loop(t_pars *pars, t_info *info, int i, int fd)
 	char	*input;
 
 	ft_check_newline(pars, pars->args[i + 1], i);
-	while (!info->stop_hd)
+	while (!info->stop_hd && g_info == 1)
 	{
 		input = add_line(input);
 		if (ft_check_hd(info, input) == 1)
@@ -58,8 +60,10 @@ int	hd_loop(t_pars *pars, t_info *info, int i, int fd)
 			break ;
 		str = ft_hd_str_01(pars, info, str, line);
 		write(fd, str, ft_strlen(str));
-		free_hd(line, str);
+		//free_hd(line, str);
+		free(str);
 	}
+	g_info = 0;
 	info->in_hd = 0;
 	if (ft_check_stop_hd(info, line) == 1)
 		return (1);
@@ -79,6 +83,7 @@ int	ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 		info->hd_quote = 0;
 	pars->heredoc = ft_strdup(pars->args[i + 1]);
 	pars->args[i + 1] = remove_quotes(pars->args[i + 1]);
+	g_info = 1;
 	if (hd_loop(pars, info, i, fd) == 1)
 		return (1);
 	if (i == count)

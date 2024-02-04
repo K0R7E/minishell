@@ -6,11 +6,13 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:41:00 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/03 17:08:34 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/04 17:21:03 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int g_info;
 
 /* void	ft_print_pars(t_pars *pars)
 {
@@ -197,6 +199,7 @@ void	ft_init_values(t_info *info)
 	info->in_hd = 0;
 	info->stop_hd = 0;
 	info->exit_code = 0;
+	g_info = 0;
 	config_signals();
 	handle_sig(0, info);
 	info->exit_code = 0;

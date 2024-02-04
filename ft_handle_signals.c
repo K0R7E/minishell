@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:40:17 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/04 14:47:50 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/04 17:24:44 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,17 @@ t_info	*handle_sig(int sig, t_info *info_in)
 		return (NULL);
 	if (sig == SIGINT)
 	{
+		if (g_info == 1)
+		{
+			g_info = 0;
+			info->stop_hd = 1;
+			write(1, "\n", 1);
+			rl_replace_line("", 0);
+			rl_on_new_line();
+			rl_redisplay();
+			info->exit_code = 130;
+			return (info);
+		}
 		if (!info->in_hd)
 			write(1, "\n", 1);
 
@@ -44,7 +55,7 @@ t_info	*handle_sig(int sig, t_info *info_in)
 			info->exit_code = 130; // not work here
 			return (info);
 		}
-		else if (info->in_hd)
+/* 		else if (info->in_hd)
 		{
 			info->stop_hd = 1;
 			write(1, "\n", 1);
@@ -52,7 +63,7 @@ t_info	*handle_sig(int sig, t_info *info_in)
 			rl_on_new_line();
 			info->exit_code = 130;
 			return (info);
-		}
+		} */
 		else
 		{
 			rl_on_new_line();

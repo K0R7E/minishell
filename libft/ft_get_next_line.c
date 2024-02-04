@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 13:31:29 by rluari            #+#    #+#             */
-/*   Updated: 2024/02/04 14:55:44 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/04 17:16:52 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*ft_read(int fd, char *str)
 		return (NULL);
 	while (!ft_strchr2(str, '\n') && rc != 0)
 	{
-		rc = read(fd, buf, BUFFER_SIZE);
+		rc = read(fd, buf, 1);
 		if (rc == -1)
 			return (free(buf), free(str), NULL);
 /* 		if (rc == 0)
@@ -66,6 +66,11 @@ char	*ft_read(int fd, char *str)
 	return (str);
 }
 
+void sigquit_handler_gnl(int signum)
+{
+	(void)signum;
+}
+
 char	*get_next_line(int fd)
 {
 	char		*line;
@@ -73,11 +78,12 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	//signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	str = ft_read(fd, str);
 	if (!str)
 		return (NULL);
 	line = ft_line(str);
 	str = ft_new(str);
+    signal(SIGQUIT, SIG_DFL);
 	return (line);
 }
