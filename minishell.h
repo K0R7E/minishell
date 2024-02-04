@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:39:43 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/03 19:32:29 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/04 13:43:38 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,9 +195,9 @@ int		slash(char *str, t_info *info);
 char	*remove_quotes(char *str);
 
 // ft_signals.c
-void	sigint_handler(int sig);
+/* void	sigint_handler(int sig);
 void	sigquit_handler(int sig);
-void	init_signals(void);
+void	init_signals(void); */
 int		ft_strcmp_123(const char *s1, const char *s2);
 
 // signal_new.c
@@ -335,4 +335,6 @@ int		should_move_to_next(t_pars *tmp);
 void	config_signals(void);
 //void	handle_sig(int sig, t_info *info);
 t_info	*handle_sig(int sig, t_info *info);
+void	sigquit_handler(int sig);
+
 #endif

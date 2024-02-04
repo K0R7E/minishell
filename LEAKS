@@ -30,12 +30,15 @@ echo segfault $T grep segfault
 ##############--SIGNALS--###################
 
 ctrl-C in an empty prompt should display a new line with a new prompt. # ok
-ctrl-\ in an empty prompt should not do anything. # wrong
-ctrl-D in an empty prompt should quit minishell # exitcode 1 instead of 0 >> 2 instead of 0
 ctrl-C in a prompt after you wrote some stuff should display a new line with a new prompt. # ok
-The buffer should be clean too. Press "Enter" to make sure nothing from the previous line is executed. # ok
+Try ctrl-C after running a blocking command like cat without arguments or grep “something“. # ok (exitcode 0 instead of 130 (in hd it"s working))
+
+ctrl-D in an empty prompt should quit minishell # ok (exit code 0 instead of 1)
 ctrl-D in a prompt after you wrote some stuff should not do anything. # ok
-ctrl-\ in a prompt after you wrote some stuff should not do anything. # wrong
-Try ctrl-C after running a blocking command like cat without arguments or grep “something“. # exitcode 0 instead of 130
-Try ctrl-\ after running a blocking command like cat without arguments or grep “something“. # exitcode 0 instead of 131 (Core dumped)
-Try ctrl-D after running a blocking command like cat without arguments or grep “something“. # ok
+Try ctrl-D after running a blocking command like cat without arguments or grep “something“. # ok (in hd, we shoud fix the gnl ft_read function)
+
+ctrl-\ in an empty prompt should not do anything. # ok
+ctrl-\ in a prompt after you wrote some stuff should not do anything. # ok
+Try ctrl-\ after running a blocking command like cat without arguments or grep “something“. # ok (in hd our function doesn't ignore the signal)
+
+The buffer should be clean too. Press "Enter" to make sure nothing from the previous line is executed. # ok
