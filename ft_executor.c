@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 15:57:48 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/03 20:08:00 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/04 12:23:31 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	handle_parent_proc(pid_t pid, t_info *info, int fd_in, int fd_out)
 	int		status;
 	t_pars	*tmp;
 
+	status = 0;
 	tmp = *info->pars_ptr;
 	waitpid(pid, &status, 0);
 	if (is_builtin_2(tmp->command) && info->command_count == 1)
