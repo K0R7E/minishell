@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 15:57:48 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/04 13:39:18 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/04 14:57:50 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ void	ft_executor(t_pars *pars, t_info *info, int fd_in, int fd_out)
 	int		fd[2];
 
 	tmp = pars;
-	signal(SIGQUIT, sigquit_handler);
 	info->in_cmd = 1;
 	while (tmp)
 	{
