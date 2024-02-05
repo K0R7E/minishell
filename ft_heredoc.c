@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 16:10:56 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/05 17:25:36 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/05 20:39:31 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,10 @@ int	hd_loop(t_pars *pars, t_info *info, int i, int fd)
 	g_info = 0;
 	info->in_hd = 0;
 	if (ft_check_stop_hd(info, line) == 1)
+	{
+		close (fd);
 		return (1);
+	}
 	return (0);
 }
 

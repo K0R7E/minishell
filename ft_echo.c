@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 15:50:26 by fstark            #+#    #+#             */
-/*   Updated: 2024/02/03 16:18:04 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/05 20:27:14 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,25 +31,45 @@ int	ft_strncmp3(char *s1, char *s2, int n)
 	return ((unsigned char)(s1[i]) - (unsigned char)(s2[i]));
 }
 
-int	ft_echo(char **input)
+int    find_flag(char **input)
 {
-	int	i;
+    int    i;
+    int    j;
+    int    flag;
 
-	i = 1;
-	while (ft_strncmp3(input[i], "-n", 2) == 0
-		&& input[1][2] == '\0' && ((ft_strlen(input[i]) == 2)
-			|| (input[i][2] == 'n')))
-		i++;
-	while (input[i])
-	{
-		printf("%s", input[i]);
-		if (input[i + 1])
-			printf(" ");
-		i++;
-	}
-	if (ft_strncmp3(input[1], "-n", 2) == 0 && input[1][2] == '\0')
-		return (0);
-	else
-		printf("\n");
-	return (0);
+    flag = 0;
+    i = 1;
+    while (ft_strncmp3(input[i], "-n", 2) == 0)
+    {
+        j = 2;
+        while (input[i][j] != '\0' && input[i][j] == 'n')
+            j++;
+        if (input[i][j] != '\0')
+            break ;
+        i++;
+    }
+    return (i);
+}
+
+int    ft_echo(char **input)
+{
+    int    i;
+    int    flag;
+
+    flag = 0;
+    i = find_flag(input);
+    if (i > 1)
+        flag = 1;
+    while (input[i])
+    {
+        printf("%s", input[i]);
+        if (input[i + 1])
+            printf(" ");
+        i++;
+    }
+    if (flag == 1)
+        return (0);
+    else
+        printf("\n");
+    return (0);
 }

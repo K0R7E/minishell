@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:40:17 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/05 15:16:33 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/05 20:50:19 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_info	*handle_sig(int sig, t_info *info_in)
 		return (NULL);
 	if (sig == SIGINT)
 	{
-		if (!info->in_hd)
+		if (!info->in_hd && !info->in_cmd) // added
 			write(1, "\n", 1);
 		if (info->in_cmd)
 		{
@@ -49,6 +49,7 @@ t_info	*handle_sig(int sig, t_info *info_in)
 			write(1, "\n", 1);
     		rl_replace_line("", 0);
     		rl_on_new_line(); */
+			info->stop_hd = 1; // added
 			g_info = 1;
     		ioctl(STDIN_FILENO, TIOCSTI, "\n");
     		rl_replace_line("", 0);

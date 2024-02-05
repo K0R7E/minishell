@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:39:43 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/05 15:12:28 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/05 20:07:10 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -316,7 +316,7 @@ int		ft_lstsize(t_lexer *tokens);
 char	*convert_to_cmd(char *str, t_info *info);
 
 //ft_executor.c
-void	handle_execve_error(char *command, char **env);
+void	handle_execve_error(char *command, char **env, char *path);
 void	handle_child_process(t_pars *tmp, t_info *info, int fd_in, int fd_out);
 void	handle_parent_proc(pid_t pid, t_info *info, int fd_in, int fd_out);
 void	ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out);

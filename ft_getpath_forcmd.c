@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 11:00:02 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/03 15:56:31 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/05 20:21:45 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,40 @@ static void	free_path(t_pars *pars, t_info *info, char **allpath)
 	return (s_cmd);
 } */
 
+char	*get_path2(t_info *info)
+{
+	t_env *tmp;
+	char *path;
+	
+	tmp = info->env_list;
+	while (tmp)
+	{
+		if (ft_strncmp2(tmp->var, "PATH", 4) == 0 && ft_strlen(tmp->var) == 4)
+		{
+			path = ft_strdup(tmp->value);
+			if (path == NULL)
+				ft_error_message(*info->pars_ptr, info);
+			return (path);
+		}
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
 char	**prepare_paths(t_pars *pars, t_info *info)
 {
 	char	**allpath;
-
-	allpath = ft_split(info->path, ':');
-	if (allpath == NULL)
-		ft_error_message(pars, info);
+	
+	char *path = get_path2(info);
+	if (path != NULL)
+	{
+		allpath = ft_split(path, ':');
+		free(path);
+		if (allpath == NULL)
+			ft_error_message(pars, info);
+	}
+	else
+		return (NULL);
 	return (allpath);
 }
 
@@ -76,6 +103,8 @@ char	*get_path_new(t_pars *pars, char *token, t_info *info)
 	char	*exec;
 
 	allpath = prepare_paths(pars, info);
+	if (allpath == NULL)
+		return (NULL);
 	s_cmd = ft_strdup(token);
 	if (s_cmd == NULL)
 		free_path(pars, info, allpath);

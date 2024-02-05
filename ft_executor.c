@@ -6,19 +6,35 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 15:57:48 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/04 14:57:50 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/05 20:07:46 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_execve_error(char *command, char **env)
+void	handle_execve_error(char *command, char **env, char *path)
 {
+	if (path == NULL)
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(command, STDERR_FILENO);
+		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
+	}
+	else
+	{
+		ft_putstr_fd("Error: command not found: ", STDERR_FILENO);
+		ft_putendl_fd(command, STDERR_FILENO);
+	}
+	ft_free_array(env);
+	exit(127);
+}
+/* {
+	if ()
 	ft_putstr_fd("Error: command not found: ", STDERR_FILENO);
 	ft_putendl_fd(command, STDERR_FILENO);
 	ft_free_array(env);
 	exit(127);
-}
+} */
 
 void	handle_child_process(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 {
@@ -45,8 +61,10 @@ void	handle_child_process(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 		close (tmp->fd_in);
 		exit(EXIT_SUCCESS);
 	}
+	if (fd_in != 0)
+		close(fd_in);
 	if (execve(tmp->cmd_path, tmp->cmd_args, env) == -1)
-		handle_execve_error(tmp->command, env);
+		handle_execve_error(tmp->command, env, tmp->cmd_path);
 }
 
 void	handle_parent_proc(pid_t pid, t_info *info, int fd_in, int fd_out)
@@ -83,7 +101,9 @@ void	ft_fork(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 
 	pid = fork();
 	if (pid == 0)
+	{
 		handle_child_process(tmp, info, fd_in, fd_out);
+	}
 	else if (pid < 0)
 	{
 		ft_putendl_fd("Error: fork failed", STDERR_FILENO);
@@ -119,5 +139,6 @@ void	ft_executor(t_pars *pars, t_info *info, int fd_in, int fd_out)
 		fd_in = fd[0];
 		tmp = tmp->next;
 	}
+	
 	info->in_cmd = 0;
 }
