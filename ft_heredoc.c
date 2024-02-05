@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 16:10:56 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/04 17:22:07 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/05 15:05:07 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	hd_loop(t_pars *pars, t_info *info, int i, int fd)
 	char	*input;
 
 	ft_check_newline(pars, pars->args[i + 1], i);
-	while (!info->stop_hd && g_info == 1)
+	while (!info->stop_hd || g_info == 0)
 	{
 		input = add_line(input);
 		if (ft_check_hd(info, input) == 1)
@@ -76,14 +76,13 @@ int	ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 
 	fd = open("/tmp/temp8726343", O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	pars->heredoc = pars->args[i + 1];
-	info->in_hd = 1;
 	if (ft_check_qoutes(pars->args[i + 1]) == 1)
 		info->hd_quote = 1;
 	else
 		info->hd_quote = 0;
 	pars->heredoc = ft_strdup(pars->args[i + 1]);
 	pars->args[i + 1] = remove_quotes(pars->args[i + 1]);
-	g_info = 1;
+	info->in_hd = 1;
 	if (hd_loop(pars, info, i, fd) == 1)
 		return (1);
 	if (i == count)

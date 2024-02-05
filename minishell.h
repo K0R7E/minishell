@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:39:43 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/04 17:20:39 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/05 15:12:28 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <dirent.h>
+# include <sys/ioctl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <errno.h>

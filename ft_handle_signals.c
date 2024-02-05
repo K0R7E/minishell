@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:40:17 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/04 17:24:44 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/05 15:16:33 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,8 @@ t_info	*handle_sig(int sig, t_info *info_in)
 		return (NULL);
 	if (sig == SIGINT)
 	{
-		if (g_info == 1)
-		{
-			g_info = 0;
-			info->stop_hd = 1;
-			write(1, "\n", 1);
-			rl_replace_line("", 0);
-			rl_on_new_line();
-			rl_redisplay();
-			info->exit_code = 130;
-			return (info);
-		}
 		if (!info->in_hd)
 			write(1, "\n", 1);
-
 		if (info->in_cmd)
 		{
 			rl_replace_line("", 0);
@@ -55,15 +43,19 @@ t_info	*handle_sig(int sig, t_info *info_in)
 			info->exit_code = 130; // not work here
 			return (info);
 		}
-/* 		else if (info->in_hd)
+		else if (info->in_hd == 1)
 		{
-			info->stop_hd = 1;
+/* 			g_info = 1;
 			write(1, "\n", 1);
-			rl_replace_line("", 0);
-			rl_on_new_line();
+    		rl_replace_line("", 0);
+    		rl_on_new_line(); */
+			g_info = 1;
+    		ioctl(STDIN_FILENO, TIOCSTI, "\n");
+    		rl_replace_line("", 0);
+    		rl_on_new_line();
 			info->exit_code = 130;
 			return (info);
-		} */
+		}
 		else
 		{
 			rl_on_new_line();
@@ -73,29 +65,6 @@ t_info	*handle_sig(int sig, t_info *info_in)
 			return (info);
 		}
 	}
-/* 	else if (sig == SIGQUIT)
-	{
-		while (waitpid(-1, NULL, WNOHANG) > 0)
-		{
-			if (!info->in_cmd && !info->in_hd)
-			{
-				printf("First\n");
-				return (NULL);
-			}
-			if (info->in_cmd == 1 || info->in_hd == 1)
-			{
-				printf("Second\n");
-				ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
-				info->exit_code = 131;
-			}
-			else
-			{
-				printf("Third\n");
-				return (info);
-			}
-			return (info);
-		}
-	} */
 	return (info);
 }
 
