@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 16:13:14 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/03 18:32:13 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:01:31 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,10 @@ int	ft_check_newline(t_pars *pars, char *str, int j)
 
 void	free_hd(char *line, char *str)
 {
-	free(line);
-	free(str);
+	if (line)
+		free(line);
+	if (str)
+		free(str);
 }
 
 char	*ft_str_123(t_pars *pars, t_info *info, char *str, char *line)

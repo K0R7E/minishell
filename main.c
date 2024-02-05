@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:41:00 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/04 17:21:03 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/05 16:36:10 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,8 +159,9 @@ void	ft_get_input_tester(t_info *info)
 	if (info->input == NULL)
 	{
 		free(info->input);
+		i = info->exit_code;
 		ft_free_all(*info->pars_ptr, info, 2);
-		exit(info->exit_code);
+		exit(i);
 	}
 	if (info->input[0] == '\0')
 	{
@@ -241,7 +242,11 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		ft_lexer(info);
 		if (ft_parsing(&pars, info->lexer, info) == 1)
+		{
+			ft_free_all(pars, info, 1);
+			free(info->input);
 			continue ;
+		}
 		ft_1(info, pars);
 	}
 	ft_free_all(pars, info, 2);
