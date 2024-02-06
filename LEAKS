@@ -67,3 +67,17 @@ ctrl-\ in a prompt after you wrote some stuff should not do anything. # ok
 Try ctrl-\ after running a blocking command like cat without arguments or grep “something“. # ok (in hd our function doesn't ignore the signal)
 
 The buffer should be clean too. Press "Enter" to make sure nothing from the previous line is executed. # ok
+
+###############--NOTES--#######################
+
+The handle_sig function, as presented in your code, seems to be used for handling signals. In this function, the SIGINT signal is treated as a special case, and its handling depends on the values stored in the info structure.
+
+The issue likely arises from the SIGINT handling branch where info->in_hd == 1. In this branch, the ioctl(STDIN_FILENO, TIOCSTI, "\n") call somehow introduces an extra newline into the terminal when the Ctrl+D is used to exit a heredoc, followed by Ctrl+C.
+
+The root cause of this problem could be an incompatibility or unexpected behavior in terminal handling or within the readline library.
+
+Due to the unpredictability of the behavior caused by the ioctl call, such strange side effects can occur. In this case, it might be worth examining whether the ioctl call is necessary for resolving the issue or if an alternative approach should be considered for handling the exit from the heredoc.
+
+If you remove the ioctl call entirely from the SIGINT handling branch and simply return from the function, does the same problem occur? If it does, then it's likely that some aspect of readline or terminal handling is causing the issue. If not, then the ioctl call might be the culprit.
+
+Troubleshooting such issues typically involves some experimentation and examination of different parts of the code to identify the source of the problem. Consulting the documentation of readline and expanding your knowledge of terminal handling could assist in this process.

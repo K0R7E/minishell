@@ -6,13 +6,13 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:41:00 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/05 16:36:10 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/06 11:23:22 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_info;
+int	g_info;
 
 /* void	ft_print_pars(t_pars *pars)
 {
@@ -78,7 +78,7 @@ int g_info;
 	printf("token: %s\n", tmp->token);
 } */
 
-void	ft_get_input(t_info *info)
+/* void	ft_get_input(t_info *info)
 {
 	char	*line;
 
@@ -99,7 +99,7 @@ void	ft_get_input(t_info *info)
 	}
 	add_history(info->input);
 	return ;
-}
+} */
 
 /* void ft_get_input_tester(t_info *info)
 {
@@ -137,9 +137,16 @@ void	ft_get_input(t_info *info)
     free(line);
 } */
 
+void	cleanup_and_exit(t_info *info, int exit_code, int flag)
+{
+	if (flag == 1)
+		free(info->input);
+	ft_free_all(*info->pars_ptr, info, 2);
+	exit(exit_code);
+}
+
 void	ft_get_input_tester(t_info *info)
 {
-	int		i;
 	char	*line2;
 
 	if (isatty(fileno(stdin)))
@@ -148,21 +155,12 @@ void	ft_get_input_tester(t_info *info)
 	{
 		line2 = get_next_line(fileno(stdin));
 		if (!line2)
-		{
-			i = info->exit_code;
-			ft_free_all(*info->pars_ptr, info, 2);
-			exit(i);
-		}
+			cleanup_and_exit(info, info->exit_code, 0);
 		info->input = ft_strtrim(line2, "\n");
 		free(line2);
 	}
 	if (info->input == NULL)
-	{
-		free(info->input);
-		i = info->exit_code;
-		ft_free_all(*info->pars_ptr, info, 2);
-		exit(i);
-	}
+		cleanup_and_exit(info, info->exit_code, 1);
 	if (info->input[0] == '\0')
 	{
 		free(info->input);
@@ -171,39 +169,6 @@ void	ft_get_input_tester(t_info *info)
 	}
 	add_history(info->input);
 	return ;
-}
-
-int	ft_listsize(t_pars *pars)
-{
-	int		i;
-	t_pars	*tmp;
-
-	i = 0;
-	tmp = pars;
-	while (tmp)
-	{
-		tmp = tmp->next;
-		i++;
-	}
-	return (i);
-}
-
-void	ft_init_values(t_info *info)
-{
-	info->old_pwd = NULL;
-	info->pwd = NULL;
-	info->path = NULL;
-	info->home = NULL;
-	info->lexer = NULL;
-	info->exit_status = 0;
-	info->in_cmd = 0;
-	info->in_hd = 0;
-	info->stop_hd = 0;
-	info->exit_code = 0;
-	g_info = 0;
-	config_signals();
-	handle_sig(0, info);
-	info->exit_code = 0;
 }
 
 t_info	*calloc_info(void)
@@ -220,17 +185,22 @@ t_info	*calloc_info(void)
 	return (info);
 }
 
+void	initialize_environment(t_info **info, t_pars **pars, char **envp)
+{
+	*pars = NULL;
+	*info = calloc_info();
+	(*info)->pars_ptr = pars;
+	(*info)->env = ft_arrycpy_main(envp, *info);
+	env_conversion(*info, *pars, envp);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_info	*info;
 	t_pars	*pars;
 
 	ft_args(argv, argc);
-	pars = NULL;
-	info = calloc_info();
-	info->pars_ptr = &pars;
-	info->env = ft_arrycpy_main(envp, info);
-	env_conversion(info, pars, envp);
+	initialize_environment(&info, &pars, envp);
 	while (1)
 	{
 		init_loop(pars, info);

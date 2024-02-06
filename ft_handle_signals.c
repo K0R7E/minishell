@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:40:17 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/05 20:50:19 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/06 09:02:02 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,37 +34,12 @@ t_info	*handle_sig(int sig, t_info *info_in)
 		return (NULL);
 	if (sig == SIGINT)
 	{
-		if (!info->in_hd && !info->in_cmd) // added
-			write(1, "\n", 1);
 		if (info->in_cmd)
-		{
-			rl_replace_line("", 0);
-			rl_redisplay();
-			info->exit_code = 130; // not work here
-			return (info);
-		}
+			handle_cmd_sig(info);
 		else if (info->in_hd == 1)
-		{
-/* 			g_info = 1;
-			write(1, "\n", 1);
-    		rl_replace_line("", 0);
-    		rl_on_new_line(); */
-			info->stop_hd = 1; // added
-			g_info = 1;
-    		ioctl(STDIN_FILENO, TIOCSTI, "\n");
-    		rl_replace_line("", 0);
-    		rl_on_new_line();
-			info->exit_code = 130;
-			return (info);
-		}
+			handle_hd_sig(info);
 		else
-		{
-			rl_on_new_line();
-			rl_replace_line("", 0);
-			rl_redisplay();
-			info->exit_code = 130;
-			return (info);
-		}
+			handle_default_sig(info);
 	}
 	return (info);
 }
@@ -86,10 +61,7 @@ void	signal_handler(int signal, siginfo_t *info, void *ucontent)
 	(void)info;
 	if (info_ptr == NULL)
 		return ;
-	if (signal == SIGINT)
-		handle_sig(signal, info_ptr);
-/* 	else if (signal == SIGQUIT)
-		handle_sig(signal, info_ptr); */
+	handle_sig(signal, info_ptr);
 }
 
 void	config_signals(void)
@@ -101,7 +73,6 @@ void	config_signals(void)
 	sa_newsig.sa_flags = SA_SIGINFO;
 	sigaction(SIGINT, &sa_newsig, NULL);
 	signal(SIGQUIT, SIG_IGN);
-	//sigaction(SIGINT, &sa_newsig, NULL);
 }
 
 /* void	handle_sig(int sig, t_info *info_in)

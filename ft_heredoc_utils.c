@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 16:13:14 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/05 17:01:31 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/06 09:18:19 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,14 @@ char	*ft_str_123(t_pars *pars, t_info *info, char *str, char *line)
 	if (str == NULL)
 		ft_error_message(pars, info);
 	return (str);
+}
+
+int	hd_err_ex(int fd)
+{
+	if (fd == -1)
+	{
+		perror ("minishell: ");
+		return (1);
+	}
+	return (0);
 }

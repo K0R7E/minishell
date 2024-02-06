@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 16:10:56 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/05 20:39:31 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/06 09:19:53 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,12 @@ int	ft_delimiter(char *delim, char *line)
 
 char	*add_line(char *input)
 {
-/* 	write(1, "> ", 2);
-	input = get_next_line(0); */
 	input = readline("> ");
 	return (input);
 }
 
 char	*remove_newline(char *line, char *input)
 {
-	//line = ft_strdup(input);
 	line = ft_strtrim(input, "\n");
 	free(input);
 	return (line);
@@ -62,15 +59,9 @@ int	hd_loop(t_pars *pars, t_info *info, int i, int fd)
 		str = ft_hd_str_01(pars, info, str, line);
 		write(fd, str, ft_strlen(str));
 		free_hd(line, str);
-		//free(str);
 	}
-	g_info = 0;
-	info->in_hd = 0;
-	if (ft_check_stop_hd(info, line) == 1)
-	{
-		close (fd);
+	if (ft_check_stop_hd(info, line, fd) == 1)
 		return (1);
-	}
 	return (0);
 }
 
@@ -78,17 +69,13 @@ int	ft_redir_heredoc(t_pars *pars, t_info *info, int i, int count)
 {
 	int		fd;
 
+	info->hd_quote = 0;
 	fd = open("/tmp/temp8726343", O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	if (fd == -1)
-	{
-		perror ("minishell: ");
+	if (hd_err_ex(fd) == 1)
 		return (1);
-	}
 	pars->heredoc = pars->args[i + 1];
 	if (ft_check_qoutes(pars->args[i + 1]) == 1)
 		info->hd_quote = 1;
-	else
-		info->hd_quote = 0;
 	pars->heredoc = ft_strdup(pars->args[i + 1]);
 	pars->args[i + 1] = remove_quotes(pars->args[i + 1]);
 	info->in_hd = 1;

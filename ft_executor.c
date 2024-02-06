@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 15:57:48 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/05 20:07:46 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/06 11:23:05 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,11 @@ void	handle_child_process(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 {
 	int		ret;
 	char	**env;
-	int		i;
-	int		k;
 
 	setup_fd(fd_in, STDIN_FILENO);
 	setup_fd(fd_out, STDOUT_FILENO);
-	i = setup_file_fd(-1, tmp->out_file, tmp->fd_out, STDOUT_FILENO);
-	k = setup_file_fd(-1, tmp->in_file, tmp->fd_in, STDIN_FILENO);
+	setup_file_fd(-1, tmp->out_file, tmp->fd_out, STDOUT_FILENO);
+	setup_file_fd(-1, tmp->in_file, tmp->fd_in, STDIN_FILENO);
 	if ((is_builtin(tmp->command, tmp->cmd_args))
 		|| (is_builtin_2(tmp->command) && info->command_count > 1))
 	{
@@ -57,12 +55,11 @@ void	handle_child_process(t_pars *tmp, t_info *info, int fd_in, int fd_out)
 		exit(EXIT_SUCCESS);
 	env = env_conversion_back(info);
 	if (tmp->heredoc && tmp->cmd_args[0] == NULL)
-	{
-		close (tmp->fd_in);
-		exit(EXIT_SUCCESS);
-	}
+		ft_shit(tmp->fd_in);
 	if (fd_in != 0)
 		close(fd_in);
+	if (tmp->cmd_path == NULL)
+		handle_execve_error(tmp->command, env, tmp->cmd_path);
 	if (execve(tmp->cmd_path, tmp->cmd_args, env) == -1)
 		handle_execve_error(tmp->command, env, tmp->cmd_path);
 }
@@ -139,6 +136,5 @@ void	ft_executor(t_pars *pars, t_info *info, int fd_in, int fd_out)
 		fd_in = fd[0];
 		tmp = tmp->next;
 	}
-	
 	info->in_cmd = 0;
 }

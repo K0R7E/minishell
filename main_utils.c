@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 15:58:45 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/04 14:57:59 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/06 09:08:34 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,37 @@ void	init_loop(t_pars *pars, t_info *info)
 	info->command_count = 1;
 	info->builtin_command_count = 0;
 	info->input = NULL;
+}
+
+int	ft_listsize(t_pars *pars)
+{
+	int		i;
+	t_pars	*tmp;
+
+	i = 0;
+	tmp = pars;
+	while (tmp)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	return (i);
+}
+
+void	ft_init_values(t_info *info)
+{
+	info->old_pwd = NULL;
+	info->pwd = NULL;
+	info->path = NULL;
+	info->home = NULL;
+	info->lexer = NULL;
+	info->exit_status = 0;
+	info->in_cmd = 0;
+	info->in_hd = 0;
+	info->stop_hd = 0;
+	info->exit_code = 0;
+	g_info = 0;
+	config_signals();
+	handle_sig(0, info);
+	info->exit_code = 0;
 }

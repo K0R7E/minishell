@@ -19,7 +19,7 @@ SRCS            =	main.c \
 					ft_unset.c builtins_utils.c ft_cd.c \
 					utils.c ft_pwd.c change_env_var_utils3.c\
 					ft_main_arrycpy.c main_utils.c\
-					ft_redir.c ft_redir_utils.c \
+					ft_redir.c ft_redir_utils.c ft_handle_signals_utils.c\
 					ft_parsing.c ft_parsing_1.c ft_parsing_2.c ft_parsing_3.c \
 					ft_executor.c ft_executor_utils.c \
 					utils2.c ft_heredoc_utils.c ft_heredoc_utils2.c \

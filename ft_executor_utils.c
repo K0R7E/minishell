@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 09:34:55 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/05 16:52:50 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/06 07:57:00 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	setup_fd(int fd, int std_no)
 	}
 }
 
-int	setup_file_fd(int file_fd, char *file, int fd, int std_no)
+void	setup_file_fd(int file_fd, char *file, int fd, int std_no)
 {
 	if (file)
 	{
@@ -61,7 +61,6 @@ int	setup_file_fd(int file_fd, char *file, int fd, int std_no)
 		if (file_fd != -1)
 			close(file_fd);
 	}
-	return (std_no);
 }
 
 int	is_builtin(char *command, char **cmd_args)

@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 11:00:02 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/05 20:21:45 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/06 07:55:21 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ static void	free_path(t_pars *pars, t_info *info, char **allpath)
 
 char	*get_path2(t_info *info)
 {
-	t_env *tmp;
-	char *path;
-	
+	t_env	*tmp;
+	char	*path;
+
 	tmp = info->env_list;
 	while (tmp)
 	{
@@ -55,8 +55,9 @@ char	*get_path2(t_info *info)
 char	**prepare_paths(t_pars *pars, t_info *info)
 {
 	char	**allpath;
-	
-	char *path = get_path2(info);
+	char	*path;
+
+	path = get_path2(info);
 	if (path != NULL)
 	{
 		allpath = ft_split(path, ':');

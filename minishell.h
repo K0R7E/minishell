@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:39:43 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/05 20:07:10 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/06 11:22:56 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ typedef struct s_info
 	int		stop_hd;
 }	t_info;
 
-extern int g_info;
+extern int	g_info;
 
 /*##########################################################*/
 /*#####################  FUNCTIONS  ########################*/
@@ -193,6 +193,8 @@ int		give_env_variable_pos(char *input, int i, t_info *info, int mode);
 int		update_quote_state2(t_quote_state qs, char c);
 char	*slash_rem(char *in, t_info *info, char *res);
 int		slash(char *str, t_info *info);
+void	ft_check_qoutes_in_repdollar(t_info *info, t_quote_state *qs);
+char	*ft_dollar_check(char *res, t_info *info, t_quote_state *qs, char *in);
 
 // remove quotes
 char	*remove_quotes(char *str);
@@ -265,10 +267,11 @@ int		ft_check_qoutes(char *str);
 int		ft_check_newline(t_pars *pars, char *str, int j);
 void	free_hd(char *line, char *str);
 char	*ft_str_123(t_pars *pars, t_info *info, char *str, char *line);
+int		hd_err_ex(int fd);
 
 //ft_heredoc_utils_2.c
 void	hd_error_msg(char *msg);
-int		ft_check_stop_hd(t_info *info, char *line);
+int		ft_check_stop_hd(t_info *info, char *line, int fd);
 char	*ft_hd_str_01(t_pars *pars, t_info *info, char *str, char *line);
 int		ft_check_empty_line(char *str, char *input);
 int		ft_check_hd(t_info *info, char *input);
@@ -326,7 +329,7 @@ void	ft_executor(t_pars *pars, t_info *info, int fd_in, int fd_out);
 int		is_builtin_1(char *command);
 int		is_builtin_2(char *command);
 void	setup_fd(int fd, int std_no);
-int		setup_file_fd(int file_fd, char *file, int fd, int std_no);
+void	setup_file_fd(int file_fd, char *file, int fd, int std_no);
 int		is_builtin(char *command, char **cmd_args);
 
 //ft_executor_utils2.c
@@ -339,5 +342,14 @@ void	config_signals(void);
 //void	handle_sig(int sig, t_info *info);
 t_info	*handle_sig(int sig, t_info *info);
 void	sigquit_handler(int sig);
+
+// handle_signals_utils.c
+void	handle_cmd_sig(t_info *info);
+void	handle_hd_sig(t_info *info);
+void	handle_default_sig(t_info *info);
+
+int		ft_listsize(t_pars *pars);
+void	ft_init_values(t_info *info);
+void	ft_shit(int tmp_fd_in);
 
 #endif

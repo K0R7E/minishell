@@ -6,7 +6,7 @@
 /*   By: akortvel <akortvel@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:30:57 by akortvel          #+#    #+#             */
-/*   Updated: 2024/02/03 19:31:30 by akortvel         ###   ########.fr       */
+/*   Updated: 2024/02/06 11:22:49 by akortvel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,10 @@ int	should_move_to_next(t_pars *tmp)
 			return (2);
 	}
 	return (0);
+}
+
+void	ft_shit(int tmp_fd_in)
+{
+	close (tmp_fd_in);
+	exit(EXIT_SUCCESS);
 }
